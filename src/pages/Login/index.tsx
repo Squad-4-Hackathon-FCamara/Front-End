@@ -1,3 +1,5 @@
+import { Button } from '@mui/material'
+
 export function Login() {
-    return <h1>Loginlogin</h1>
+    return <Button variant="contained">Login</Button>
 }
