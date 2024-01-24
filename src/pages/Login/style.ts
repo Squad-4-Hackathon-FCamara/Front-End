@@ -8,8 +8,6 @@ export const MainWrapper = styled.main`
   justify-content: space-between;
   align-items: center;
 
-  
-
   a {
     color: ${props => props.theme["color-neutral-100"]};
     

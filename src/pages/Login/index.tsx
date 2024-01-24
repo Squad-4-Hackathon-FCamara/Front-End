@@ -17,14 +17,22 @@ import {
 } from "./style";
 import { MouseEvent, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type Inputs = {
+  emailInput: string;
+  passwordInput: string;
+};
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
 
-  function handleLoginClick(event: MouseEvent<HTMLButtonElement>) {
-    event.preventDefault();
-  }
+  const { register, handleSubmit } = useForm<Inputs>();
+
+  const handleLoginClick: SubmitHandler<Inputs> = (event) => {
+    console.log("Login: ", event);
+  };
 
   return (
     <MainWrapper>
@@ -48,6 +56,7 @@ export function Login() {
             id="email-input"
             label="Email address"
             variant="outlined"
+            {...register("emailInput")}
           />
 
           {/* Campo para senha, ver https://mui.com/material-ui/react-text-field/ */}
@@ -71,6 +80,7 @@ export function Login() {
               }
               label="Password"
               sx={{ width: "517px" }}
+              {...register("passwordInput")}
             />
           </FormControl>
 
@@ -79,7 +89,7 @@ export function Login() {
             variant="contained"
             size="large"
             type="submit"
-            onClick={handleLoginClick}
+            onClick={handleSubmit(handleLoginClick)}
           >
             Entrar
           </Button>
