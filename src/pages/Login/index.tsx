@@ -59,7 +59,7 @@ export function Login() {
             {...register("emailInput")}
           />
 
-          {/* Campo para senha, ver https://mui.com/material-ui/react-text-field/ */}
+         {/* Campo para senh a, ver https://mui.com/material-ui/react-text-field/ */}
           <FormControl variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">
               Password
