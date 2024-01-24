@@ -15,12 +15,16 @@ import {
   LoginWithGoogle,
   MainWrapper,
 } from "./style";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
+
+  function handleLoginClick(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+  }
 
   return (
     <MainWrapper>
@@ -32,7 +36,10 @@ export function Login() {
         <form>
           <h1>Entre no Orange Portfólio</h1>
 
-          <LoginWithGoogle type="button">Entrar com Google</LoginWithGoogle>
+          <LoginWithGoogle type="button">
+            <img src={GoogleLogo}></img>
+            Entrar com Google
+          </LoginWithGoogle>
 
           <h2>Faça login com email</h2>
 
@@ -40,7 +47,7 @@ export function Login() {
           <TextField
             label="Email address"
             variant="outlined"
-            sx={{ width: "517px" }}
+            sx={{ width: "517px", marginBottom: "1rem" }}
           />
 
           {/* Campo para senha, ver https://mui.com/material-ui/react-text-field/ */}
@@ -68,7 +75,9 @@ export function Login() {
           </FormControl>
 
           {/* Botão de login */}
-          <LoginButton type="submit">ENTRAR</LoginButton>
+          <LoginButton type="submit" onClick={handleLoginClick}>
+            ENTRAR
+          </LoginButton>
         </form>
       </LoginContainer>
     </MainWrapper>

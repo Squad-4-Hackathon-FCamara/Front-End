@@ -2,10 +2,10 @@ export const defaultTheme = {
     black: '#000',
     white: '#fff',
 
-    'color-principal-70': '#edeff2',
-    'color-principal-80': '#444466',
-    'color-principal-90': '#222244',
-    'color-principal-100': '#111133',
+    'color-primary-70': '#edeff2',
+    'color-primary-80': '#444466',
+    'color-primary-90': '#222244',
+    'color-primary-100': '#111133',
 
     'color-secondary-60': '#ffeecc',
     'color-secondary-70': '#ffcc99',
