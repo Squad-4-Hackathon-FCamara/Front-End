@@ -8,9 +8,19 @@ export const MainWrapper = styled.main`
   justify-content: space-between;
   align-items: center;
 
-  form {
-    display: flex;
-    flex-direction: column;
+  
+
+  a {
+    color: ${props => props.theme["color-neutral-100"]};
+    
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.15px; 
+
+    text-decoration: none;
+    margin-top: 18px;
   }
 `
 
@@ -21,6 +31,10 @@ export const ImageContainer = styled.section`
   img {
     height: 100%;
   }
+
+  @media (max-width: 1200px) {
+    display: none;
+  }
 `
 
 export const LoginContainer = styled.section`
@@ -29,7 +43,7 @@ export const LoginContainer = styled.section`
   align-items: center;
   flex-direction: column;
   flex: 1;
-  padding: 13.125rem 7.6875rem 12.5rem 7.6875rem;
+
 
   h1 {
     text-align: center;
@@ -50,6 +64,49 @@ export const LoginContainer = styled.section`
     line-height: 24px; 
 
     color: ${props => props.theme["color-neutral-110"]};
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // Customização  os inputs e botões do formulário
+  // Essas classes e Ids foram obtidos no navegador, com o inspetor de elementos
+  .MuiFormControl-root {
+    margin-bottom: 16px;
+    width: 517px;
+  }
+
+  #email-input {
+    color: ${props => props.theme["color-neutral-120"]};
+    width: 517px;
+  }
+
+  #outlined-adornment-password {
+    color: ${props => props.theme["color-neutral-120"]};
+    width: 517px;
+  }
+
+  #login-button {
+    background-color: ${props => props.theme["color-secondary-100"]};
+    width: 517px;
+    height: 42px;
+  }
+
+  // Media query para responsividade
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    padding: 24px;
+
+    h1 {
+      font-size: 24px;
+    }
+
+    .MuiFormControl-root, .MuiInputBase-root, #email-input, #outline-adornment-password, #login-button, form {
+      width: 100%;
+    }
   }
 `
 
@@ -107,6 +164,7 @@ export const LoginButton = styled.button`
   border: none;
   border-radius: 4px;
   background: ${props => props.theme["color-secondary-100"]};
+  background-position: center;
   color: ${props => props.theme["color-neutral-60"]};
   cursor: pointer;
 
@@ -119,6 +177,10 @@ export const LoginButton = styled.button`
 
   &:hover {
     background: ${props => props.theme["color-secondary-110"]};
+  }
+
+  &:active {
+    
   }
 `
 

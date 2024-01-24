@@ -1,4 +1,5 @@
 import {
+  Button,
   FormControl,
   IconButton,
   InputAdornment,
@@ -10,7 +11,6 @@ import IMGLogin from "./../../assets/images/img-login.svg";
 import GoogleLogo from "./../../assets/images/google-logo.svg";
 import {
   ImageContainer,
-  LoginButton,
   LoginContainer,
   LoginWithGoogle,
   MainWrapper,
@@ -33,21 +33,21 @@ export function Login() {
       </ImageContainer>
 
       <LoginContainer>
+        <h1>Entre no Orange Portfólio</h1>
+
+        <LoginWithGoogle type="button">
+          <img src={GoogleLogo}></img>
+          Entrar com Google
+        </LoginWithGoogle>
+
         <form>
-          <h1>Entre no Orange Portfólio</h1>
-
-          <LoginWithGoogle type="button">
-            <img src={GoogleLogo}></img>
-            Entrar com Google
-          </LoginWithGoogle>
-
           <h2>Faça login com email</h2>
 
           {/* Campo para email */}
           <TextField
+            id="email-input"
             label="Email address"
             variant="outlined"
-            sx={{ width: "517px", marginBottom: "1rem" }}
           />
 
           {/* Campo para senha, ver https://mui.com/material-ui/react-text-field/ */}
@@ -74,10 +74,17 @@ export function Login() {
             />
           </FormControl>
 
-          {/* Botão de login */}
-          <LoginButton type="submit" onClick={handleLoginClick}>
-            ENTRAR
-          </LoginButton>
+          <Button
+            id="login-button"
+            variant="contained"
+            size="large"
+            type="submit"
+            onClick={handleLoginClick}
+          >
+            Entrar
+          </Button>
+
+          <a href="/register">Cadastre-se</a>
         </form>
       </LoginContainer>
     </MainWrapper>
