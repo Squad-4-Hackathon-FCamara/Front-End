@@ -1,18 +1,18 @@
-import { Button } from '@mui/material'
-import { main } from '@popperjs/core'
-import './style.css';
+
 import IMGLogin from './../../assets/images/img_login.svg'
+import { ImageContainer, LoginContainer, MainWrapper } from './style';
+
 export function Login() {
     return (
-        <main> 
-            <div id='img-container'>
+        <MainWrapper> 
+            <ImageContainer>
                 <img src={IMGLogin} alt="" />
-            </div>
+            </ImageContainer>
 
-            <div id='login-container'>
+            <LoginContainer>
                 <h1>Entre no Orange Portfólio</h1>
                 Formulário
-            </div>
-        </main>
+            </LoginContainer>
+        </MainWrapper>
     )
 }
