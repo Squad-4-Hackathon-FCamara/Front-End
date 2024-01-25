@@ -36,7 +36,9 @@ export const ImageContainer = styled.section`
 `
 
 export const LoginContainer = styled.section`
+  position: relative;
   display: flex;
+  height: 100%;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -69,8 +71,8 @@ export const LoginContainer = styled.section`
     flex-direction: column;
   }
 
-  // Customização  os inputs e botões do formulário
-  // Essas classes e Ids foram obtidos no navegador, com o inspetor de elementos
+  // Customização  os inputs, botões e alert do formulário
+  // MuiFormControl-root foi obtida no navegador, com o inspetor de elementos
   .MuiFormControl-root {
     margin-bottom: 16px;
     width: 517px;
@@ -92,14 +94,26 @@ export const LoginContainer = styled.section`
     height: 42px;
   }
 
-  // Media query para responsividade
+  #snackbar {
+    position: absolute;
+    top: 54px;
 
+    #invalid-credentials {
+      background-color: ${props => props.theme["warning-main"]};
+    }
+  }
+
+  // Media query para responsividade
   @media (max-width: 768px) {
     max-width: 100%;
     padding: 24px;
 
     h1 {
       font-size: 24px;
+    }
+
+    #snackbar {
+      top: 49px;
     }
 
     .MuiFormControl-root, .MuiInputBase-root, #email-input, #outline-adornment-password, #login-button, form {
