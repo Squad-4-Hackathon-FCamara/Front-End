@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import {
   ImageContainer,
   LoginContainer,
@@ -51,11 +52,7 @@ export function Login() {
     },
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = loginForm;
+  const { register, handleSubmit } = loginForm;
 
   // Conjunto de funções para manipular os inputs e o formulário
   function handleEmailInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -68,21 +65,31 @@ export function Login() {
 
   // Cuida do submit do formulário
   function handleLoginClick(data: LoginFormData) {
-    console.log("Errors: ", errors);
+    console.log("Errors: ", data);
+
+    // Endpoint de teste da api adviceslip, retorna uma piada sobre o Chuck Norris
+    axios
+      .get("https://api.chucknorris.io/jokes/random")
+      .then((response) => {
+        console.log(response.data.value);
+      })
+      .catch((error) => {
+        console.error("HTTP Error code: ", error.statusCode);
+      });
 
     // Esses ifs são apenas para exemplo de como ativar os erros e a snackbar
     // DEVEM ser apagados depois!
-    if (data.email !== "teste@teste.com") {
-      setIsEmailValid(false);
-    }
+    // if (data.email !== "teste@teste.com") {
+    //   setIsEmailValid(false);
+    // }
 
-    if (data.password !== "123") {
-      setIsPasswordValid(false);
-    }
+    // if (data.password !== "123") {
+    //   setIsPasswordValid(false);
+    // }
 
-    if (data.email !== "teste@teste.com" || data.password !== "123") {
-      setIsSnackbarOpen(true);
-    }
+    // if (data.email !== "teste@teste.com" || data.password !== "123") {
+    //   setIsSnackbarOpen(true);
+    // }
   }
 
   // Cuida do fechamento da snackbar
