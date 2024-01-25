@@ -2,7 +2,6 @@ import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import {
   ImageContainer,
   LoginContainer,
@@ -23,6 +22,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import IMGLogin from "./../../assets/images/img-login.svg";
 import GoogleLogo from "./../../assets/images/google-logo.svg";
+import { AxiosAPI } from "../../AxiosConfig";
 
 export function Login() {
   // Estados para o form, talvez possa ser substituído por um reducer no futuro
@@ -68,8 +68,7 @@ export function Login() {
     console.log("Errors: ", data);
 
     // Endpoint de teste da api adviceslip, retorna uma piada sobre o Chuck Norris
-    axios
-      .get("https://api.chucknorris.io/jokes/random")
+    AxiosAPI.get("/jokes/random")
       .then((response) => {
         console.log(response.data.value);
       })
