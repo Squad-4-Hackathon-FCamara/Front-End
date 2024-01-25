@@ -2,6 +2,11 @@ export const defaultTheme = {
     black: '#000',
     white: '#fff',
 
+    'success-main': '#2E7D32',
+    'info-main': '#0288D1',
+    'warning-main': '#EF6C00',
+    'error-main': '#D32F2F',
+
     'color-primary-70': '#edeff2',
     'color-primary-80': '#444466',
     'color-primary-90': '#222244',

@@ -1,37 +1,107 @@
-import {
-  Button,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-} from "@mui/material";
-import IMGLogin from "./../../assets/images/img-login.svg";
-import GoogleLogo from "./../../assets/images/google-logo.svg";
+import { ChangeEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as zod from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import {
   ImageContainer,
   LoginContainer,
   LoginWithGoogle,
   MainWrapper,
 } from "./style";
-import { MouseEvent, useState } from "react";
+import {
+  Alert,
+  Button,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  Snackbar,
+  TextField,
+} from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { SubmitHandler, useForm } from "react-hook-form";
-
-type Inputs = {
-  emailInput: string;
-  passwordInput: string;
-};
+import IMGLogin from "./../../assets/images/img-login.svg";
+import GoogleLogo from "./../../assets/images/google-logo.svg";
 
 export function Login() {
+  // Estados para o form, talvez possa ser substituído por um reducer no futuro
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
-  const { register, handleSubmit } = useForm<Inputs>();
+  // Regras de validação com Zod
+  // Ainda não consegui exibir essas mensagens de erro
+  const loginValidationSchema = zod.object({
+    email: zod
+      .string()
+      .min(1, { message: "Digite seu email" })
+      .email({ message: "Email inválido" }),
+    password: zod.string().min(1, { message: "Digite sua senha" }),
+  });
 
-  const handleLoginClick: SubmitHandler<Inputs> = (event) => {
-    console.log("Login: ", event);
+  type LoginFormData = zod.infer<typeof loginValidationSchema>;
+
+  const loginForm = useForm<LoginFormData>({
+    resolver: zodResolver(loginValidationSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const { register, handleSubmit } = loginForm;
+
+  // Conjunto de funções para manipular os inputs e o formulário
+  function handleEmailInputChange(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.value) setIsEmailValid(true);
+  }
+
+  function handlePasswordInputChange(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.value) setIsPasswordValid(true);
+  }
+
+  // Cuida do submit do formulário
+  function handleLoginClick(data: LoginFormData) {
+    console.log("Errors: ", data);
+
+    // Endpoint de teste da api adviceslip, retorna uma piada sobre o Chuck Norris
+    axios
+      .get("https://api.chucknorris.io/jokes/random")
+      .then((response) => {
+        console.log(response.data.value);
+      })
+      .catch((error) => {
+        console.error("HTTP Error code: ", error.statusCode);
+      });
+
+    // Esses ifs são apenas para exemplo de como ativar os erros e a snackbar
+    // DEVEM ser apagados depois!
+    // if (data.email !== "teste@teste.com") {
+    //   setIsEmailValid(false);
+    // }
+
+    // if (data.password !== "123") {
+    //   setIsPasswordValid(false);
+    // }
+
+    // if (data.email !== "teste@teste.com" || data.password !== "123") {
+    //   setIsSnackbarOpen(true);
+    // }
+  }
+
+  // Cuida do fechamento da snackbar
+  const handleCloseSnackbar = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setIsSnackbarOpen(false);
   };
 
   return (
@@ -41,6 +111,21 @@ export function Login() {
       </ImageContainer>
 
       <LoginContainer>
+        <Snackbar
+          id="snackbar"
+          open={isSnackbarOpen}
+          autoHideDuration={5000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          <Alert id="invalid-credentials" variant="filled" severity="warning">
+            Email ou senha estão incorretos
+          </Alert>
+        </Snackbar>
+
         <h1>Entre no Orange Portfólio</h1>
 
         <LoginWithGoogle type="button">
@@ -56,11 +141,17 @@ export function Login() {
             id="email-input"
             label="Email address"
             variant="outlined"
-            {...register("emailInput")}
+            error={!isEmailValid}
+            {...register("email")}
+            onChange={handleEmailInputChange}
           />
 
           {/* Campo para senha, ver https://mui.com/material-ui/react-text-field/ */}
-          <FormControl variant="outlined">
+          <FormControl
+            variant="outlined"
+            error={!isPasswordValid}
+            onChange={handlePasswordInputChange}
+          >
             <InputLabel htmlFor="outlined-adornment-password">
               Password
             </InputLabel>
@@ -80,7 +171,7 @@ export function Login() {
               }
               label="Password"
               sx={{ width: "517px" }}
-              {...register("passwordInput")}
+              {...register("password")}
             />
           </FormControl>
 
