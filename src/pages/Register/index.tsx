@@ -35,6 +35,19 @@ import { TextField,Button, FormControl, InputLabel, OutlinedInput, InputAdornmen
   
           <form>
 
+          <div>
+            <TextField
+            id="first-name-input"
+            label="Nome"
+            variant="outlined"
+          />
+          
+          <TextField
+            id="last-name-input"
+            label="Sobrenome"
+            variant="outlined"
+          /></div>
+
           <TextField
             id="email-input"
             label="Email address"

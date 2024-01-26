@@ -61,6 +61,24 @@ export const RegisterContainer = styled.section`
     padding-bottom: 32px;
   }
 
+  div {
+    display: flex;
+    gap: 16px;
+    flex: 1;
+
+    .MuiFormControl-root {
+      width: 250px;
+    }
+
+    #first-name-input {
+      width: 250px;
+    }
+
+    #last-name-input {
+      width: 250px;
+    }
+  }
+
   .MuiFormControl-root {
     margin-bottom: 16px;
     width: 517px;
@@ -84,7 +102,7 @@ export const RegisterContainer = styled.section`
     justify-content: center;
 
     p {
-      color:${(props) => props.theme["color-neutral-60"]} ;
+      color: ${(props) => props.theme["color-neutral-60"]};
       font-feature-settings: "clig" off, "liga" off;
       /* [Orange P] Style Guide/Button */
       font-family: Roboto;
@@ -94,6 +112,31 @@ export const RegisterContainer = styled.section`
       line-height: 26px; /* 173.333% */
       letter-spacing: 0.46px;
       text-transform: uppercase;
+    }
+  }
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 24px;
+    }
+    div {
+      flex-direction: column;
+    }
+    .MuiFormControl-root {
+      width: 100%;
+    }
+    #first-name-input {
+      width: 100%;
+    }
+
+    #last-name-input {
+      width: 100%;
+    }
+    #email-input {
+      width: 100%;
+    }
+
+    #outlined-adornment-password {
+      width: 100%;
     }
   }
 `;
