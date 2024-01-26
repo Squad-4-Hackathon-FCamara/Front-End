@@ -76,6 +76,10 @@ export const RegisterContainer = styled.section`
   }
 
   @media (max-width: 768px) {
+    h1 {
+      font-size: 24px;
+    }
+
     form {
       width: 100%;
       padding: 0 24px;
