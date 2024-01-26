@@ -116,6 +116,7 @@ export const SearchBar = styled.section`
   }
 
   // .MuiAutocomplete-root é uma classe do Material UI, visível com o inspetor de elementos do navegador
+  // No index, o componente BaseAutocomplete usa essa classe
   .MuiAutocomplete-root {
     width: 513px;
   }

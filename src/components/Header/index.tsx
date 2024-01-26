@@ -34,20 +34,19 @@ export function Header() {
     setAnchorEl(null);
   };
 
-  function getScreenWidth() {
-    const width = document.documentElement.clientWidth;
-
-    return width;
-  }
-
   // useEffect fica observando uma variável, e executa uma lógica quando ocorre uma mudança no valor
+  // No return, o event listener é removido
   useEffect(() => {
-    const clientWidth = () => {
-      setScreenWidth(getScreenWidth());
-    };
+    window.addEventListener("resize", () => {
+      setScreenWidth(window.innerWidth);
+    });
 
-    window.addEventListener("resize", clientWidth);
-  });
+    return () => {
+      window.removeEventListener("resize", () => {
+        setScreenWidth(window.innerWidth);
+      });
+    };
+  }, []);
 
   return (
     <HeaderContainer>

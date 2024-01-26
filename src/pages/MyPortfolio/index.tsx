@@ -1,12 +1,11 @@
-import { Autocomplete, Button, Checkbox, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import {
   PortfolioContainer,
   ProfileCard,
   ProjectsList,
   SearchBar,
 } from "./style";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { BaseAutocomplete } from "../../components/BaseAutocomplete";
 
 export function MyPortfolio() {
   // Apenas para testes, eventualmente essas informações virão do back end
@@ -19,9 +18,6 @@ export function MyPortfolio() {
     { id: 6, name: "DevOps" },
     { id: 7, name: "Soft Skills" },
   ];
-
-  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-  const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
   return (
     <PortfolioContainer>
@@ -43,30 +39,7 @@ export function MyPortfolio() {
       {/* Autocomplete para pesquisa */}
       <SearchBar>
         <h6>Meus projetos</h6>
-        <Autocomplete
-          multiple
-          freeSolo
-          limitTags={4}
-          disableCloseOnSelect
-          options={tagsMockUp}
-          getOptionLabel={(tags) =>
-            typeof tags === "string" ? tags : tags.name
-          }
-          renderInput={(params) => (
-            <TextField {...params} label="Buscar tags" placeholder="" />
-          )}
-          renderOption={(props, option, { selected }) => (
-            <li {...props}>
-              <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                style={{ marginRight: 8 }}
-                checked={selected}
-              />
-              {option.name}
-            </li>
-          )}
-        />
+        <BaseAutocomplete items={tagsMockUp} />
       </SearchBar>
 
       {/* Lista dos projetos do usuário */}
