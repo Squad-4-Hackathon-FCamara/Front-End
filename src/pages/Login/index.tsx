@@ -65,12 +65,12 @@ export function Login() {
 
   // Cuida do submit do formulário
   function handleLoginClick(data: LoginFormData) {
-    console.log("Errors: ", data);
+    console.log("Data: ", data);
 
     // Endpoint de teste da api adviceslip, retorna uma piada sobre o Chuck Norris
     AxiosAPI.get("/jokes/random")
       .then((response) => {
-        console.log(response.data.value);
+        console.log(response);
       })
       .catch((error) => {
         console.error("HTTP Error code: ", error.statusCode);
@@ -78,17 +78,17 @@ export function Login() {
 
     // Esses ifs são apenas para exemplo de como ativar os erros e a snackbar
     // DEVEM ser apagados depois!
-    // if (data.email !== "teste@teste.com") {
-    //   setIsEmailValid(false);
-    // }
+    if (data.email !== "teste@teste.com") {
+      setIsEmailValid(false);
+    }
 
-    // if (data.password !== "123") {
-    //   setIsPasswordValid(false);
-    // }
+    if (data.password !== "123") {
+      setIsPasswordValid(false);
+    }
 
-    // if (data.email !== "teste@teste.com" || data.password !== "123") {
-    //   setIsSnackbarOpen(true);
-    // }
+    if (data.email !== "teste@teste.com" || data.password !== "123") {
+      setIsSnackbarOpen(true);
+    }
   }
 
   // Cuida do fechamento da snackbar
@@ -113,7 +113,7 @@ export function Login() {
         <Snackbar
           id="snackbar"
           open={isSnackbarOpen}
-          autoHideDuration={5000}
+          autoHideDuration={3000}
           onClose={handleCloseSnackbar}
           anchorOrigin={{
             vertical: "top",
