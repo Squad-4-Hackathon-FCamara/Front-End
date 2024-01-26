@@ -169,7 +169,6 @@ export function Login() {
                 </InputAdornment>
               }
               label="Password"
-              sx={{ width: "517px" }}
               {...register("password")}
             />
           </FormControl>

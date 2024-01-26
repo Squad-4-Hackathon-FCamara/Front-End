@@ -47,6 +47,7 @@ export const RegisterContainer = styled.section`
     justify-content: center; //Faz alinhamento vertical
     align-items: center; //Faz alinhamento horizontal
     flex-direction: column;
+    width: 517px;
   }
 
   h1 {
@@ -61,82 +62,27 @@ export const RegisterContainer = styled.section`
     padding-bottom: 32px;
   }
 
-  div {
+  #names-container {
+    width: 100%;
     display: flex;
     gap: 16px;
-    flex: 1;
-
-    .MuiFormControl-root {
-      width: 250px;
-    }
-
-    #first-name-input {
-      width: 250px;
-    }
-
-    #last-name-input {
-      width: 250px;
-    }
-  }
-
-  .MuiFormControl-root {
     margin-bottom: 16px;
-    width: 517px;
   }
 
-  #email-input {
-    color: ${(props) => props.theme["color-neutral-120"]};
-    width: 517px;
-  }
-
-  #outlined-adornment-password {
-    color: ${(props) => props.theme["color-neutral-120"]};
-    width: 517px;
-  }
-
-  #register-button {
+  #login-button {
     background-color: ${(props) => props.theme["color-secondary-100"]};
-    width: 517px;
+    width: 100%;
     height: 42px;
-    display: flex;
-    justify-content: center;
-
-    p {
-      color: ${(props) => props.theme["color-neutral-60"]};
-      font-feature-settings: "clig" off, "liga" off;
-      /* [Orange P] Style Guide/Button */
-      font-family: Roboto;
-      font-size: 15px;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 26px; /* 173.333% */
-      letter-spacing: 0.46px;
-      text-transform: uppercase;
-    }
   }
+
   @media (max-width: 768px) {
-    h1 {
-      font-size: 24px;
+    form {
+      width: 100%;
+      padding: 0 24px;
     }
-    div {
+
+    #names-container {
       flex-direction: column;
-    }
-    .MuiFormControl-root {
-      width: 100%;
-    }
-    #first-name-input {
-      width: 100%;
-    }
-
-    #last-name-input {
-      width: 100%;
-    }
-    #email-input {
-      width: 100%;
-    }
-
-    #outlined-adornment-password {
-      width: 100%;
     }
   }
 `;
