@@ -128,7 +128,7 @@ export function Header() {
 
       <ProfileContainer>
         <img
-          src="https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=giovani"
+          src="https://api.dicebear.com/7.x/thumbs/svg?seed=Gio?scale=200"
           alt="Avatar"
         />
         <IconButton aria-label="notifications">
