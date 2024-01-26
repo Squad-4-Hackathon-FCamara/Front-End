@@ -1,18 +1,21 @@
 import styled from "styled-components";
 
 export const PortfolioContainer = styled.main`
-  display: flex;
-  justify-content: center;
+  display: block;
   padding: 0 32px;
+
+  @media (max-width: 768px) {
+    padding: 0 24px;
+  }
 `
 
 export const ProfileCard = styled.section`
   display: flex;
   gap: 42px;
-  margin: 122px 0 56px 0;
+  margin: 122px auto 56px auto;
   width: 364px;
 
-  h1 {
+  h5 {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -27,9 +30,10 @@ export const ProfileCard = styled.section`
     line-height: 24px; 
   }
 
-  h3 {
+  h6 {
     margin: 16px 0 24px 0;
     color: ${props => props.theme["color-neutral-130"]};
+    opacity: 50%;
 
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
@@ -65,10 +69,20 @@ export const ProfileCard = styled.section`
     text-transform: uppercase; 
   }
 
+  #add-project-button:disabled {
+    background: rgba(0, 0, 0, 0.12);
+
+    p {
+      color: rgba(0, 0, 0, 0.38);
+    }
+  }
+
   @media (max-width: 768px) {
     flex-direction: column;
     justify-content: center;
+    margin: 56px auto 56px auto;
     gap: 16px;
+    width: 312px;
 
     img {
       margin: auto;
@@ -77,9 +91,40 @@ export const ProfileCard = styled.section`
     div {
       margin: auto;
     }
+
+    h6 {
+      margin: 8px 0;
+    }
   }
 `
 
-export const SearchBar = styled.section``
+export const SearchBar = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  h6 {
+    color: ${props => props.theme["color-neutral-130"]};
+    opacity: 0.6;
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.15px; 
+  }
+
+  // .MuiAutocomplete-root é uma classe do Material UI, visível com o inspetor de elementos do navegador
+  .MuiAutocomplete-root {
+    width: 513px;
+  }
+
+  @media (max-width: 768px) {
+  .MuiAutocomplete-root {
+    width: 100%;
+  }
+  }
+`
 
 export const ProjectsList = styled.section``
