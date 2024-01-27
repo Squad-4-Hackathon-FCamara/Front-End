@@ -3,7 +3,6 @@ import {
   AddProjectCard,
   PortfolioContainer,
   ProfileCard,
-  ProjectSkeleton,
   ProjectsList,
   SearchBar,
 } from "./style";

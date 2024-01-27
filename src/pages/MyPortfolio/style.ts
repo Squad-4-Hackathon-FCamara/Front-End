@@ -57,6 +57,7 @@ export const ProfileCard = styled.section`
     background: ${(props) => props.theme["color-secondary-100"]};
     width: 200px;
     height: 42px;
+    transition: background-color 0.2s;
   }
 
   #add-project-button p {
@@ -75,6 +76,10 @@ export const ProfileCard = styled.section`
     p {
       color: rgba(0, 0, 0, 0.38);
     }
+  }
+
+  #add-project-button:hover {
+    background: ${(props) => props.theme["color-secondary-110"]};
   }
 
   @media (max-width: 768px) {
