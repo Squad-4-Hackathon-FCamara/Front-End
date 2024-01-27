@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosAPI } from "../../AxiosConfig";
 import {
   ImageContainer,
   LoginContainer,
@@ -22,7 +23,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import IMGLogin from "./../../assets/images/img-login.svg";
 import GoogleLogo from "./../../assets/images/google-logo.svg";
-import { AxiosAPI } from "../../AxiosConfig";
+import { defaultTheme } from "../../styles/themes/default.ts";
 
 export function Login() {
   // Estados para o form, talvez possa ser substituído por um reducer no futuro
@@ -120,7 +121,11 @@ export function Login() {
             horizontal: "center",
           }}
         >
-          <Alert id="invalid-credentials" variant="filled" severity="warning">
+          <Alert
+            variant="filled"
+            severity="warning"
+            sx={{ backgroundColor: defaultTheme["warning-main"] }}
+          >
             Email ou senha estão incorretos
           </Alert>
         </Snackbar>
@@ -137,12 +142,12 @@ export function Login() {
 
           {/* Campo para email */}
           <TextField
-            id="email-input"
             label="Email address"
             variant="outlined"
             error={!isEmailValid}
             {...register("email")}
             onChange={handleEmailInputChange}
+            sx={{ width: "100%", marginBottom: "16px" }}
           />
 
           {/* Campo para senha, ver https://mui.com/material-ui/react-text-field/ */}
@@ -150,6 +155,7 @@ export function Login() {
             variant="outlined"
             error={!isPasswordValid}
             onChange={handlePasswordInputChange}
+            sx={{ width: "100%", marginBottom: "16px" }}
           >
             <InputLabel htmlFor="outlined-adornment-password">
               Password
