@@ -7,7 +7,7 @@ export const PortfolioContainer = styled.main`
   @media (max-width: 768px) {
     padding: 0 24px;
   }
-`
+`;
 
 export const ProfileCard = styled.section`
   display: flex;
@@ -22,24 +22,24 @@ export const ProfileCard = styled.section`
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 200px;
-    color: ${props => props.theme["color-neutral-120"]};
+    color: ${(props) => props.theme["color-neutral-120"]};
 
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 24px;
     font-weight: 400;
-    line-height: 24px; 
+    line-height: 24px;
   }
 
   h6 {
     margin: 16px 0 24px 0;
-    color: ${props => props.theme["color-neutral-130"]};
+    color: ${(props) => props.theme["color-neutral-130"]};
     opacity: 50%;
 
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 16px;
-    letter-spacing: 0.15px; 
+    letter-spacing: 0.15px;
   }
 
   img {
@@ -54,19 +54,19 @@ export const ProfileCard = styled.section`
   }
 
   #add-project-button {
-    background: ${props => props.theme["color-secondary-100"]};
+    background: ${(props) => props.theme["color-secondary-100"]};
     width: 200px;
     height: 42px;
   }
 
   #add-project-button p {
-    color: ${props => props.theme.white};
-    font-family: 'Roboto', sans-serif;
+    color: ${(props) => props.theme.white};
+    font-family: "Roboto", sans-serif;
     font-size: 15px;
     font-weight: 500;
     line-height: 26px;
     letter-spacing: 0.46px;
-    text-transform: uppercase; 
+    text-transform: uppercase;
   }
 
   #add-project-button:disabled {
@@ -86,7 +86,7 @@ export const ProfileCard = styled.section`
 
     img {
       margin: auto;
-    };
+    }
 
     div {
       margin: auto;
@@ -96,7 +96,7 @@ export const ProfileCard = styled.section`
       margin: 8px 0;
     }
   }
-`
+`;
 
 export const SearchBar = styled.section`
   display: flex;
@@ -104,15 +104,15 @@ export const SearchBar = styled.section`
   gap: 16px;
 
   h6 {
-    color: ${props => props.theme["color-neutral-130"]};
+    color: ${(props) => props.theme["color-neutral-130"]};
     opacity: 0.6;
 
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 500;
     line-height: 20px;
-    letter-spacing: 0.15px; 
+    letter-spacing: 0.15px;
   }
 
   // .MuiAutocomplete-root é uma classe do Material UI, visível com o inspetor de elementos do navegador
@@ -122,10 +122,60 @@ export const SearchBar = styled.section`
   }
 
   @media (max-width: 768px) {
-  .MuiAutocomplete-root {
-    width: 100%;
+    .MuiAutocomplete-root {
+      width: 100%;
+    }
   }
-  }
-`
+`;
 
-export const ProjectsList = styled.section``
+export const ProjectsList = styled.section`
+  margin-top: 40px;
+`;
+
+export const AddProjectCard = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 68px 60px;
+  cursor: pointer;
+
+  width: 390px;
+  height: 258px;
+  border-radius: 4px;
+  background-color: ${(props) => props.theme["color-neutral-70"]};
+
+  img {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 20px;
+  }
+
+  h6 {
+    color: ${(props) => props.theme["color-neutral-120"]};
+
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.5px;
+    opacity: 0.6;
+    margin-bottom: 16px;
+  }
+
+  p {
+    color: ${(props) => props.theme["color-neutral-120"]};
+
+    font-family: "Roboto";
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 14px;
+    letter-spacing: 0.25px;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 68px 21px;
+  }
+`;

@@ -1,11 +1,16 @@
-import { Button } from "@mui/material";
+import { Button, Hidden, Skeleton } from "@mui/material";
 import {
+  AddProjectCard,
   PortfolioContainer,
   ProfileCard,
+  ProjectSkeleton,
   ProjectsList,
   SearchBar,
 } from "./style";
 import { BaseAutocomplete } from "../../components/BaseAutocomplete";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import CollectionsImage from "./../../assets/images/collections.svg";
+import { defaultTheme } from "../../styles/themes/default";
 
 export function MyPortfolio() {
   // Apenas para testes, eventualmente essas informações virão do back end
@@ -17,6 +22,18 @@ export function MyPortfolio() {
     { id: 5, name: "Design" },
     { id: 6, name: "DevOps" },
     { id: 7, name: "Soft Skills" },
+  ];
+
+  // Apenas para testes, eventualmente essas informações virão do back end
+  const projectsMockUp = [
+    // { title: "Projeto 1", createdAt: "01/24", tags: ["Front End", "Design"] },
+    // { title: "Projeto 2", createdAt: "01/24", tags: ["Front End", "Design"] },
+    // { title: "Projeto 3", createdAt: "01/24", tags: ["Front End", "Design"] },
+    // { title: "Projeto 4", createdAt: "01/24", tags: ["Front End", "Design"] },
+    // { title: "Projeto 5", createdAt: "01/24", tags: ["Front End", "Design"] },
+    // { title: "Projeto 6", createdAt: "01/24", tags: ["Front End", "Design"] },
+    // { title: "Projeto 7", createdAt: "01/24", tags: ["Front End", "Design"] },
+    // { title: "Projeto 8", createdAt: "01/24", tags: ["Front End", "Design"] },
   ];
 
   return (
@@ -43,7 +60,41 @@ export function MyPortfolio() {
       </SearchBar>
 
       {/* Lista dos projetos do usuário */}
-      <ProjectsList></ProjectsList>
+      <ProjectsList>
+        {projectsMockUp.length === 0 ? (
+          <Grid container spacing={2}>
+            <Grid xs={12} sm={12} md={6} lg={4} xl={3}>
+              <AddProjectCard>
+                <img src={CollectionsImage} alt="" />
+                <div>
+                  <h6>Adicione seu primeiro projeto</h6>
+                  <p>Compartilhe seu talento com milhares de pessoas</p>
+                </div>
+              </AddProjectCard>
+            </Grid>
+            {/* {Array.from({ length: 3 }).map((_, index) => (
+              <Hidden key={index} only={["xs", "xl"]}>
+                <Grid xs={12} sm={12} md={6} lg={4} xl={3}>
+                  <Skeleton
+                    variant="rectangular"
+                    animation={false}
+                    width={390}
+                    height={258}
+                    sx={{
+                      bgcolor: defaultTheme["color-neutral-70"],
+                      borderRadius: "4px",
+                    }}
+                  />
+                </Grid>
+              </Hidden>
+            ))} */}
+          </Grid>
+        ) : (
+          <Grid container spacing={2}>
+            <Grid xs={12} sm={12} md={6} lg={4} xl={3}></Grid>
+          </Grid>
+        )}
+      </ProjectsList>
     </PortfolioContainer>
   );
 }
