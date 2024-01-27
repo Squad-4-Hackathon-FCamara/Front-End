@@ -11,8 +11,16 @@ import { BaseAutocomplete } from "../../components/BaseAutocomplete";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import CollectionsImage from "./../../assets/images/collections.svg";
 import { defaultTheme } from "../../styles/themes/default";
+import { ProjectDialog } from "./components/ProjectDialog";
+import { useContext } from "react";
+import { ApplicationContext } from "../../contexts/ApplicationContext";
 
 export function MyPortfolio() {
+  const { toggleAddProjectDialogIsOpen } = useContext(ApplicationContext);
+
+  function handleOpenDialog() {
+    toggleAddProjectDialogIsOpen(true);
+  }
   // Apenas para testes, eventualmente essas informações virão do back end
   const tagsMockUp = [
     { id: 1, name: "Front End" },
@@ -47,7 +55,11 @@ export function MyPortfolio() {
         <div>
           <h5>Giovani de Oliveira</h5>
           <h6>Brasil</h6>
-          <Button id="add-project-button" variant="contained">
+          <Button
+            id="add-project-button"
+            variant="contained"
+            onClick={handleOpenDialog}
+          >
             <p>ADICIONAR PROJETO</p>
           </Button>
         </div>
@@ -64,7 +76,7 @@ export function MyPortfolio() {
         {projectsMockUp.length === 0 ? (
           <Grid container spacing={2}>
             <Grid xs={12} sm={12} md={6} lg={4} xl={3}>
-              <AddProjectCard>
+              <AddProjectCard onClick={handleOpenDialog}>
                 <img src={CollectionsImage} alt="" />
                 <div>
                   <h6>Adicione seu primeiro projeto</h6>
@@ -72,8 +84,8 @@ export function MyPortfolio() {
                 </div>
               </AddProjectCard>
             </Grid>
-            {/* {Array.from({ length: 3 }).map((_, index) => (
-              <Hidden key={index} only={["xs", "xl"]}>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <Hidden key={index} only={["xs", "sm"]}>
                 <Grid xs={12} sm={12} md={6} lg={4} xl={3}>
                   <Skeleton
                     variant="rectangular"
@@ -87,7 +99,7 @@ export function MyPortfolio() {
                   />
                 </Grid>
               </Hidden>
-            ))} */}
+            ))}
           </Grid>
         ) : (
           <Grid container spacing={2}>
@@ -95,6 +107,8 @@ export function MyPortfolio() {
           </Grid>
         )}
       </ProjectsList>
+
+      <ProjectDialog />
     </PortfolioContainer>
   );
 }
