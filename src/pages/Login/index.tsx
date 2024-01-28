@@ -114,7 +114,7 @@ export function Login() {
         <Snackbar
           id="snackbar"
           open={isSnackbarOpen}
-          autoHideDuration={3000}
+          autoHideDuration={10000}
           onClose={handleCloseSnackbar}
           anchorOrigin={{
             vertical: "top",

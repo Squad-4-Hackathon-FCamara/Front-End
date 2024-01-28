@@ -36,7 +36,9 @@ export const ImageContainer = styled.section`
 `;
 
 export const RegisterContainer = styled.section`
+  position: relative;
   display: flex;
+  height: 100%;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -62,6 +64,11 @@ export const RegisterContainer = styled.section`
     padding-bottom: 32px;
   }
 
+  #snackbar {
+    position: absolute;
+    top: 77px;
+  }
+
   #names-container {
     width: 100%;
     display: flex;
@@ -83,6 +90,10 @@ export const RegisterContainer = styled.section`
     form {
       width: 100%;
       padding: 0 24px;
+    }
+
+    #snackbar {
+      top: 49px;
     }
 
     #names-container {

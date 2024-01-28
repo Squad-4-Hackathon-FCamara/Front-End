@@ -1,3 +1,7 @@
+import { defaultTheme } from "../../styles/themes/default.ts";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as zod from "zod";
 import {
   Button,
   FormControl,
@@ -7,23 +11,18 @@ import {
   OutlinedInput,
   TextField,
   Alert,
-  Box,
-  Collapse,
   Snackbar,
 } from "@mui/material";
 import IMGRegister from "./../../assets/images/img-cadastro.svg";
 import { ImageContainer, MainWrapper, RegisterContainer } from "./style";
 import { ChangeEvent, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { defaultTheme } from "../../styles/themes/default.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useForm } from "react-hook-form";
-import * as zod from "zod";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 export function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
-  const [open, setOpen]= useState(false)
+  const [open, setOpen] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
@@ -31,15 +30,9 @@ export function Register() {
   const [isLastNameValid, setIsLastNameValid] = useState(true);
 
   const registerValidationSchema = zod.object({
-    firstName: zod
-      .string()
-      .min(1, {message: "Digite seu nome"})
-      .max(30),
+    firstName: zod.string().min(1, { message: "Digite seu nome" }).max(30),
 
-    lastName: zod
-    .string()
-    .min(1,{message: "Digite seu sobrenome"})
-    .max(30),
+    lastName: zod.string().min(1, { message: "Digite seu sobrenome" }).max(30),
 
     email: zod
       .string()
@@ -60,7 +53,6 @@ export function Register() {
 
   const { register, handleSubmit } = registerForm;
 
-
   /* Essas funções serão passadas pra validação no front end */
   function handleEmailInputChange(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.value) setIsEmailValid(true);
@@ -69,20 +61,17 @@ export function Register() {
   function handlePasswordInputChange(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.value) setIsPasswordValid(true);
   }
-  
+
   function handleFirstNameInputChange(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.value) setIsFirstNameValid(true);
   }
 
-  
   function handleLastNameInputChange(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.value) setIsLastNameValid(true);
   }
-  
 
-  function handleRegisterClick(data:RegisterFormData) {
-    setIsSnackbarOpen(true)
- 
+  function handleRegisterClick(data: RegisterFormData) {
+    setIsSnackbarOpen(true);
   }
 
   const handleCloseSnackbar = (
@@ -103,7 +92,7 @@ export function Register() {
       </ImageContainer>
 
       <RegisterContainer>
-      <Snackbar
+        <Snackbar
           id="snackbar"
           open={isSnackbarOpen}
           autoHideDuration={10000}
@@ -117,9 +106,23 @@ export function Register() {
             variant="filled"
             severity="success"
             sx={{ backgroundColor: defaultTheme["success-main"] }}
+            iconMapping={{
+              success: <CheckCircleOutlineIcon fontSize="inherit" />,
+            }}
           >
             Cadastro feito com sucesso
           </Alert>
+
+          {/* <Alert
+            variant="filled"
+            severity="warning"
+            sx={{ backgroundColor: defaultTheme["warning-main"] }}
+            iconMapping={{
+              success: <CheckCircleOutlineIcon fontSize="inherit" />,
+            }}
+          >
+            Dados de cadastro inválidos
+          </Alert> */}
         </Snackbar>
         <h1>Cadastre-se</h1>
 
@@ -151,13 +154,12 @@ export function Register() {
           <FormControl
             variant="outlined"
             sx={{ width: "100%", marginBottom: "16px" }}
-            
           >
             <InputLabel htmlFor="outlined-adornment-password">
               Password
             </InputLabel>
             <OutlinedInput
-            {...register("password")}
+              {...register("password")}
               type={showPassword ? "text" : "password"}
               label="Password"
               endAdornment={
@@ -187,8 +189,4 @@ export function Register() {
       </RegisterContainer>
     </MainWrapper>
   );
-
-
-
-
 }
