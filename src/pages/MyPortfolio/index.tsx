@@ -33,14 +33,62 @@ export function MyPortfolio() {
 
   // Apenas para testes, eventualmente essas informações virão do back end
   const projectsMockUp = [
-    // { title: "Projeto 1", createdAt: "01/24", tags: ["Front End", "Design"] },
-    // { title: "Projeto 2", createdAt: "01/24", tags: ["Front End", "Design"] },
-    // { title: "Projeto 3", createdAt: "01/24", tags: ["Front End", "Design"] },
-    // { title: "Projeto 4", createdAt: "01/24", tags: ["Front End", "Design"] },
-    // { title: "Projeto 5", createdAt: "01/24", tags: ["Front End", "Design"] },
-    // { title: "Projeto 6", createdAt: "01/24", tags: ["Front End", "Design"] },
-    // { title: "Projeto 7", createdAt: "01/24", tags: ["Front End", "Design"] },
-    // { title: "Projeto 8", createdAt: "01/24", tags: ["Front End", "Design"] },
+    {
+      id: 1,
+      title: "Projeto 1",
+      createdAt: "01/24",
+      tags: ["Front End", "Design"],
+      thumbnail: "https://source.unsplash.com/random",
+    },
+    {
+      id: 2,
+      title: "Projeto 2",
+      createdAt: "01/24",
+      tags: ["Front End", "Design"],
+      thumbnail: "https://source.unsplash.com/random",
+    },
+    {
+      id: 3,
+      title: "Projeto 3",
+      createdAt: "01/24",
+      tags: ["Front End", "Design"],
+      thumbnail: "https://source.unsplash.com/random",
+    },
+    {
+      id: 4,
+      title: "Projeto 4",
+      createdAt: "01/24",
+      tags: ["Front End", "Design"],
+      thumbnail: "https://source.unsplash.com/random",
+    },
+    {
+      id: 5,
+      title: "Projeto 5",
+      createdAt: "01/24",
+      tags: ["Front End", "Design"],
+      thumbnail: "https://source.unsplash.com/random",
+    },
+    {
+      id: 6,
+      title: "Projeto 6",
+      createdAt: "01/24",
+      tags: ["Front End", "Design"],
+      thumbnail: "https://source.unsplash.com/random",
+    },
+    {
+      id: 7,
+      title: "Projeto 7",
+      createdAt: "01/24",
+      tags: ["Front End", "Design"],
+      thumbnail: "https://source.unsplash.com/random",
+    },
+    {
+      id: 8,
+      title: "Projeto 8",
+      createdAt: "01/24",
+      tags: ["Front End", "Design"],
+      thumbnail: "https://source.unsplash.com/random",
+    },
   ];
 
   return (
@@ -73,7 +121,7 @@ export function MyPortfolio() {
       {/* Lista dos projetos do usuário */}
       <ProjectsList>
         {projectsMockUp.length === 0 ? (
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
             <Grid xs={12} sm={12} md={6} lg={4} xl={3}>
               <AddProjectCard onClick={handleOpenDialog}>
                 <img src={CollectionsImage} alt="" />
@@ -89,10 +137,10 @@ export function MyPortfolio() {
                   <Skeleton
                     variant="rectangular"
                     animation={false}
-                    width={390}
+                    width={"100%"}
                     height={258}
                     sx={{
-                      bgcolor: defaultTheme["color-neutral-60"],
+                      bgcolor: defaultTheme["color-neutral-70"],
                       borderRadius: "4px",
                     }}
                   />
@@ -102,7 +150,20 @@ export function MyPortfolio() {
           </Grid>
         ) : (
           <Grid container spacing={2}>
-            <Grid xs={12} sm={12} md={6} lg={4} xl={3}></Grid>
+            {projectsMockUp.map((index) => (
+              <Grid key={index.id} xs={12} sm={12} md={6} lg={4} xl={3}>
+                <Skeleton
+                  variant="rectangular"
+                  animation={false}
+                  width={"100%"}
+                  height={258}
+                  sx={{
+                    bgcolor: defaultTheme["color-neutral-70"],
+                    borderRadius: "4px",
+                  }}
+                />
+              </Grid>
+            ))}
           </Grid>
         )}
       </ProjectsList>

@@ -47,6 +47,10 @@ export const FormWrapper = styled.div`
     gap: 16px;
   }
 
+  #image-input {
+    display: none;
+  }
+
   @media (max-width: 768px) {
     flex-direction: column-reverse;
   }

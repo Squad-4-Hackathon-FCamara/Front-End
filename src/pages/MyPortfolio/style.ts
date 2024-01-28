@@ -123,6 +123,7 @@ export const SearchBar = styled.section`
 
 export const ProjectsList = styled.section`
   margin-top: 40px;
+  gap: 24px;
 `;
 
 export const AddProjectCard = styled.section`
@@ -133,7 +134,7 @@ export const AddProjectCard = styled.section`
   padding: 68px 60px;
   cursor: pointer;
 
-  width: 390px;
+  width: 100%;
   height: 258px;
   border-radius: 4px;
   background-color: ${(props) => props.theme["color-neutral-70"]};
@@ -172,3 +173,5 @@ export const AddProjectCard = styled.section`
     padding: 68px 21px;
   }
 `;
+
+export const ProjectCard = styled.div``;

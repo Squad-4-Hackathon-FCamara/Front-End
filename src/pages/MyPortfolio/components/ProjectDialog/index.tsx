@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { MouseEvent, ChangeEvent, useContext, useRef, useState } from "react";
 import { ApplicationContext } from "../../../../contexts/ApplicationContext";
 import { useScreenWidth } from "../../../../hooks/useScreenWidth";
 import * as zod from "zod";
@@ -26,6 +26,24 @@ export function ProjectDialog() {
   const { applicationState, toggleAddProjectDialogIsOpen } =
     useContext(ApplicationContext);
 
+  // Mecanismo para fazer o upload de uma imagem
+  const [thumbnail, setThumbnail] = useState<File | undefined>(undefined);
+
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  function handleUploadImage(event: MouseEvent<HTMLDivElement>) {
+    console.log(event);
+    imageInputRef.current?.click();
+  }
+
+  function handleChangeImage(event: ChangeEvent<HTMLInputElement>) {
+    const image = event.target?.files?.[0];
+    if (image) {
+      setThumbnail(image);
+      console.log("Imagem: ", image);
+    }
+  }
+
+  // Fecha o dialog
   function handleClose() {
     toggleAddProjectDialogIsOpen(false);
   }
@@ -33,6 +51,7 @@ export function ProjectDialog() {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
+  // Validação e formulário com Zod e React Hook Form
   const projectValidationSchema = zod.object({
     title: zod.string().min(1, { message: "Insira o nome do projeto" }),
     tags: zod.array(zod.string()).min(1, "Selecione uma tag"),
@@ -77,12 +96,21 @@ export function ProjectDialog() {
           <FormWrapper>
             <div>
               <p>Selecione o conteúdo que você deseja fazer upload</p>
-              <ThumbnailContainer>
+              <ThumbnailContainer onClick={handleUploadImage}>
                 <img src={CollectionsImage} alt="" />
                 <div>
                   <p>Compartilhe seu talento com milhares de pessoas</p>
                 </div>
               </ThumbnailContainer>
+              <input
+                id="image-input"
+                type="file"
+                src=""
+                alt=""
+                accept="image/*"
+                ref={imageInputRef}
+                onChange={handleChangeImage}
+              ></input>
             </div>
 
             <div id="fields-wrapper">
