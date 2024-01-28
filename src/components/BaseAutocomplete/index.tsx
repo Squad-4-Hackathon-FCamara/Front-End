@@ -1,7 +1,7 @@
+import { useScreenWidth } from "./../../hooks/useScreenWidth";
 import { Autocomplete, Checkbox, TextField } from "@mui/material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import { useScreenWidth } from "./../../hooks/useScreenWidth";
 
 type Items = {
   id: number;
