@@ -1,7 +1,7 @@
 import { Autocomplete, Checkbox, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { useScreenWidth } from "./../../hooks/useScreenWidth";
 
 type Items = {
   id: number;
@@ -13,21 +13,9 @@ interface BaseAutocompleteProps {
 }
 
 export function BaseAutocomplete({ items }: BaseAutocompleteProps) {
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const screenWidth = useScreenWidth();
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      setScreenWidth(window.innerWidth);
-    });
-
-    return () => {
-      window.removeEventListener("resize", () => {
-        setScreenWidth(window.innerWidth);
-      });
-    };
-  }, []);
 
   return (
     <Autocomplete
@@ -37,6 +25,7 @@ export function BaseAutocomplete({ items }: BaseAutocompleteProps) {
       disableCloseOnSelect
       options={items}
       getOptionLabel={(tags) => (typeof tags === "string" ? tags : tags.name)}
+      sx={{ width: screenWidth < 768 ? "100%" : "513px" }}
       renderInput={(params) => (
         <TextField {...params} label="Buscar tags" placeholder="" />
       )}

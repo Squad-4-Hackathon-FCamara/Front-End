@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   HeaderContainer,
@@ -13,15 +13,11 @@ import {
 } from "@mui/material";
 import OrangeLogo from "./../../assets/images/orange-logo.svg";
 import { Menu, Notifications } from "@mui/icons-material";
+import { useScreenWidth } from "../../hooks/useScreenWidth";
 
 export function Header() {
   const navigate = useNavigate();
-
-  // screenWidth é como uma variável;
-  // setScreenWidth é uma função
-  const [screenWidth, setScreenWidth] = useState(
-    document.documentElement.clientWidth
-  );
+  const screenWidth = useScreenWidth();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -33,20 +29,6 @@ export function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  // useEffect fica observando uma variável, e executa uma lógica quando ocorre uma mudança no valor
-  // No return, o event listener é removido
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      setScreenWidth(window.innerWidth);
-    });
-
-    return () => {
-      window.removeEventListener("resize", () => {
-        setScreenWidth(window.innerWidth);
-      });
-    };
-  }, []);
 
   return (
     <HeaderContainer>

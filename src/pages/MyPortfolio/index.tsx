@@ -92,7 +92,7 @@ export function MyPortfolio() {
                     width={390}
                     height={258}
                     sx={{
-                      bgcolor: defaultTheme["color-neutral-70"],
+                      bgcolor: defaultTheme["color-neutral-60"],
                       borderRadius: "4px",
                     }}
                   />

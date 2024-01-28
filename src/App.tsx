@@ -6,6 +6,7 @@ import { Router } from "./Router";
 import { defaultTheme } from "./styles/themes/default";
 import { ThemeProvider } from "styled-components";
 import { ApplicationContextProvider } from "./contexts/ApplicationContext";
+import { useEffect, useState } from "react";
 
 export function App() {
   return (
