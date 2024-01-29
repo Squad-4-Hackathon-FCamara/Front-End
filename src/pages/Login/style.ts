@@ -86,7 +86,7 @@ export const LoginContainer = styled.section`
 
   #snackbar {
     position: absolute;
-    top: 54px;
+    top: 77px;
   }
 
   // Media query para responsividade
