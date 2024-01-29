@@ -7,12 +7,33 @@ import {
   ApplicationState,
   applicationReducer,
 } from "../reducer/application/reducer";
-import { toggleAddProjectDialogAction } from "../reducer/application/actions";
+import {
+  addNewProjectAction,
+  loginWithEmailAction,
+  loginWithGoogleAction,
+  registerUserAction,
+  toggleAddProjectDialogAction,
+} from "../reducer/application/actions";
 
 // Tipagem do contexto
 interface ApplicationContextType {
   applicationState: ApplicationState;
   toggleAddProjectDialogIsOpen: (isOpen: boolean) => void;
+  loginWithEmail: (email: string, password: string) => void;
+  loginWithGoogle: () => void;
+  registerUser: (
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) => void;
+  addNewProject: (
+    title: string,
+    tags: number[],
+    link: string,
+    description: string,
+    thumbnail: File
+  ) => void;
 }
 
 // Tipagem do context provider
@@ -68,11 +89,42 @@ export function ApplicationContextProvider({
     dispatch(toggleAddProjectDialogAction(isOpen));
   }
 
+  function loginWithEmail(email: string, password: string) {
+    dispatch(loginWithEmailAction(email, password));
+  }
+
+  function loginWithGoogle() {
+    dispatch(loginWithGoogleAction());
+  }
+
+  function registerUser(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) {
+    dispatch(registerUserAction(firstName, lastName, email, password));
+  }
+
+  function addNewProject(
+    title: string,
+    tags: number[],
+    link: string,
+    description: string,
+    thumbnail: File
+  ) {
+    dispatch(addNewProjectAction(title, tags, link, description, thumbnail));
+  }
+
   return (
     <ApplicationContext.Provider
       value={{
         applicationState,
         toggleAddProjectDialogIsOpen,
+        loginWithEmail,
+        loginWithGoogle,
+        registerUser,
+        addNewProject,
       }}
     >
       {children}

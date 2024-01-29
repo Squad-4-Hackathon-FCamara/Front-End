@@ -15,13 +15,16 @@ import {
 } from "@mui/material";
 import IMGRegister from "./../../assets/images/img-cadastro.svg";
 import { ImageContainer, MainWrapper, RegisterContainer } from "./style";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { ApplicationContext } from "../../contexts/ApplicationContext.tsx";
 
 export function Register() {
+  const { registerUser } = useContext(ApplicationContext);
+
+  // Estados locais
   const [showPassword, setShowPassword] = useState(false);
-  const handleShowPassword = () => setShowPassword((show) => !show);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
@@ -70,7 +73,7 @@ export function Register() {
   }
 
   function handleRegisterClick(data: RegisterFormData) {
-    console.log(data);
+    registerUser(data.firstName, data.lastName, data.email, data.password);
     setIsSnackbarOpen(true);
 
     // Exemplo de uso
@@ -83,13 +86,14 @@ export function Register() {
     event: React.SyntheticEvent | Event,
     reason?: string
   ) => {
-    console.log(event);
-    if (reason === "clickaway") {
+    if (event && reason === "clickaway") {
       return;
     }
 
     setIsSnackbarOpen(false);
   };
+
+  const handleShowPassword = () => setShowPassword((show) => !show);
 
   return (
     <MainWrapper>

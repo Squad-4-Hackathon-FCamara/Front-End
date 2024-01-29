@@ -22,6 +22,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export function ProjectDialog() {
+  const { addNewProject } = useContext(ApplicationContext);
+
   const screenWidth = useScreenWidth();
   const { applicationState, toggleAddProjectDialogIsOpen } =
     useContext(ApplicationContext);
@@ -54,9 +56,10 @@ export function ProjectDialog() {
   // Validação e formulário com Zod e React Hook Form
   const projectValidationSchema = zod.object({
     title: zod.string().min(1, { message: "Insira o nome do projeto" }),
-    tags: zod.array(zod.string()).min(1, "Selecione uma tag"),
+    tagsList: zod.any(),
     link: zod.string().min(1, { message: "Insira o link do projeto" }),
     description: zod.string(),
+    thumbnail: zod.any(),
   });
 
   type ProjectFormData = zod.infer<typeof projectValidationSchema>;
@@ -65,9 +68,10 @@ export function ProjectDialog() {
     resolver: zodResolver(projectValidationSchema),
     defaultValues: {
       title: "",
-      tags: [] as string[],
+      tagsList: [] as number[],
       link: "",
       description: "",
+      thumbnail: null,
     },
   });
 
@@ -75,6 +79,14 @@ export function ProjectDialog() {
 
   function handleSaveProject(data: ProjectFormData) {
     console.log(data);
+
+    addNewProject(
+      data.title,
+      data.tagsList,
+      data.link,
+      data.description,
+      data.thumbnail
+    );
   }
 
   // Apenas para testes, eventualmente essas informações virão do back end
@@ -103,6 +115,7 @@ export function ProjectDialog() {
                 </div>
               </ThumbnailContainer>
               <input
+                {...register("thumbnail")}
                 id="image-input"
                 type="file"
                 src=""
@@ -120,7 +133,7 @@ export function ProjectDialog() {
                 sx={{ width: screenWidth < 960 ? "100%" : "413px" }}
               />
               <Autocomplete
-                {...register("tags")}
+                {...register("tagsList")}
                 multiple
                 freeSolo
                 limitTags={screenWidth < 960 ? 1 : 3}

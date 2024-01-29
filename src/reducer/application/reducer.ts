@@ -3,6 +3,7 @@
 
 import { produce } from "immer";
 import { ActionTypes } from "./actions";
+import { AxiosAPI } from "../../AxiosConfig";
 
 // Interface com as informações da aplicação
 export interface ApplicationState {
@@ -18,6 +19,33 @@ export function applicationReducer(state: ApplicationState, action: any) {
       return produce(state, (draft) => {
         draft.addProjectDialogIsOpen = action.payload.isOpen;
       });
+
+    // Login com email
+    case ActionTypes.LOGIN_WITH_EMAIL:
+      // Exemplo de uso do Axios
+      // Endpoint de teste da api adviceslip, retorna uma piada sobre o Chuck Norris
+      AxiosAPI.get("/jokes/random")
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("HTTP Error code: ", error.statusCode);
+        });
+      return state;
+
+    // Login com Google
+    case ActionTypes.LOGIN_WITH_GOOGLE:
+      return state;
+
+    // Cadastro de usuário
+    case ActionTypes.REGISTER_USER:
+      return state;
+
+    // Adicionar projeto
+    case ActionTypes.ADD_NEW_PROJECT:
+      console.log(action);
+      return state;
+
     default:
       return state;
   }

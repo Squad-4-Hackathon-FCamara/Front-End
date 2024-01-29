@@ -1,8 +1,7 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosAPI } from "../../AxiosConfig";
 import {
   ImageContainer,
   LoginContainer,
@@ -24,11 +23,13 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import IMGLogin from "./../../assets/images/img-login.svg";
 import GoogleLogo from "./../../assets/images/google-logo.svg";
 import { defaultTheme } from "../../styles/themes/default.ts";
+import { ApplicationContext } from "../../contexts/ApplicationContext.tsx";
 
 export function Login() {
+  const { loginWithEmail } = useContext(ApplicationContext);
+
   // Estados para o form, talvez possa ser substituído por um reducer no futuro
   const [showPassword, setShowPassword] = useState(false);
-  const handleShowPassword = () => setShowPassword((show) => !show);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
@@ -66,16 +67,7 @@ export function Login() {
 
   // Cuida do submit do formulário
   function handleLoginClick(data: LoginFormData) {
-    console.log("Data: ", data);
-
-    // Endpoint de teste da api adviceslip, retorna uma piada sobre o Chuck Norris
-    AxiosAPI.get("/jokes/random")
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error("HTTP Error code: ", error.statusCode);
-      });
+    loginWithEmail(data.email, data.password);
 
     // Esses ifs são apenas para exemplo de como ativar os erros e a snackbar
     // DEVEM ser apagados depois!
@@ -97,12 +89,14 @@ export function Login() {
     event: React.SyntheticEvent | Event,
     reason?: string
   ) => {
-    if (reason === "clickaway") {
+    if (event && reason === "clickaway") {
       return;
     }
 
     setIsSnackbarOpen(false);
   };
+
+  const handleShowPassword = () => setShowPassword((show) => !show);
 
   return (
     <MainWrapper>
