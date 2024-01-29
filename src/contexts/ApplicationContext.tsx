@@ -13,12 +13,14 @@ import {
   loginWithGoogleAction,
   registerUserAction,
   toggleAddProjectDialogAction,
+  toggleViewProjectDialogAction,
 } from "../reducer/application/actions";
 
 // Tipagem do contexto
 interface ApplicationContextType {
   applicationState: ApplicationState;
   toggleAddProjectDialogIsOpen: (isOpen: boolean) => void;
+  toggleViewProjectDialogIsOpen: (isOpen: boolean) => void;
   loginWithEmail: (email: string, password: string) => void;
   loginWithGoogle: () => void;
   registerUser: (
@@ -56,6 +58,7 @@ export function ApplicationContextProvider({
   */
   const initialArg: ApplicationState = {
     addProjectDialogIsOpen: false,
+    viewProjectDialogIsOpen: false,
   };
 
   const [applicationState, dispatch] = useReducer(
@@ -87,6 +90,10 @@ export function ApplicationContextProvider({
   // ▼▼▼ Funções/ações do reducer, são elas que nós vamos de fato usar nos componentes ▼▼▼
   function toggleAddProjectDialogIsOpen(isOpen: boolean) {
     dispatch(toggleAddProjectDialogAction(isOpen));
+  }
+
+  function toggleViewProjectDialogIsOpen(isOpen: boolean) {
+    dispatch(toggleViewProjectDialogAction(isOpen));
   }
 
   function loginWithEmail(email: string, password: string) {
@@ -121,6 +128,7 @@ export function ApplicationContextProvider({
       value={{
         applicationState,
         toggleAddProjectDialogIsOpen,
+        toggleViewProjectDialogIsOpen,
         loginWithEmail,
         loginWithGoogle,
         registerUser,

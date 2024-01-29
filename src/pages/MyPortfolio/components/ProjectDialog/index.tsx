@@ -20,38 +20,17 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CollectionsImage from "./../../../../assets/images/collections.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { ViewProjectDialog } from "../../../../components/ViewProjectDialog";
 
 export function ProjectDialog() {
-  const { addNewProject } = useContext(ApplicationContext);
+  const {
+    applicationState,
+    addNewProject,
+    toggleViewProjectDialogIsOpen,
+    toggleAddProjectDialogIsOpen,
+  } = useContext(ApplicationContext);
 
   const screenWidth = useScreenWidth();
-  const { applicationState, toggleAddProjectDialogIsOpen } =
-    useContext(ApplicationContext);
-
-  // Mecanismo para fazer o upload de uma imagem
-  const [thumbnail, setThumbnail] = useState<File | undefined>(undefined);
-
-  const imageInputRef = useRef<HTMLInputElement>(null);
-  function handleUploadImage(event: MouseEvent<HTMLDivElement>) {
-    console.log(event);
-    imageInputRef.current?.click();
-  }
-
-  function handleChangeImage(event: ChangeEvent<HTMLInputElement>) {
-    const image = event.target?.files?.[0];
-    if (image) {
-      setThumbnail(image);
-      console.log("Imagem: ", image);
-    }
-  }
-
-  // Fecha o dialog
-  function handleClose() {
-    toggleAddProjectDialogIsOpen(false);
-  }
-
-  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-  const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
   // Validação e formulário com Zod e React Hook Form
   const projectValidationSchema = zod.object({
@@ -76,6 +55,35 @@ export function ProjectDialog() {
   });
 
   const { register, handleSubmit } = projectForm;
+
+  // Mecanismo para fazer o upload de uma imagem
+  const [thumbnail, setThumbnail] = useState<File | undefined>(undefined);
+
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  function handleUploadImage(event: MouseEvent<HTMLDivElement>) {
+    console.log(event);
+    imageInputRef.current?.click();
+  }
+
+  function handleChangeImage(event: ChangeEvent<HTMLInputElement>) {
+    const image = event.target?.files?.[0];
+    if (image) {
+      setThumbnail(image);
+      console.log("Imagem: ", image);
+    }
+  }
+
+  function handleOpenPreview() {
+    toggleViewProjectDialogIsOpen(true);
+  }
+
+  // Fecha o dialog
+  function handleClose() {
+    toggleAddProjectDialogIsOpen(false);
+  }
+
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
   function handleSaveProject(data: ProjectFormData) {
     console.log(data);
@@ -174,7 +182,7 @@ export function ProjectDialog() {
           </FormWrapper>
 
           <ActionsWrapper>
-            <p>Visualizar publicação</p>
+            <p onClick={handleOpenPreview}>Visualizar publicação</p>
             <div>
               <Button
                 id="action-button"
@@ -196,6 +204,8 @@ export function ProjectDialog() {
           </ActionsWrapper>
         </DialogContainer>
       </form>
+
+      <ViewProjectDialog />
     </Dialog>
   );
 }

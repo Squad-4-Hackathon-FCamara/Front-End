@@ -107,6 +107,12 @@ export const ActionsWrapper = styled.div`
     letter-spacing: 0.15px;
 
     margin: 16px 0;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  p:hover {
+    color: ${(props) => props.theme["color-neutral-100"]};
   }
 
   #action-button {

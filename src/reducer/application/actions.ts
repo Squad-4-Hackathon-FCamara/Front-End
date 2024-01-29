@@ -2,15 +2,27 @@
 
 export enum ActionTypes {
   TOGGLE_ADD_PROJECT_DIALOG = "TOGGLE_ADD_PROJECT_DIALOG",
+  TOGGLE_VIEW_PROJECT_DIALOG = "TOGGLE_VIEW_PROJECT_DIALOG",
   LOGIN_WITH_EMAIL = "LOGIN_WITH_EMAIL",
   LOGIN_WITH_GOOGLE = "LOGIN_WITH_GOOGLE",
   REGISTER_USER = "REGISTER_USER",
   ADD_NEW_PROJECT = "ADD_NEW_PROJECT",
 }
 
+// Abre dialog de criação de projetos
 export function toggleAddProjectDialogAction(isOpen: boolean) {
   return {
     type: ActionTypes.TOGGLE_ADD_PROJECT_DIALOG,
+    payload: {
+      isOpen,
+    },
+  };
+}
+
+// Abre dialog de visualização de projetos
+export function toggleViewProjectDialogAction(isOpen: boolean) {
+  return {
+    type: ActionTypes.TOGGLE_VIEW_PROJECT_DIALOG,
     payload: {
       isOpen,
     },

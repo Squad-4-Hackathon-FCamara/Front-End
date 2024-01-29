@@ -8,6 +8,7 @@ import { AxiosAPI } from "../../AxiosConfig";
 // Interface com as informações da aplicação
 export interface ApplicationState {
   addProjectDialogIsOpen: boolean;
+  viewProjectDialogIsOpen: boolean;
 }
 
 // Inicia o reducer
@@ -15,9 +16,16 @@ export function applicationReducer(state: ApplicationState, action: any) {
   // O switch case é usado para acessar as diferentes ações do reducer
   // Também estamos usando a função produce do immer, para facilitar o trabalho com imutabilidade
   switch (action.type) {
+    // Abre dialog de criação de projetos
     case ActionTypes.TOGGLE_ADD_PROJECT_DIALOG:
       return produce(state, (draft) => {
         draft.addProjectDialogIsOpen = action.payload.isOpen;
+      });
+
+    // Abre visualização de projetos
+    case ActionTypes.TOGGLE_VIEW_PROJECT_DIALOG:
+      return produce(state, (draft) => {
+        draft.viewProjectDialogIsOpen = action.payload.isOpen;
       });
 
     // Login com email
