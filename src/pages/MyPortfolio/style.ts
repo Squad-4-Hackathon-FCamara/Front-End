@@ -175,28 +175,48 @@ export const AddProjectCard = styled.section`
 `;
 
 interface ProjectCardProps {
-  thumbnailurl: string;
+  $thumbnailurl: string;
 }
 
 export const ProjectCard = styled.div<ProjectCardProps>`
   display: flex;
   flex-direction: column;
+  align-items: end;
 
   width: 100%;
   height: 258px;
   border-radius: 4px;
   background-color: ${(props) => props.theme["color-neutral-70"]};
-  background-image: url(${(props) => props.thumbnailurl});
+  background-image: url(${(props) => props.$thumbnailurl});
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  padding: 16px;
+
+  div {
+    background: ${(props) => props.theme["color-secondary-70"]};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
 `;
 
 export const ProjectInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 12px;
+  margin: 12px 0 40px 0;
+
+  #tag-chips {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 8px;
+  }
 
   #avatar {
     display: flex;

@@ -1,4 +1,4 @@
-import { Button, Hidden, Skeleton } from "@mui/material";
+import { Button, Chip, Hidden, Skeleton } from "@mui/material";
 import {
   AddProjectCard,
   PortfolioContainer,
@@ -16,6 +16,7 @@ import { ProjectDialog } from "./components/ProjectDialog";
 import { useContext } from "react";
 import { ApplicationContext } from "../../contexts/ApplicationContext";
 import { SuccessDialog } from "../../components/SuccessDialog";
+import { Edit } from "@mui/icons-material";
 
 export function MyPortfolio() {
   const { toggleAddProjectDialogIsOpen } = useContext(ApplicationContext);
@@ -155,8 +156,16 @@ export function MyPortfolio() {
           <Grid container spacing={2}>
             {projectsMockUp.map((index) => (
               <Grid key={index.id} xs={12} sm={12} md={6} lg={4} xl={3}>
-                <ProjectCard thumbnailurl={index.thumbnail}>
-                  Editar/Excluir
+                <ProjectCard $thumbnailurl={index.thumbnail}>
+                  <div>
+                    <Edit
+                      sx={{
+                        width: "24px",
+                        height: "24px",
+                        color: defaultTheme["color-neutral-120"],
+                      }}
+                    />
+                  </div>
                 </ProjectCard>
                 <ProjectInfo>
                   <div id="avatar">
@@ -168,7 +177,11 @@ export function MyPortfolio() {
                     />
                     <h5>Giovani de Oliveira • 01/24</h5>
                   </div>
-                  <div id="tags">tags</div>
+                  <div id="tag-chips">
+                    {index.tags.map((tag) => {
+                      return <Chip key={tag} label={tag} />;
+                    })}
+                  </div>
                 </ProjectInfo>
               </Grid>
             ))}
