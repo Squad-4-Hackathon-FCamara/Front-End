@@ -35,7 +35,7 @@ interface ApplicationContextType {
   ) => void;
   addNewProject: (
     title: string,
-    tags: number[],
+    tags: string[],
     link: string,
     description: string,
     thumbnail: File
@@ -70,6 +70,13 @@ export function ApplicationContextProvider({
     viewProjectDialogIsOpen: false,
     successDialogIsOpen: false,
     successDialogMessage: "",
+    projectInEditor: {
+      title: "",
+      tags: [],
+      link: "",
+      description: "",
+      thumbnail: {} as File,
+    },
   };
 
   const [applicationState, dispatch] = useReducer(
@@ -134,7 +141,7 @@ export function ApplicationContextProvider({
 
   function addNewProject(
     title: string,
-    tags: number[],
+    tags: string[],
     link: string,
     description: string,
     thumbnail: File

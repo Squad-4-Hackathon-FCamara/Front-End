@@ -11,6 +11,13 @@ export interface ApplicationState {
   viewProjectDialogIsOpen: boolean;
   successDialogIsOpen: boolean;
   successDialogMessage: string;
+  projectInEditor: {
+    title: string;
+    tags: string[];
+    link: string;
+    description: string;
+    thumbnail: File;
+  };
 }
 
 // Inicia o reducer
@@ -32,8 +39,15 @@ export function applicationReducer(state: ApplicationState, action: any) {
 
     // Limpa dialog de projetos
     case ActionTypes.CLEAN_PROJECT_DIALOG:
-      console.log("Limpa dialog");
-      return state;
+      return produce(state, (draft) => {
+        draft.projectInEditor = {
+          title: "",
+          tags: [] as string[],
+          link: "",
+          description: "",
+          thumbnail: {} as File,
+        };
+      });
 
     // Abre dialog de sucesso
     case ActionTypes.TOGGLE_SUCCESS_DIALOG:
@@ -65,8 +79,27 @@ export function applicationReducer(state: ApplicationState, action: any) {
 
     // Adicionar projeto
     case ActionTypes.ADD_NEW_PROJECT:
-      console.log(action);
-      return state;
+      // AxiosAPI.post("/addProject", {
+      //   title: action.payload.title,
+      //   tags: action.payload.tags,
+      //   link: action.payload.link,
+      //   description: action.payload.description,
+      //   thumbnail: action.payload.thumbnail,
+      // }).then((response) => {
+      //   console.log(response)
+      //   return state;
+      // }).catch((error) => {
+      //   console.error("HTTP Error code: ", error.statusCode);
+      // })
+      return produce(state, (draft) => {
+        draft.projectInEditor = {
+          title: action.payload.title,
+          tags: action.payload.tags,
+          link: action.payload.link,
+          description: action.payload.description,
+          thumbnail: action.payload.thumbnail,
+        };
+      });
 
     default:
       return state;

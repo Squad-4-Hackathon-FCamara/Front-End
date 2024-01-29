@@ -1,4 +1,11 @@
-import { MouseEvent, ChangeEvent, useContext, useRef, useState } from "react";
+import {
+  MouseEvent,
+  ChangeEvent,
+  useContext,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
 import { ApplicationContext } from "../../../../contexts/ApplicationContext";
 import { useScreenWidth } from "../../../../hooks/useScreenWidth";
 import * as zod from "zod";
@@ -49,14 +56,14 @@ export function ProjectDialog() {
     resolver: zodResolver(projectValidationSchema),
     defaultValues: {
       title: "",
-      tagsList: [] as number[],
+      tagsList: [] as string[],
       link: "",
       description: "",
       thumbnail: null,
     },
   });
 
-  const { register, handleSubmit } = projectForm;
+  const { register, setValue, handleSubmit } = projectForm;
 
   // Mecanismo para fazer o upload de uma imagem
   const [thumbnail, setThumbnail] = useState<File | undefined>(undefined);
@@ -98,20 +105,36 @@ export function ProjectDialog() {
       data.thumbnail
     );
 
-    cleanProjectDialog();
+    // cleanProjectDialog();
     toggleAddProjectDialogIsOpen(false);
     toggleSuccessDialog(true, "Projeto adicionado com sucesso!");
   }
 
+  // useEffect para limpar o formulário quando a página for recarregada
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      toggleAddProjectDialogIsOpen(false);
+      toggleViewProjectDialogIsOpen(false);
+      toggleSuccessDialog(false, "");
+      cleanProjectDialog();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  });
+
   // Apenas para testes, eventualmente essas informações virão do back end
   const tagsMockUp = [
-    { id: 1, name: "Front End" },
-    { id: 2, name: "Back End" },
-    { id: 3, name: "UX/UI" },
-    { id: 4, name: "IA" },
-    { id: 5, name: "Design" },
-    { id: 6, name: "DevOps" },
-    { id: 7, name: "Soft Skills" },
+    { id: "1", name: "Front End" },
+    { id: "2", name: "Back End" },
+    { id: "3", name: "UX/UI" },
+    { id: "4", name: "IA" },
+    { id: "5", name: "Design" },
+    { id: "6", name: "DevOps" },
+    { id: "7", name: "Soft Skills" },
   ];
 
   return (
@@ -153,6 +176,9 @@ export function ProjectDialog() {
                 limitTags={screenWidth < 960 ? 1 : 3}
                 disableCloseOnSelect
                 options={tagsMockUp}
+                onChange={(event, values) =>
+                  event ? setValue("tagsList", values) : undefined
+                }
                 getOptionLabel={(tags) =>
                   typeof tags === "string" ? tags : tags.name
                 }

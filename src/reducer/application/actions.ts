@@ -91,7 +91,7 @@ export function registerUserAction(
 // Adicionar novo projeto
 export function addNewProjectAction(
   title: string,
-  tags: number[],
+  tags: string[],
   link: string,
   description: string,
   thumbnail: File
