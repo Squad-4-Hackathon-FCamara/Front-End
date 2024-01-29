@@ -9,6 +9,8 @@ import { AxiosAPI } from "../../AxiosConfig";
 export interface ApplicationState {
   addProjectDialogIsOpen: boolean;
   viewProjectDialogIsOpen: boolean;
+  successDialogIsOpen: boolean;
+  successDialogMessage: string;
 }
 
 // Inicia o reducer
@@ -26,6 +28,18 @@ export function applicationReducer(state: ApplicationState, action: any) {
     case ActionTypes.TOGGLE_VIEW_PROJECT_DIALOG:
       return produce(state, (draft) => {
         draft.viewProjectDialogIsOpen = action.payload.isOpen;
+      });
+
+    // Limpa dialog de projetos
+    case ActionTypes.CLEAN_PROJECT_DIALOG:
+      console.log("Limpa dialog");
+      return state;
+
+    // Abre dialog de sucesso
+    case ActionTypes.TOGGLE_SUCCESS_DIALOG:
+      return produce(state, (draft) => {
+        draft.successDialogIsOpen = action.payload.isOpen;
+        draft.successDialogMessage = action.payload.successDialogMessage;
       });
 
     // Login com email

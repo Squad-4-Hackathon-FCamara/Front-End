@@ -9,10 +9,12 @@ import {
 } from "../reducer/application/reducer";
 import {
   addNewProjectAction,
+  cleanProjectDialogAction,
   loginWithEmailAction,
   loginWithGoogleAction,
   registerUserAction,
   toggleAddProjectDialogAction,
+  toggleSuccessDialogAction,
   toggleViewProjectDialogAction,
 } from "../reducer/application/actions";
 
@@ -21,6 +23,8 @@ interface ApplicationContextType {
   applicationState: ApplicationState;
   toggleAddProjectDialogIsOpen: (isOpen: boolean) => void;
   toggleViewProjectDialogIsOpen: (isOpen: boolean) => void;
+  cleanProjectDialog: () => void;
+  toggleSuccessDialog: (isOpen: boolean, message: string) => void;
   loginWithEmail: (email: string, password: string) => void;
   loginWithGoogle: () => void;
   registerUser: (
@@ -43,6 +47,11 @@ interface ApplicationContextProviderProps {
   children: ReactNode;
 }
 
+export type SuccessDialogType = {
+  isOpen: boolean;
+  message: string;
+};
+
 // Inicia e exporta o contexto
 export const ApplicationContext = createContext({} as ApplicationContextType);
 
@@ -59,6 +68,8 @@ export function ApplicationContextProvider({
   const initialArg: ApplicationState = {
     addProjectDialogIsOpen: false,
     viewProjectDialogIsOpen: false,
+    successDialogIsOpen: false,
+    successDialogMessage: "",
   };
 
   const [applicationState, dispatch] = useReducer(
@@ -96,6 +107,14 @@ export function ApplicationContextProvider({
     dispatch(toggleViewProjectDialogAction(isOpen));
   }
 
+  function cleanProjectDialog() {
+    dispatch(cleanProjectDialogAction());
+  }
+
+  function toggleSuccessDialog(isOpen: boolean, message: string = "") {
+    dispatch(toggleSuccessDialogAction(isOpen, message));
+  }
+
   function loginWithEmail(email: string, password: string) {
     dispatch(loginWithEmailAction(email, password));
   }
@@ -129,6 +148,8 @@ export function ApplicationContextProvider({
         applicationState,
         toggleAddProjectDialogIsOpen,
         toggleViewProjectDialogIsOpen,
+        cleanProjectDialog,
+        toggleSuccessDialog,
         loginWithEmail,
         loginWithGoogle,
         registerUser,

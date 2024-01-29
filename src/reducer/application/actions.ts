@@ -3,6 +3,8 @@
 export enum ActionTypes {
   TOGGLE_ADD_PROJECT_DIALOG = "TOGGLE_ADD_PROJECT_DIALOG",
   TOGGLE_VIEW_PROJECT_DIALOG = "TOGGLE_VIEW_PROJECT_DIALOG",
+  CLEAN_PROJECT_DIALOG = "CLEAN_PROJECT_DIALOG",
+  TOGGLE_SUCCESS_DIALOG = "TOGGLE_SUCCESS_DIALOG",
   LOGIN_WITH_EMAIL = "LOGIN_WITH_EMAIL",
   LOGIN_WITH_GOOGLE = "LOGIN_WITH_GOOGLE",
   REGISTER_USER = "REGISTER_USER",
@@ -25,6 +27,27 @@ export function toggleViewProjectDialogAction(isOpen: boolean) {
     type: ActionTypes.TOGGLE_VIEW_PROJECT_DIALOG,
     payload: {
       isOpen,
+    },
+  };
+}
+
+// Limpa o dialog de projeto
+export function cleanProjectDialogAction() {
+  return {
+    type: ActionTypes.CLEAN_PROJECT_DIALOG,
+  };
+}
+
+// Abre dialog de sucesso
+export function toggleSuccessDialogAction(
+  isOpen: boolean,
+  successDialogMessage: string
+) {
+  return {
+    type: ActionTypes.TOGGLE_SUCCESS_DIALOG,
+    payload: {
+      isOpen,
+      successDialogMessage,
     },
   };
 }

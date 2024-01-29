@@ -13,6 +13,7 @@ import { defaultTheme } from "../../styles/themes/default";
 import { ProjectDialog } from "./components/ProjectDialog";
 import { useContext } from "react";
 import { ApplicationContext } from "../../contexts/ApplicationContext";
+import { SuccessDialog } from "../../components/SuccessDialog";
 
 export function MyPortfolio() {
   const { toggleAddProjectDialogIsOpen } = useContext(ApplicationContext);
@@ -169,6 +170,7 @@ export function MyPortfolio() {
       </ProjectsList>
 
       <ProjectDialog />
+      <SuccessDialog />
     </PortfolioContainer>
   );
 }

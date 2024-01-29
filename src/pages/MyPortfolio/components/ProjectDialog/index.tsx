@@ -28,6 +28,8 @@ export function ProjectDialog() {
     addNewProject,
     toggleViewProjectDialogIsOpen,
     toggleAddProjectDialogIsOpen,
+    cleanProjectDialog,
+    toggleSuccessDialog,
   } = useContext(ApplicationContext);
 
   const screenWidth = useScreenWidth();
@@ -95,6 +97,10 @@ export function ProjectDialog() {
       data.description,
       data.thumbnail
     );
+
+    cleanProjectDialog();
+    toggleAddProjectDialogIsOpen(false);
+    toggleSuccessDialog(true, "Projeto adicionado com sucesso!");
   }
 
   // Apenas para testes, eventualmente essas informações virão do back end
