@@ -174,4 +174,49 @@ export const AddProjectCard = styled.section`
   }
 `;
 
-export const ProjectCard = styled.div``;
+interface ProjectCardProps {
+  thumbnailurl: string;
+}
+
+export const ProjectCard = styled.div<ProjectCardProps>`
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 258px;
+  border-radius: 4px;
+  background-color: ${(props) => props.theme["color-neutral-70"]};
+  background-image: url(${(props) => props.thumbnailurl});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+`;
+
+export const ProjectInfo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+
+  #avatar {
+    display: flex;
+    align-items: center;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+
+  h5 {
+    color: ${(props) => props.theme["color-neutral-110"]};
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.15px;
+  }
+`;
