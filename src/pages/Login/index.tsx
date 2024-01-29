@@ -79,17 +79,17 @@ export function Login() {
 
     // Esses ifs são apenas para exemplo de como ativar os erros e a snackbar
     // DEVEM ser apagados depois!
-    if (data.email !== "teste@teste.com") {
-      setIsEmailValid(false);
-    }
+    // if (data.email !== "teste@teste.com") {
+    //   setIsEmailValid(false);
+    // }
 
-    if (data.password !== "123") {
-      setIsPasswordValid(false);
-    }
+    // if (data.password !== "123") {
+    //   setIsPasswordValid(false);
+    // }
 
-    if (data.email !== "teste@teste.com" || data.password !== "123") {
-      setIsSnackbarOpen(true);
-    }
+    // if (data.email !== "teste@teste.com" || data.password !== "123") {
+    //   setIsSnackbarOpen(true);
+    // }
   }
 
   // Cuida do fechamento da snackbar

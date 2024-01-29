@@ -22,7 +22,6 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 export function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((show) => !show);
-  const [open, setOpen] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
@@ -71,13 +70,20 @@ export function Register() {
   }
 
   function handleRegisterClick(data: RegisterFormData) {
+    console.log(data);
     setIsSnackbarOpen(true);
+
+    // Exemplo de uso
+    // if (data.firstName != "Gio") {
+    //   setIsFirstNameValid(false);
+    // }
   }
 
   const handleCloseSnackbar = (
     event: React.SyntheticEvent | Event,
     reason?: string
   ) => {
+    console.log(event);
     if (reason === "clickaway") {
       return;
     }
@@ -129,30 +135,38 @@ export function Register() {
         <form>
           <div id="names-container">
             <TextField
+              {...register("firstName")}
               label="First name"
               variant="outlined"
+              error={!isFirstNameValid}
+              onChange={handleFirstNameInputChange}
               sx={{ width: "100%" }}
-              {...register("firstName")}
             />
 
             <TextField
+              {...register("lastName")}
               label="Last name"
               variant="outlined"
+              error={!isLastNameValid}
+              onChange={handleLastNameInputChange}
               sx={{ width: "100%" }}
-              {...register("lastName")}
             />
           </div>
 
           {/* Campo para email */}
           <TextField
+            {...register("email")}
             label="Email address"
             variant="outlined"
+            error={!isEmailValid}
+            onChange={handleEmailInputChange}
             sx={{ width: "100%", marginBottom: "16px" }}
-            {...register("email")}
           />
 
           <FormControl
             variant="outlined"
+            error={!isPasswordValid}
+            onChange={handlePasswordInputChange}
             sx={{ width: "100%", marginBottom: "16px" }}
           >
             <InputLabel htmlFor="outlined-adornment-password">
