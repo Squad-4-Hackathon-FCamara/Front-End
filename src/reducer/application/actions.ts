@@ -1,14 +1,14 @@
 // Nesse arquivo são definidas as ações que o reducer pode executar
 
 export enum ActionTypes {
-  TOGGLE_ADD_PROJECT_DIALOG = "TOGGLE_ADD_PROJECT_DIALOG",
-  TOGGLE_VIEW_PROJECT_DIALOG = "TOGGLE_VIEW_PROJECT_DIALOG",
-  CLEAN_PROJECT_DIALOG = "CLEAN_PROJECT_DIALOG",
-  TOGGLE_SUCCESS_DIALOG = "TOGGLE_SUCCESS_DIALOG",
-  LOGIN_WITH_EMAIL = "LOGIN_WITH_EMAIL",
-  LOGIN_WITH_GOOGLE = "LOGIN_WITH_GOOGLE",
-  REGISTER_USER = "REGISTER_USER",
-  ADD_NEW_PROJECT = "ADD_NEW_PROJECT",
+  TOGGLE_ADD_PROJECT_DIALOG = 'TOGGLE_ADD_PROJECT_DIALOG',
+  TOGGLE_VIEW_PROJECT_DIALOG = 'TOGGLE_VIEW_PROJECT_DIALOG',
+  CLEAN_PROJECT_DIALOG = 'CLEAN_PROJECT_DIALOG',
+  TOGGLE_SUCCESS_DIALOG = 'TOGGLE_SUCCESS_DIALOG',
+  LOGIN_WITH_EMAIL = 'LOGIN_WITH_EMAIL',
+  LOGIN_WITH_GOOGLE = 'LOGIN_WITH_GOOGLE',
+  REGISTER_USER = 'REGISTER_USER',
+  ADD_NEW_PROJECT = 'ADD_NEW_PROJECT',
 }
 
 // Abre dialog de criação de projetos
@@ -18,7 +18,7 @@ export function toggleAddProjectDialogAction(isOpen: boolean) {
     payload: {
       isOpen,
     },
-  };
+  }
 }
 
 // Abre dialog de visualização de projetos
@@ -28,20 +28,20 @@ export function toggleViewProjectDialogAction(isOpen: boolean) {
     payload: {
       isOpen,
     },
-  };
+  }
 }
 
 // Limpa o dialog de projeto
 export function cleanProjectDialogAction() {
   return {
     type: ActionTypes.CLEAN_PROJECT_DIALOG,
-  };
+  }
 }
 
 // Abre dialog de sucesso
 export function toggleSuccessDialogAction(
   isOpen: boolean,
-  successDialogMessage: string
+  successDialogMessage: string,
 ) {
   return {
     type: ActionTypes.TOGGLE_SUCCESS_DIALOG,
@@ -49,7 +49,7 @@ export function toggleSuccessDialogAction(
       isOpen,
       successDialogMessage,
     },
-  };
+  }
 }
 
 // Login com email
@@ -60,14 +60,14 @@ export function loginWithEmailAction(email: string, password: string) {
       email,
       password,
     },
-  };
+  }
 }
 
 // Login com google
 export function loginWithGoogleAction() {
   return {
     type: ActionTypes.LOGIN_WITH_EMAIL,
-  };
+  }
 }
 
 // Cadastro de usuário
@@ -75,7 +75,7 @@ export function registerUserAction(
   firstName: string,
   lastName: string,
   email: string,
-  password: string
+  password: string,
 ) {
   return {
     type: ActionTypes.REGISTER_USER,
@@ -85,25 +85,29 @@ export function registerUserAction(
       email,
       password,
     },
-  };
+  }
 }
 
 // Adicionar novo projeto
 export function addNewProjectAction(
+  id: string,
+  userId: string,
   title: string,
   tags: string[],
   link: string,
   description: string,
-  thumbnail: File
+  thumbnail: File,
 ) {
   return {
     type: ActionTypes.ADD_NEW_PROJECT,
     payload: {
+      id,
+      userId,
       title,
       tags,
       link,
       description,
       thumbnail,
     },
-  };
+  }
 }

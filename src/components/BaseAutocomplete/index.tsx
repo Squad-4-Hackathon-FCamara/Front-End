@@ -1,21 +1,21 @@
-import { useScreenWidth } from "./../../hooks/useScreenWidth";
-import { Autocomplete, Checkbox, TextField } from "@mui/material";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { useScreenWidth } from './../../hooks/useScreenWidth'
+import { Autocomplete, Checkbox, TextField } from '@mui/material'
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
+import CheckBoxIcon from '@mui/icons-material/CheckBox'
 
 type Items = {
-  id: number;
-  name: string;
-};
+  id: string
+  name: string
+}
 
 interface BaseAutocompleteProps {
-  items: Items[];
+  items: Items[]
 }
 
 export function BaseAutocomplete({ items }: BaseAutocompleteProps) {
-  const screenWidth = useScreenWidth();
-  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-  const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const screenWidth = useScreenWidth()
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
+  const checkedIcon = <CheckBoxIcon fontSize="small" />
 
   return (
     <Autocomplete
@@ -24,8 +24,8 @@ export function BaseAutocomplete({ items }: BaseAutocompleteProps) {
       limitTags={screenWidth < 768 ? 2 : 4}
       disableCloseOnSelect
       options={items}
-      getOptionLabel={(tags) => (typeof tags === "string" ? tags : tags.name)}
-      sx={{ width: screenWidth < 768 ? "100%" : "513px" }}
+      getOptionLabel={(tags) => (typeof tags === 'string' ? tags : tags.name)}
+      sx={{ width: screenWidth < 768 ? '100%' : '513px' }}
       renderInput={(params) => (
         <TextField {...params} label="Buscar tags" placeholder="" />
       )}
@@ -41,5 +41,5 @@ export function BaseAutocomplete({ items }: BaseAutocompleteProps) {
         </li>
       )}
     />
-  );
+  )
 }
