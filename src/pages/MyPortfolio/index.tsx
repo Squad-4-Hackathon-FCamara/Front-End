@@ -28,13 +28,14 @@ import { Edit } from '@mui/icons-material'
 import { useScreenWidth } from '../../hooks/useScreenWidth'
 import { ViewProjectDialog } from '../../components/ViewProjectDialog'
 import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
+import { DeleteDialog } from '../../components/DeleteDialog'
 
 export function MyPortfolio() {
   const {
     projectsList,
     toggleAddProjectDialogIsOpen,
     toggleViewProjectDialogIsOpen,
-    deleteProject,
+    toggleDeleteDialog,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
@@ -65,9 +66,8 @@ export function MyPortfolio() {
   }
 
   function handleDelete(event: MouseEvent<HTMLElement>, id: string) {
-    console.log('Id: ', id)
     event.stopPropagation()
-    deleteProject(id)
+    // toggleDeleteDialog(true, id)
   }
   // Apenas para testes, eventualmente essas informações virão do back end
   const tagsMockUp = [
@@ -253,7 +253,7 @@ export function MyPortfolio() {
                       <h5>01/24</h5>
                     </span>
                   </div>
-                  {screenWidth > 768 ? (
+                  {/* {screenWidth > 768 ? (
                     <div id="tag-chips">
                       {project.tags.map((tag) => {
                         return <Chip key={tag.id} label={tag.name} />
@@ -266,7 +266,7 @@ export function MyPortfolio() {
                         label={project.tags[0].name}
                       />
                     </div>
-                  )}
+                  )} */}
                 </ProjectInfo>
               </Grid>
             ))}
@@ -277,6 +277,7 @@ export function MyPortfolio() {
       <ProjectDialog />
       <SuccessDialog />
       <ViewProjectDialog />
+      {/* <DeleteDialog /> */}
     </PortfolioContainer>
   )
 }

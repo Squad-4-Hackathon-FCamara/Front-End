@@ -16,6 +16,7 @@ import {
   loginWithGoogleAction,
   registerUserAction,
   toggleAddProjectDialogAction,
+  toggleDeleteDialogAction,
   toggleSuccessDialogAction,
   toggleViewProjectDialogAction,
 } from '../reducer/application/actions'
@@ -27,6 +28,7 @@ interface ApplicationContextType {
   toggleViewProjectDialogIsOpen: (isOpen: boolean) => void
   cleanProjectDialog: () => void
   toggleSuccessDialog: (isOpen: boolean, message: string) => void
+  toggleDeleteDialog: (isOpen: boolean) => void
   loginWithEmail: (email: string, password: string) => void
   loginWithGoogle: () => void
   registerUser: (
@@ -75,6 +77,7 @@ export function ApplicationContextProvider({
     addProjectDialogIsOpen: false,
     viewProjectDialogIsOpen: false,
     successDialogIsOpen: false,
+    deleteDialogIsOpen: false,
     successDialogMessage: '',
     projectInEditor: {
       id: '',
@@ -128,6 +131,10 @@ export function ApplicationContextProvider({
     dispatch(toggleSuccessDialogAction(isOpen, message))
   }
 
+  function toggleDeleteDialog(isOpen: boolean) {
+    dispatch(toggleDeleteDialogAction(isOpen))
+  }
+
   function loginWithEmail(email: string, password: string) {
     dispatch(loginWithEmailAction(email, password))
   }
@@ -177,6 +184,7 @@ export function ApplicationContextProvider({
         applicationState,
         toggleAddProjectDialogIsOpen,
         toggleViewProjectDialogIsOpen,
+        toggleDeleteDialog,
         cleanProjectDialog,
         toggleSuccessDialog,
         loginWithEmail,

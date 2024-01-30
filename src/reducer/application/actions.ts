@@ -5,6 +5,7 @@ export enum ActionTypes {
   TOGGLE_VIEW_PROJECT_DIALOG = 'TOGGLE_VIEW_PROJECT_DIALOG',
   CLEAN_PROJECT_DIALOG = 'CLEAN_PROJECT_DIALOG',
   TOGGLE_SUCCESS_DIALOG = 'TOGGLE_SUCCESS_DIALOG',
+  TOGGLE_DELETE_DIALOG = 'TOGGLE_DELETE_DIALOG',
   LOGIN_WITH_EMAIL = 'LOGIN_WITH_EMAIL',
   LOGIN_WITH_GOOGLE = 'LOGIN_WITH_GOOGLE',
   REGISTER_USER = 'REGISTER_USER',
@@ -49,6 +50,16 @@ export function toggleSuccessDialogAction(
     payload: {
       isOpen,
       successDialogMessage,
+    },
+  }
+}
+
+// Abre dialog de exclusão
+export function toggleDeleteDialogAction(isOpen: boolean) {
+  return {
+    type: ActionTypes.TOGGLE_DELETE_DIALOG,
+    payload: {
+      isOpen,
     },
   }
 }

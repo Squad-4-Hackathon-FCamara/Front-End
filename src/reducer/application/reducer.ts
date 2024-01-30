@@ -21,6 +21,7 @@ export interface ApplicationState {
   viewProjectDialogIsOpen: boolean
   successDialogIsOpen: boolean
   successDialogMessage: string
+  deleteDialogIsOpen: boolean
   projectInEditor: {
     id: string
     userId: string
@@ -71,6 +72,12 @@ export function applicationReducer(state: ApplicationState, action: any) {
         draft.successDialogMessage = action.payload.successDialogMessage
       })
 
+    // Abre dialog de exclusão
+    case ActionTypes.TOGGLE_DELETE_DIALOG:
+      return produce(state, (draft) => {
+        draft.deleteDialogIsOpen = action.payload.isOpen
+      })
+
     // Login com email
     case ActionTypes.LOGIN_WITH_EMAIL:
       // Exemplo de uso do Axios
@@ -107,6 +114,7 @@ export function applicationReducer(state: ApplicationState, action: any) {
       //   console.error("HTTP Error code: ", error.statusCode);
       // })
       return produce(state, (draft) => {
+        console.log('Thumbnail: ', action.payload.thumbnail)
         if (!draft.projectsList) draft.projectsList = []
 
         const project: Project = {

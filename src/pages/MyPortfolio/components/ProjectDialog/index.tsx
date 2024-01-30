@@ -66,7 +66,7 @@ export function ProjectDialog() {
   const { register, setValue, handleSubmit } = projectForm
 
   // Mecanismo para fazer o upload de uma imagem
-  const [thumbnail, setThumbnail] = useState<File | undefined>(undefined)
+  const [thumbnail, setThumbnail] = useState<File | null>(null)
 
   const imageInputRef = useRef<HTMLInputElement>(null)
   function handleUploadImage(event: MouseEvent<HTMLDivElement>) {
@@ -95,7 +95,11 @@ export function ProjectDialog() {
   const checkedIcon = <CheckBoxIcon fontSize="small" />
 
   function handleSaveProject(data: ProjectFormData) {
-    console.log(data)
+    // console.log(data)
+
+    if (thumbnail) {
+      console.log('Estado: ', thumbnail)
+    }
 
     addNewProject(
       '',
@@ -104,7 +108,7 @@ export function ProjectDialog() {
       data.tagsList,
       data.link,
       data.description,
-      data.thumbnail,
+      thumbnail,
     )
 
     toggleAddProjectDialogIsOpen(false)
