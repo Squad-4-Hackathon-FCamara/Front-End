@@ -5,16 +5,15 @@
 import { ReactNode, createContext, useEffect, useReducer } from 'react'
 import {
   ApplicationState,
-  Project,
   applicationReducer,
 } from '../reducer/application/reducer'
 import {
-  addNewProjectAction,
-  cleanProjectDialogAction,
-  deleteProjectAction,
-  loginWithEmailAction,
-  loginWithGoogleAction,
-  registerUserAction,
+  // addNewProjectAction,
+  // cleanProjectDialogAction,
+  // deleteProjectAction,
+  // loginWithEmailAction,
+  // loginWithGoogleAction,
+  // registerUserAction,
   toggleAddProjectDialogAction,
   toggleDeleteDialogAction,
   toggleSuccessDialogAction,
@@ -26,28 +25,28 @@ interface ApplicationContextType {
   applicationState: ApplicationState
   toggleAddProjectDialogIsOpen: (isOpen: boolean) => void
   toggleViewProjectDialogIsOpen: (isOpen: boolean) => void
-  cleanProjectDialog: () => void
+  // cleanProjectDialog: () => void
   toggleSuccessDialog: (isOpen: boolean, message: string) => void
   toggleDeleteDialog: (isOpen: boolean) => void
-  loginWithEmail: (email: string, password: string) => void
-  loginWithGoogle: () => void
-  registerUser: (
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-  ) => void
-  addNewProject: (
-    id: string,
-    userId: string,
-    title: string,
-    tags: string[],
-    link: string,
-    description: string,
-    thumbnail: File,
-  ) => void
-  deleteProject: (id: string) => void
-  projectsList: Project[]
+  // loginWithEmail: (email: string, password: string) => void
+  // loginWithGoogle: () => void
+  // registerUser: (
+  //   firstName: string,
+  //   lastName: string,
+  //   email: string,
+  //   password: string,
+  // ) => void
+  // addNewProject: (
+  //   id: string,
+  //   userId: string,
+  //   title: string,
+  //   tags: string[],
+  //   link: string,
+  //   description: string,
+  //   thumbnail: File,
+  // ) => void
+  // deleteProject: (id: string) => void
+  // projectsList: Project[]
 }
 
 // Tipagem do context provider
@@ -79,16 +78,16 @@ export function ApplicationContextProvider({
     successDialogIsOpen: false,
     deleteDialogIsOpen: false,
     successDialogMessage: '',
-    projectInEditor: {
-      id: '',
-      userId: '',
-      title: '',
-      tags: [],
-      link: '',
-      description: '',
-      thumbnail: {} as File,
-    },
-    projectsList: [],
+    // projectInEditor: {
+    //   id: '',
+    //   userId: '',
+    //   title: '',
+    //   tags: [],
+    //   link: '',
+    //   description: '',
+    //   thumbnail: {} as File,
+    // },
+    // projectsList: [],
   }
 
   const [applicationState, dispatch] = useReducer(
@@ -123,9 +122,9 @@ export function ApplicationContextProvider({
     dispatch(toggleViewProjectDialogAction(isOpen))
   }
 
-  function cleanProjectDialog() {
-    dispatch(cleanProjectDialogAction())
-  }
+  // function cleanProjectDialog() {
+  //   dispatch(cleanProjectDialogAction())
+  // }
 
   function toggleSuccessDialog(isOpen: boolean, message: string = '') {
     dispatch(toggleSuccessDialogAction(isOpen, message))
@@ -135,48 +134,48 @@ export function ApplicationContextProvider({
     dispatch(toggleDeleteDialogAction(isOpen))
   }
 
-  function loginWithEmail(email: string, password: string) {
-    dispatch(loginWithEmailAction(email, password))
-  }
+  // function loginWithEmail(email: string, password: string) {
+  //   dispatch(loginWithEmailAction(email, password))
+  // }
 
-  function loginWithGoogle() {
-    dispatch(loginWithGoogleAction())
-  }
+  // function loginWithGoogle() {
+  //   dispatch(loginWithGoogleAction())
+  // }
 
-  function registerUser(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-  ) {
-    dispatch(registerUserAction(firstName, lastName, email, password))
-  }
+  // function registerUser(
+  //   firstName: string,
+  //   lastName: string,
+  //   email: string,
+  //   password: string,
+  // ) {
+  //   dispatch(registerUserAction(firstName, lastName, email, password))
+  // }
 
-  function addNewProject(
-    id: string,
-    userId: string,
-    title: string,
-    tags: string[],
-    link: string,
-    description: string,
-    thumbnail: File,
-  ) {
-    dispatch(
-      addNewProjectAction(
-        id,
-        userId,
-        title,
-        tags,
-        link,
-        description,
-        thumbnail,
-      ),
-    )
-  }
+  // function addNewProject(
+  //   id: string,
+  //   userId: string,
+  //   title: string,
+  //   tags: string[],
+  //   link: string,
+  //   description: string,
+  //   thumbnail: File,
+  // ) {
+  //   dispatch(
+  //     addNewProjectAction(
+  //       id,
+  //       userId,
+  //       title,
+  //       tags,
+  //       link,
+  //       description,
+  //       thumbnail,
+  //     ),
+  //   )
+  // }
 
-  function deleteProject(id: string) {
-    dispatch(deleteProjectAction(id))
-  }
+  // function deleteProject(id: string) {
+  //   dispatch(deleteProjectAction(id))
+  // }
 
   return (
     <ApplicationContext.Provider
@@ -185,14 +184,14 @@ export function ApplicationContextProvider({
         toggleAddProjectDialogIsOpen,
         toggleViewProjectDialogIsOpen,
         toggleDeleteDialog,
-        cleanProjectDialog,
+        // cleanProjectDialog,
         toggleSuccessDialog,
-        loginWithEmail,
-        loginWithGoogle,
-        registerUser,
-        addNewProject,
-        deleteProject,
-        projectsList: applicationState.projectsList,
+        // loginWithEmail,
+        // loginWithGoogle,
+        // registerUser,
+        // addNewProject,
+        // deleteProject,
+        // projectsList: applicationState.projectsList,
       }}
     >
       {children}

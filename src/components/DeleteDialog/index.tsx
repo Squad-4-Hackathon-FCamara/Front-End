@@ -4,16 +4,14 @@ import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { DialogWrapper } from './style'
 
 export function DeleteDialog() {
-  const { applicationState, toggleDeleteDialog, deleteProject } =
+  const { applicationState, toggleDeleteDialog } =
     useContext(ApplicationContext)
 
   function handleCloseDialog() {
     toggleDeleteDialog(false)
   }
 
-  function handleDelete() {
-    // deleteProject()
-  }
+  function handleDelete() {}
 
   return (
     <Dialog open={applicationState.successDialogIsOpen}>

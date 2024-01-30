@@ -32,11 +32,11 @@ import { ViewProjectDialog } from '../../../../components/ViewProjectDialog'
 export function ProjectDialog() {
   const {
     applicationState,
-    addNewProject,
     toggleViewProjectDialogIsOpen,
     toggleAddProjectDialogIsOpen,
-    cleanProjectDialog,
     toggleSuccessDialog,
+    // addNewProject,
+    // cleanProjectDialog,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
@@ -95,25 +95,25 @@ export function ProjectDialog() {
   const checkedIcon = <CheckBoxIcon fontSize="small" />
 
   function handleSaveProject(data: ProjectFormData) {
-    // console.log(data)
+    console.log(data)
 
     if (thumbnail) {
       console.log('Estado: ', thumbnail)
     }
 
-    addNewProject(
-      '',
-      '',
-      data.title,
-      data.tagsList,
-      data.link,
-      data.description,
-      thumbnail,
-    )
+    // addNewProject(
+    //   '',
+    //   '',
+    //   data.title,
+    //   data.tagsList,
+    //   data.link,
+    //   data.description,
+    //   thumbnail,
+    // )
 
     toggleAddProjectDialogIsOpen(false)
     toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
-    cleanProjectDialog()
+    // cleanProjectDialog()
   }
 
   // useEffect para limpar o formulário quando a página for recarregada
@@ -122,7 +122,7 @@ export function ProjectDialog() {
       toggleAddProjectDialogIsOpen(false)
       toggleViewProjectDialogIsOpen(false)
       toggleSuccessDialog(false, '')
-      cleanProjectDialog()
+      // cleanProjectDialog()
     }
 
     window.addEventListener('beforeunload', handleBeforeUnload)

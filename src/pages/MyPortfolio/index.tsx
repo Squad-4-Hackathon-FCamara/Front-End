@@ -32,10 +32,10 @@ import { DeleteDialog } from '../../components/DeleteDialog'
 
 export function MyPortfolio() {
   const {
-    projectsList,
     toggleAddProjectDialogIsOpen,
     toggleViewProjectDialogIsOpen,
-    toggleDeleteDialog,
+    // projectsList,
+    // toggleDeleteDialog,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
@@ -67,6 +67,7 @@ export function MyPortfolio() {
 
   function handleDelete(event: MouseEvent<HTMLElement>, id: string) {
     event.stopPropagation()
+    console.log('Delete: ', id)
     // toggleDeleteDialog(true, id)
   }
   // Apenas para testes, eventualmente essas informações virão do back end
@@ -81,7 +82,7 @@ export function MyPortfolio() {
   ]
 
   // Apenas para testes, eventualmente essas informações virão do back end
-  const projectsMockUp = [
+  const projectsList = [
     {
       id: '1',
       title: 'Projeto 1',
@@ -187,9 +188,7 @@ export function MyPortfolio() {
               <Grid key={project.id} xs={12} sm={12} md={6} lg={4} xl={3}>
                 <ProjectCard
                   $thumbnailurl={
-                    project.thumbnail
-                      ? project.thumbnail.name
-                      : defaultThumbnail
+                    project.thumbnail ? project.thumbnail : defaultThumbnail
                   }
                   onClick={handleViewProject}
                 >
