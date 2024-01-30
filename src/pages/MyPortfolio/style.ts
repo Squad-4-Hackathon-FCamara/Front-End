@@ -193,15 +193,15 @@ export const ProjectCard = styled.div<ProjectCardProps>`
   background-size: cover;
   padding: 16px;
 
-  div {
+  #project-menu-button {
     background: ${(props) => props.theme["color-secondary-70"]};
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 28px;
     height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
+    transition: background-color 0.2;
+  }
+
+  #project-menu-button:hover {
+    background: ${(props) => props.theme["color-secondary-80"]};
   }
 `;
 
@@ -238,5 +238,29 @@ export const ProjectInfo = styled.div`
     font-weight: 400;
     line-height: 16px;
     letter-spacing: 0.15px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    img {
+      width: 40px;
+      height: 40px;
+    }
+
+    span {
+      flex-direction: column;
+      align-items: start;
+      gap: 4px;
+    }
   }
 `;

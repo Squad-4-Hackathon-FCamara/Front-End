@@ -1,4 +1,12 @@
-import { Button, Chip, Hidden, Skeleton } from "@mui/material";
+import {
+  Button,
+  Chip,
+  Hidden,
+  IconButton,
+  Menu,
+  MenuItem,
+  Skeleton,
+} from "@mui/material";
 import {
   AddProjectCard,
   PortfolioContainer,
@@ -13,13 +21,28 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import CollectionsImage from "./../../assets/images/collections.svg";
 import { defaultTheme } from "../../styles/themes/default";
 import { ProjectDialog } from "./components/ProjectDialog";
-import { useContext } from "react";
+import { MouseEvent, useContext, useState } from "react";
 import { ApplicationContext } from "../../contexts/ApplicationContext";
 import { SuccessDialog } from "../../components/SuccessDialog";
 import { Edit } from "@mui/icons-material";
+import { useScreenWidth } from "../../hooks/useScreenWidth";
 
 export function MyPortfolio() {
   const { toggleAddProjectDialogIsOpen } = useContext(ApplicationContext);
+
+  const screenWidth = useScreenWidth();
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+
+  function handleOpenProjectMenu(event: MouseEvent<HTMLButtonElement>) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleCloseProjectMenu() {
+    setAnchorEl(null);
+  }
 
   function handleOpenDialog() {
     toggleAddProjectDialogIsOpen(true);
@@ -61,34 +84,6 @@ export function MyPortfolio() {
     {
       id: 4,
       title: "Projeto 4",
-      createdAt: "01/24",
-      tags: ["Front End", "Design"],
-      thumbnail: "https://source.unsplash.com/random",
-    },
-    {
-      id: 5,
-      title: "Projeto 5",
-      createdAt: "01/24",
-      tags: ["Front End", "Design"],
-      thumbnail: "https://source.unsplash.com/random",
-    },
-    {
-      id: 6,
-      title: "Projeto 6",
-      createdAt: "01/24",
-      tags: ["Front End", "Design"],
-      thumbnail: "https://source.unsplash.com/random",
-    },
-    {
-      id: 7,
-      title: "Projeto 7",
-      createdAt: "01/24",
-      tags: ["Front End", "Design"],
-      thumbnail: "https://source.unsplash.com/random",
-    },
-    {
-      id: 8,
-      title: "Projeto 8",
       createdAt: "01/24",
       tags: ["Front End", "Design"],
       thumbnail: "https://source.unsplash.com/random",
@@ -157,7 +152,13 @@ export function MyPortfolio() {
             {projectsMockUp.map((index) => (
               <Grid key={index.id} xs={12} sm={12} md={6} lg={4} xl={3}>
                 <ProjectCard $thumbnailurl={index.thumbnail}>
-                  <div>
+                  <IconButton
+                    id="project-menu-button"
+                    aria-controls={isMenuOpen ? "project-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={isMenuOpen ? "true" : undefined}
+                    onClick={handleOpenProjectMenu}
+                  >
                     <Edit
                       sx={{
                         width: "24px",
@@ -165,7 +166,27 @@ export function MyPortfolio() {
                         color: defaultTheme["color-neutral-120"],
                       }}
                     />
-                  </div>
+                  </IconButton>
+                  <Menu
+                    id="project-menu"
+                    anchorEl={anchorEl}
+                    open={isMenuOpen}
+                    onClose={handleCloseProjectMenu}
+                    MenuListProps={{
+                      "aria-labelledby": "project-menu-button",
+                    }}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                  >
+                    <MenuItem sx={{ width: "208px" }}>Editar</MenuItem>
+                    <MenuItem sx={{ width: "208px" }}>Excluir</MenuItem>
+                  </Menu>
                 </ProjectCard>
                 <ProjectInfo>
                   <div id="avatar">
@@ -175,13 +196,23 @@ export function MyPortfolio() {
                       }
                       alt=""
                     />
-                    <h5>Giovani de Oliveira • 01/24</h5>
+                    <span>
+                      <h5>Giovani de Oliveira</h5>
+                      {screenWidth > 768 ? <h5> • </h5> : <></>}
+                      <h5>01/24</h5>
+                    </span>
                   </div>
-                  <div id="tag-chips">
-                    {index.tags.map((tag) => {
-                      return <Chip key={tag} label={tag} />;
-                    })}
-                  </div>
+                  {screenWidth > 768 ? (
+                    <div id="tag-chips">
+                      {index.tags.map((tag) => {
+                        return <Chip key={tag} label={tag} />;
+                      })}
+                    </div>
+                  ) : (
+                    <div id="tag-chips">
+                      <Chip key={index.tags[0]} label={index.tags[0]} />
+                    </div>
+                  )}
                 </ProjectInfo>
               </Grid>
             ))}
