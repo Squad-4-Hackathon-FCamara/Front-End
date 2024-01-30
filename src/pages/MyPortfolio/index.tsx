@@ -30,8 +30,12 @@ import { ViewProjectDialog } from '../../components/ViewProjectDialog'
 import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
 
 export function MyPortfolio() {
-  const { toggleAddProjectDialogIsOpen, toggleViewProjectDialogIsOpen } =
-    useContext(ApplicationContext)
+  const {
+    projectsList,
+    toggleAddProjectDialogIsOpen,
+    toggleViewProjectDialogIsOpen,
+    deleteProject,
+  } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
 
@@ -60,8 +64,10 @@ export function MyPortfolio() {
     event.stopPropagation()
   }
 
-  function handleDelete(event: MouseEvent<HTMLElement>) {
+  function handleDelete(event: MouseEvent<HTMLElement>, id: string) {
+    console.log('Id: ', id)
     event.stopPropagation()
+    deleteProject(id)
   }
   // Apenas para testes, eventualmente essas informações virão do back end
   const tagsMockUp = [
@@ -80,28 +86,40 @@ export function MyPortfolio() {
       id: '1',
       title: 'Projeto 1',
       createdAt: '01/24',
-      tags: ['Front End', 'Design'],
+      tags: [
+        { id: '1', name: 'Front End' },
+        { id: '2', name: 'Design' },
+      ],
       thumbnail: 'https://source.unsplash.com/random',
     },
     {
       id: '2',
       title: 'Projeto 2',
       createdAt: '01/24',
-      tags: ['Front End', 'Design'],
+      tags: [
+        { id: '1', name: 'Front End' },
+        { id: '2', name: 'Design' },
+      ],
       thumbnail: '',
     },
     {
       id: '3',
       title: 'Projeto 3',
       createdAt: '01/24',
-      tags: ['Front End', 'Design'],
+      tags: [
+        { id: '1', name: 'Front End' },
+        { id: '2', name: 'Design' },
+      ],
       thumbnail: 'https://source.unsplash.com/random',
     },
     {
       id: '4',
       title: 'Projeto 4',
       createdAt: '01/24',
-      tags: ['Front End', 'Design'],
+      tags: [
+        { id: '1', name: 'Front End' },
+        { id: '2', name: 'Design' },
+      ],
       thumbnail: '',
     },
   ]
@@ -135,7 +153,7 @@ export function MyPortfolio() {
 
       {/* Lista dos projetos do usuário */}
       <ProjectsList>
-        {projectsMockUp.length === 0 ? (
+        {projectsList.length === 0 ? (
           <Grid container spacing={3}>
             <Grid xs={12} sm={12} md={6} lg={4} xl={3}>
               <AddProjectCard onClick={handleOpenDialog}>
@@ -155,7 +173,7 @@ export function MyPortfolio() {
                     width={'100%'}
                     height={258}
                     sx={{
-                      bgcolor: defaultTheme['color-neutral-70'],
+                      bgcolor: defaultTheme['color-neutral-60'],
                       borderRadius: '4px',
                     }}
                   />
@@ -165,11 +183,13 @@ export function MyPortfolio() {
           </Grid>
         ) : (
           <Grid container spacing={2}>
-            {projectsMockUp.map((index) => (
-              <Grid key={index.id} xs={12} sm={12} md={6} lg={4} xl={3}>
+            {projectsList.map((project) => (
+              <Grid key={project.id} xs={12} sm={12} md={6} lg={4} xl={3}>
                 <ProjectCard
                   $thumbnailurl={
-                    index.thumbnail ? index.thumbnail : defaultThumbnail
+                    project.thumbnail
+                      ? project.thumbnail.name
+                      : defaultThumbnail
                   }
                   onClick={handleViewProject}
                 >
@@ -211,7 +231,10 @@ export function MyPortfolio() {
                     <MenuItem onClick={handleEdit} sx={{ width: '208px' }}>
                       Editar
                     </MenuItem>
-                    <MenuItem onClick={handleDelete} sx={{ width: '208px' }}>
+                    <MenuItem
+                      onClick={(e) => handleDelete(e, project.id)}
+                      sx={{ width: '208px' }}
+                    >
                       Excluir
                     </MenuItem>
                   </Menu>
@@ -232,13 +255,16 @@ export function MyPortfolio() {
                   </div>
                   {screenWidth > 768 ? (
                     <div id="tag-chips">
-                      {index.tags.map((tag) => {
-                        return <Chip key={tag} label={tag} />
+                      {project.tags.map((tag) => {
+                        return <Chip key={tag.id} label={tag.name} />
                       })}
                     </div>
                   ) : (
                     <div id="tag-chips">
-                      <Chip key={index.tags[0]} label={index.tags[0]} />
+                      <Chip
+                        key={project.tags[0].id}
+                        label={project.tags[0].name}
+                      />
                     </div>
                   )}
                 </ProjectInfo>

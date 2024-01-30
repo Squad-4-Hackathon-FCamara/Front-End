@@ -9,6 +9,7 @@ export enum ActionTypes {
   LOGIN_WITH_GOOGLE = 'LOGIN_WITH_GOOGLE',
   REGISTER_USER = 'REGISTER_USER',
   ADD_NEW_PROJECT = 'ADD_NEW_PROJECT',
+  DELETE_PROJECT = 'DELETE_PROJECT',
 }
 
 // Abre dialog de criação de projetos
@@ -108,6 +109,16 @@ export function addNewProjectAction(
       link,
       description,
       thumbnail,
+    },
+  }
+}
+
+// Exclui um projeto pelo ID
+export function deleteProjectAction(id: string) {
+  return {
+    type: ActionTypes.DELETE_PROJECT,
+    payload: {
+      id,
     },
   }
 }

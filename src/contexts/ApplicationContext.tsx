@@ -5,11 +5,13 @@
 import { ReactNode, createContext, useEffect, useReducer } from 'react'
 import {
   ApplicationState,
+  Project,
   applicationReducer,
 } from '../reducer/application/reducer'
 import {
   addNewProjectAction,
   cleanProjectDialogAction,
+  deleteProjectAction,
   loginWithEmailAction,
   loginWithGoogleAction,
   registerUserAction,
@@ -42,6 +44,8 @@ interface ApplicationContextType {
     description: string,
     thumbnail: File,
   ) => void
+  deleteProject: (id: string) => void
+  projectsList: Project[]
 }
 
 // Tipagem do context provider
@@ -81,7 +85,7 @@ export function ApplicationContextProvider({
       description: '',
       thumbnail: {} as File,
     },
-    projects: [],
+    projectsList: [],
   }
 
   const [applicationState, dispatch] = useReducer(
@@ -163,6 +167,10 @@ export function ApplicationContextProvider({
     )
   }
 
+  function deleteProject(id: string) {
+    dispatch(deleteProjectAction(id))
+  }
+
   return (
     <ApplicationContext.Provider
       value={{
@@ -175,6 +183,8 @@ export function ApplicationContextProvider({
         loginWithGoogle,
         registerUser,
         addNewProject,
+        deleteProject,
+        projectsList: applicationState.projectsList,
       }}
     >
       {children}

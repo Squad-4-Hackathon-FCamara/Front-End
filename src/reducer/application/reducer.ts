@@ -30,7 +30,7 @@ export interface ApplicationState {
     description: string
     thumbnail: File
   }
-  projects: Project[]
+  projectsList: Project[]
 }
 
 // Inicia o reducer
@@ -107,8 +107,12 @@ export function applicationReducer(state: ApplicationState, action: any) {
       //   console.error("HTTP Error code: ", error.statusCode);
       // })
       return produce(state, (draft) => {
+        if (!draft.projectsList) draft.projectsList = []
+
         const project: Project = {
-          id: '',
+          id: action.payload.id
+            ? action.payload.id
+            : String(draft.projectsList.length + 1),
           userId: '',
           title: action.payload.title,
           tags: action.payload.tags,
@@ -117,13 +121,16 @@ export function applicationReducer(state: ApplicationState, action: any) {
           thumbnail: action.payload.thumbnail,
         }
 
-        if (!draft.projects) {
-          draft.projects = []
-        }
-
-        // draft.projects = [...draft.projects, project]
-        draft.projects.push(project)
+        draft.projectsList.push(project)
         draft.projectInEditor = project
+      })
+
+    // Exclui um projeto pelo ID
+    case ActionTypes.DELETE_PROJECT:
+      return produce(state, (draft) => {
+        draft.projectsList = draft.projectsList.filter(
+          (project) => project.id !== action.payload.id,
+        )
       })
 
     default:
