@@ -33,4 +33,9 @@ export const DialogWrapper = styled.section`
   #close-button:hover {
     background-color: ${(props) => props.theme["color-secondary-110"]};
   }
+
+  @media (max-width: 768px) {
+    padding: 32px 28px;
+    width: 100%;
+  }
 `;

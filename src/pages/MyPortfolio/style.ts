@@ -182,6 +182,7 @@ export const ProjectCard = styled.div<ProjectCardProps>`
   display: flex;
   flex-direction: column;
   align-items: end;
+  cursor: pointer;
 
   width: 100%;
   height: 258px;

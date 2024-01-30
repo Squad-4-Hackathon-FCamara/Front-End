@@ -26,9 +26,12 @@ import { ApplicationContext } from "../../contexts/ApplicationContext";
 import { SuccessDialog } from "../../components/SuccessDialog";
 import { Edit } from "@mui/icons-material";
 import { useScreenWidth } from "../../hooks/useScreenWidth";
+import { ViewProjectDialog } from "../../components/ViewProjectDialog";
+import defaultThumbnail from "./../../assets/images/default-thumbnail.jpg";
 
 export function MyPortfolio() {
-  const { toggleAddProjectDialogIsOpen } = useContext(ApplicationContext);
+  const { toggleAddProjectDialogIsOpen, toggleViewProjectDialogIsOpen } =
+    useContext(ApplicationContext);
 
   const screenWidth = useScreenWidth();
 
@@ -46,6 +49,10 @@ export function MyPortfolio() {
 
   function handleOpenDialog() {
     toggleAddProjectDialogIsOpen(true);
+  }
+
+  function handleViewProject() {
+    toggleViewProjectDialogIsOpen(true);
   }
   // Apenas para testes, eventualmente essas informações virão do back end
   const tagsMockUp = [
@@ -72,7 +79,7 @@ export function MyPortfolio() {
       title: "Projeto 2",
       createdAt: "01/24",
       tags: ["Front End", "Design"],
-      thumbnail: "https://source.unsplash.com/random",
+      thumbnail: "",
     },
     {
       id: 3,
@@ -86,7 +93,7 @@ export function MyPortfolio() {
       title: "Projeto 4",
       createdAt: "01/24",
       tags: ["Front End", "Design"],
-      thumbnail: "https://source.unsplash.com/random",
+      thumbnail: "",
     },
   ];
 
@@ -151,7 +158,12 @@ export function MyPortfolio() {
           <Grid container spacing={2}>
             {projectsMockUp.map((index) => (
               <Grid key={index.id} xs={12} sm={12} md={6} lg={4} xl={3}>
-                <ProjectCard $thumbnailurl={index.thumbnail}>
+                <ProjectCard
+                  $thumbnailurl={
+                    index.thumbnail ? index.thumbnail : defaultThumbnail
+                  }
+                  onClick={handleViewProject}
+                >
                   <IconButton
                     id="project-menu-button"
                     aria-controls={isMenuOpen ? "project-menu" : undefined}
@@ -222,6 +234,7 @@ export function MyPortfolio() {
 
       <ProjectDialog />
       <SuccessDialog />
+      <ViewProjectDialog />
     </PortfolioContainer>
   );
 }

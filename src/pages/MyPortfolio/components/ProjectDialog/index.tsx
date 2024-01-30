@@ -105,9 +105,9 @@ export function ProjectDialog() {
       data.thumbnail
     );
 
-    // cleanProjectDialog();
     toggleAddProjectDialogIsOpen(false);
     toggleSuccessDialog(true, "Projeto adicionado com sucesso!");
+    cleanProjectDialog();
   }
 
   // useEffect para limpar o formulário quando a página for recarregada
