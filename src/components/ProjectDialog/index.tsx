@@ -35,8 +35,6 @@ export function ProjectDialog() {
     toggleViewProjectDialogIsOpen,
     toggleAddProjectDialogIsOpen,
     toggleSuccessDialog,
-    // addNewProject,
-    // cleanProjectDialog,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
@@ -101,19 +99,11 @@ export function ProjectDialog() {
       console.log('Estado: ', thumbnail)
     }
 
-    // addNewProject(
-    //   '',
-    //   '',
-    //   data.title,
-    //   data.tagsList,
-    //   data.link,
-    //   data.description,
-    //   thumbnail,
-    // )
+    // Se o projeto tiver id, a mensagem do toggleSuccessDialog será:
+    // "Edição concluída com sucesso!"
 
     toggleAddProjectDialogIsOpen(false)
     toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
-    // cleanProjectDialog()
   }
 
   // useEffect para limpar o formulário quando a página for recarregada

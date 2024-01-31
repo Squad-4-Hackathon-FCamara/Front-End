@@ -43,7 +43,8 @@ export const DialogWrapper = styled.section`
   }
 
   @media (max-width: 768px) {
-    padding: 32px 28px;
+    padding: 24px;
     width: 100%;
+    gap: 24px;
   }
 `
