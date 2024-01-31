@@ -1,5 +1,5 @@
 // Contexto é uma forma de compartilhar estados entre todos os componentes da aplicação
-// Em outras palavras, é um forma de compartilhar um ou mais useState entre os componentes
+// Em outras palavras, é um forma de compartilhar informações entre os componentes
 // Para isso, será utilizado um provedor de contexto no App.tsx
 
 import { ReactNode, createContext, useEffect, useReducer } from 'react'
@@ -8,12 +8,6 @@ import {
   applicationReducer,
 } from '../reducer/application/reducer'
 import {
-  // addNewProjectAction,
-  // cleanProjectDialogAction,
-  // deleteProjectAction,
-  // loginWithEmailAction,
-  // loginWithGoogleAction,
-  // registerUserAction,
   toggleAddProjectDialogAction,
   toggleDeleteDialogAction,
   toggleSuccessDialogAction,
@@ -29,26 +23,6 @@ interface ApplicationContextType {
   toggleSuccessDialog: (isOpen: boolean, message: string) => void
   toggleDeleteDialog: (isOpen: boolean) => void
   storeProjectIdToDelete: (projectId: string) => void
-  // cleanProjectDialog: () => void
-  // loginWithEmail: (email: string, password: string) => void
-  // loginWithGoogle: () => void
-  // registerUser: (
-  //   firstName: string,
-  //   lastName: string,
-  //   email: string,
-  //   password: string,
-  // ) => void
-  // addNewProject: (
-  //   id: string,
-  //   userId: string,
-  //   title: string,
-  //   tags: string[],
-  //   link: string,
-  //   description: string,
-  //   thumbnail: File,
-  // ) => void
-  // deleteProject: (id: string) => void
-  // projectsList: Project[]
 }
 
 // Tipagem do context provider
@@ -81,16 +55,6 @@ export function ApplicationContextProvider({
     deleteDialogIsOpen: false,
     successDialogMessage: '',
     projectIdToDelete: '',
-    // projectInEditor: {
-    //   id: '',
-    //   userId: '',
-    //   title: '',
-    //   tags: [],
-    //   link: '',
-    //   description: '',
-    //   thumbnail: {} as File,
-    // },
-    // projectsList: [],
   }
 
   const [applicationState, dispatch] = useReducer(
@@ -136,52 +100,6 @@ export function ApplicationContextProvider({
   function storeProjectIdToDelete(projectId: string) {
     dispatch(storeProjectIdToDeleteAction(projectId))
   }
-  // function cleanProjectDialog() {
-  //   dispatch(cleanProjectDialogAction())
-  // }
-
-  // function loginWithEmail(email: string, password: string) {
-  //   dispatch(loginWithEmailAction(email, password))
-  // }
-
-  // function loginWithGoogle() {
-  //   dispatch(loginWithGoogleAction())
-  // }
-
-  // function registerUser(
-  //   firstName: string,
-  //   lastName: string,
-  //   email: string,
-  //   password: string,
-  // ) {
-  //   dispatch(registerUserAction(firstName, lastName, email, password))
-  // }
-
-  // function addNewProject(
-  //   id: string,
-  //   userId: string,
-  //   title: string,
-  //   tags: string[],
-  //   link: string,
-  //   description: string,
-  //   thumbnail: File,
-  // ) {
-  //   dispatch(
-  //     addNewProjectAction(
-  //       id,
-  //       userId,
-  //       title,
-  //       tags,
-  //       link,
-  //       description,
-  //       thumbnail,
-  //     ),
-  //   )
-  // }
-
-  // function deleteProject(id: string) {
-  //   dispatch(deleteProjectAction(id))
-  // }
 
   return (
     <ApplicationContext.Provider
@@ -192,13 +110,6 @@ export function ApplicationContextProvider({
         toggleDeleteDialog,
         toggleSuccessDialog,
         storeProjectIdToDelete,
-        // cleanProjectDialog,
-        // loginWithEmail,
-        // loginWithGoogle,
-        // registerUser,
-        // addNewProject,
-        // deleteProject,
-        // projectsList: applicationState.projectsList,
       }}
     >
       {children}

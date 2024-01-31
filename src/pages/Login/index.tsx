@@ -24,6 +24,7 @@ import IMGLogin from './../../assets/images/img-login.svg'
 import GoogleLogo from './../../assets/images/google-logo.svg'
 import { defaultTheme } from '../../styles/themes/default.ts'
 import { AxiosAPI } from '../../AxiosConfig.ts'
+import { useNavigate } from 'react-router'
 // import { ApplicationContext } from "../../contexts/ApplicationContext.tsx";
 
 export function Login() {
@@ -34,6 +35,8 @@ export function Login() {
   const [isEmailValid, setIsEmailValid] = useState(true)
   const [isPasswordValid, setIsPasswordValid] = useState(true)
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false)
+
+  const navigate = useNavigate()
 
   // Regras de validação com Zod
   // Ainda não consegui exibir essas mensagens de erro
@@ -76,6 +79,7 @@ export function Login() {
     AxiosAPI.post('/auth/login', request)
       .then((response) => {
         console.log(response)
+        navigate('/')
       })
       .catch((error) => {
         console.error(error)

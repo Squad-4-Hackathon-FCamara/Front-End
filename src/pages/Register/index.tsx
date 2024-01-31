@@ -12,6 +12,7 @@ import {
   TextField,
   Alert,
   Snackbar,
+  FormHelperText,
 } from '@mui/material'
 import IMGRegister from './../../assets/images/img-cadastro.svg'
 import { ImageContainer, MainWrapper, RegisterContainer } from './style'
@@ -19,11 +20,9 @@ import { ChangeEvent, useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import { AxiosAPI } from '../../AxiosConfig.ts'
-// import { ApplicationContext } from '../../contexts/ApplicationContext.tsx'
+import { useNavigate } from 'react-router'
 
 export function Register() {
-  // const { registerUser } = useContext(ApplicationContext);
-
   // Estados locais
   const [showPassword, setShowPassword] = useState(false)
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false)
@@ -32,16 +31,13 @@ export function Register() {
   const [isFirstNameValid, setIsFirstNameValid] = useState(true)
   const [isLastNameValid, setIsLastNameValid] = useState(true)
 
+  const navigate = useNavigate()
+
   const registerValidationSchema = zod.object({
-    firstName: zod.string().min(1, { message: 'Digite seu nome' }).max(30),
-
-    lastName: zod.string().min(1, { message: 'Digite seu sobrenome' }).max(30),
-
-    email: zod
-      .string()
-      .min(1, { message: 'Digite seu email' })
-      .email({ message: 'Email inválido' }),
-    password: zod.string().min(1, { message: 'Digite sua senha' }),
+    firstName: zod.string(),
+    lastName: zod.string(),
+    email: zod.string(),
+    password: zod.string(),
   })
 
   type RegisterFormData = zod.infer<typeof registerValidationSchema>
@@ -49,6 +45,8 @@ export function Register() {
   const registerForm = useForm<RegisterFormData>({
     resolver: zodResolver(registerValidationSchema),
     defaultValues: {
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
     },
@@ -73,10 +71,18 @@ export function Register() {
     if (event.target.value) setIsLastNameValid(true)
   }
 
-  function handleRegisterClick(data: RegisterFormData) {
-    console.log(data)
-    // setIsSnackbarOpen(true)
+  // Função para atualizar o estado que os campos usam para exibir erros
+  function updateValidation(error: any, fieldName: string, stateCallback: any) {
+    if (
+      error.response.data.message?.find((msg: string) =>
+        msg.includes(fieldName),
+      )
+    ) {
+      stateCallback(false)
+    }
+  }
 
+  function handleRegisterClick(data: RegisterFormData) {
     const request = {
       email: data.email,
       password: data.password,
@@ -86,17 +92,17 @@ export function Register() {
 
     AxiosAPI.post('/auth/register', request)
       .then((response) => {
-        console.log(response)
+        console.log('Response: ', response)
         setIsSnackbarOpen(true)
+        // Adicionar um delay para fazer a navegação?
+        navigate('/login')
       })
-      .catch((error) => console.error(error))
-
-    // registerUser(data.firstName, data.lastName, data.email, data.password)
-
-    // Exemplo de uso
-    // if (data.firstName != "Gio") {
-    //   setIsFirstNameValid(false);
-    // }
+      .catch((error) => {
+        updateValidation(error, 'firstName', setIsFirstNameValid)
+        updateValidation(error, 'lastName', setIsLastNameValid)
+        updateValidation(error, 'email', setIsEmailValid)
+        updateValidation(error, 'password', setIsPasswordValid)
+      })
   }
 
   const handleCloseSnackbar = (
@@ -157,18 +163,20 @@ export function Register() {
           <div id="names-container">
             <TextField
               {...register('firstName')}
-              label="First name"
+              label="Nome"
               variant="outlined"
               error={!isFirstNameValid}
+              helperText={!isFirstNameValid ? 'Insira um nome válido' : ''}
               onChange={handleFirstNameInputChange}
               sx={{ width: '100%' }}
             />
 
             <TextField
               {...register('lastName')}
-              label="Last name"
+              label="Sobrenome"
               variant="outlined"
               error={!isLastNameValid}
+              helperText={!isLastNameValid ? 'Insira um sobrenome válido' : ''}
               onChange={handleLastNameInputChange}
               sx={{ width: '100%' }}
             />
@@ -177,9 +185,10 @@ export function Register() {
           {/* Campo para email */}
           <TextField
             {...register('email')}
-            label="Email address"
+            label="Endereço de email"
             variant="outlined"
             error={!isEmailValid}
+            helperText={!isEmailValid ? 'Insira um email válido' : ''}
             onChange={handleEmailInputChange}
             sx={{ width: '100%', marginBottom: '16px' }}
           />
@@ -190,13 +199,11 @@ export function Register() {
             onChange={handlePasswordInputChange}
             sx={{ width: '100%', marginBottom: '16px' }}
           >
-            <InputLabel htmlFor="outlined-adornment-password">
-              Password
-            </InputLabel>
+            <InputLabel htmlFor="outlined-adornment-password">Senha</InputLabel>
             <OutlinedInput
               {...register('password')}
               type={showPassword ? 'text' : 'password'}
-              label="Password"
+              label="Senha"
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -209,6 +216,11 @@ export function Register() {
                 </InputAdornment>
               }
             />
+            <FormHelperText>
+              {!isPasswordValid
+                ? 'Senha deve ter ao menos 8 caracteres, letras maiúsculas, letras minúsculas, números e caracteres especiais'
+                : ''}
+            </FormHelperText>
           </FormControl>
 
           <Button
