@@ -1,7 +1,7 @@
-import { defaultTheme } from "../../styles/themes/default.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as zod from "zod";
+import { defaultTheme } from '../../styles/themes/default.ts'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import * as zod from 'zod'
 import {
   Button,
   FormControl,
@@ -12,66 +12,86 @@ import {
   TextField,
   Alert,
   Snackbar,
-} from "@mui/material";
-import IMGRegister from "./../../assets/images/img-cadastro.svg";
-import { ImageContainer, MainWrapper, RegisterContainer } from "./style";
-import { ChangeEvent, useState } from "react";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+} from '@mui/material'
+import IMGRegister from './../../assets/images/img-cadastro.svg'
+import { ImageContainer, MainWrapper, RegisterContainer } from './style'
+import { ChangeEvent, useState } from 'react'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import { AxiosAPI } from '../../AxiosConfig.ts'
+// import { ApplicationContext } from '../../contexts/ApplicationContext.tsx'
 
 export function Register() {
-  const [showPassword, setShowPassword] = useState(false);
-  const handleShowPassword = () => setShowPassword((show) => !show);
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const [isPasswordValid, setIsPasswordValid] = useState(true);
-  const [isFirstNameValid, setIsFirstNameValid] = useState(true);
-  const [isLastNameValid, setIsLastNameValid] = useState(true);
+  // const { registerUser } = useContext(ApplicationContext);
+
+  // Estados locais
+  const [showPassword, setShowPassword] = useState(false)
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false)
+  const [isEmailValid, setIsEmailValid] = useState(true)
+  const [isPasswordValid, setIsPasswordValid] = useState(true)
+  const [isFirstNameValid, setIsFirstNameValid] = useState(true)
+  const [isLastNameValid, setIsLastNameValid] = useState(true)
 
   const registerValidationSchema = zod.object({
-    firstName: zod.string().min(1, { message: "Digite seu nome" }).max(30),
+    firstName: zod.string().min(1, { message: 'Digite seu nome' }).max(30),
 
-    lastName: zod.string().min(1, { message: "Digite seu sobrenome" }).max(30),
+    lastName: zod.string().min(1, { message: 'Digite seu sobrenome' }).max(30),
 
     email: zod
       .string()
-      .min(1, { message: "Digite seu email" })
-      .email({ message: "Email inválido" }),
-    password: zod.string().min(1, { message: "Digite sua senha" }),
-  });
+      .min(1, { message: 'Digite seu email' })
+      .email({ message: 'Email inválido' }),
+    password: zod.string().min(1, { message: 'Digite sua senha' }),
+  })
 
-  type RegisterFormData = zod.infer<typeof registerValidationSchema>;
+  type RegisterFormData = zod.infer<typeof registerValidationSchema>
 
   const registerForm = useForm<RegisterFormData>({
     resolver: zodResolver(registerValidationSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
-  });
+  })
 
-  const { register, handleSubmit } = registerForm;
+  const { register, handleSubmit } = registerForm
 
   /* Essas funções serão passadas pra validação no front end */
   function handleEmailInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsEmailValid(true);
+    if (event.target.value) setIsEmailValid(true)
   }
 
   function handlePasswordInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsPasswordValid(true);
+    if (event.target.value) setIsPasswordValid(true)
   }
 
   function handleFirstNameInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsFirstNameValid(true);
+    if (event.target.value) setIsFirstNameValid(true)
   }
 
   function handleLastNameInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsLastNameValid(true);
+    if (event.target.value) setIsLastNameValid(true)
   }
 
   function handleRegisterClick(data: RegisterFormData) {
-    console.log(data);
-    setIsSnackbarOpen(true);
+    console.log(data)
+    // setIsSnackbarOpen(true)
+
+    const request = {
+      email: data.email,
+      password: data.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
+    }
+
+    AxiosAPI.post('/auth/register', request)
+      .then((response) => {
+        console.log(response)
+        setIsSnackbarOpen(true)
+      })
+      .catch((error) => console.error(error))
+
+    // registerUser(data.firstName, data.lastName, data.email, data.password)
 
     // Exemplo de uso
     // if (data.firstName != "Gio") {
@@ -81,15 +101,16 @@ export function Register() {
 
   const handleCloseSnackbar = (
     event: React.SyntheticEvent | Event,
-    reason?: string
+    reason?: string,
   ) => {
-    console.log(event);
-    if (reason === "clickaway") {
-      return;
+    if (event && reason === 'clickaway') {
+      return
     }
 
-    setIsSnackbarOpen(false);
-  };
+    setIsSnackbarOpen(false)
+  }
+
+  const handleShowPassword = () => setShowPassword((show) => !show)
 
   return (
     <MainWrapper>
@@ -104,14 +125,14 @@ export function Register() {
           autoHideDuration={10000}
           onClose={handleCloseSnackbar}
           anchorOrigin={{
-            vertical: "top",
-            horizontal: "center",
+            vertical: 'top',
+            horizontal: 'center',
           }}
         >
           <Alert
             variant="filled"
             severity="success"
-            sx={{ backgroundColor: defaultTheme["success-main"] }}
+            sx={{ backgroundColor: defaultTheme['success-main'] }}
             iconMapping={{
               success: <CheckCircleOutlineIcon fontSize="inherit" />,
             }}
@@ -135,46 +156,46 @@ export function Register() {
         <form>
           <div id="names-container">
             <TextField
-              {...register("firstName")}
+              {...register('firstName')}
               label="First name"
               variant="outlined"
               error={!isFirstNameValid}
               onChange={handleFirstNameInputChange}
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
             />
 
             <TextField
-              {...register("lastName")}
+              {...register('lastName')}
               label="Last name"
               variant="outlined"
               error={!isLastNameValid}
               onChange={handleLastNameInputChange}
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
             />
           </div>
 
           {/* Campo para email */}
           <TextField
-            {...register("email")}
+            {...register('email')}
             label="Email address"
             variant="outlined"
             error={!isEmailValid}
             onChange={handleEmailInputChange}
-            sx={{ width: "100%", marginBottom: "16px" }}
+            sx={{ width: '100%', marginBottom: '16px' }}
           />
 
           <FormControl
             variant="outlined"
             error={!isPasswordValid}
             onChange={handlePasswordInputChange}
-            sx={{ width: "100%", marginBottom: "16px" }}
+            sx={{ width: '100%', marginBottom: '16px' }}
           >
             <InputLabel htmlFor="outlined-adornment-password">
               Password
             </InputLabel>
             <OutlinedInput
-              {...register("password")}
-              type={showPassword ? "text" : "password"}
+              {...register('password')}
+              type={showPassword ? 'text' : 'password'}
               label="Password"
               endAdornment={
                 <InputAdornment position="end">
@@ -202,5 +223,5 @@ export function Register() {
         </form>
       </RegisterContainer>
     </MainWrapper>
-  );
+  )
 }

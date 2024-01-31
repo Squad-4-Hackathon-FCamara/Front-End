@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   HeaderContainer,
@@ -13,15 +13,11 @@ import {
 } from "@mui/material";
 import OrangeLogo from "./../../assets/images/orange-logo.svg";
 import { Menu, Notifications } from "@mui/icons-material";
+import { useScreenWidth } from "../../hooks/useScreenWidth";
 
 export function Header() {
   const navigate = useNavigate();
-
-  // screenWidth é como uma variável;
-  // setScreenWidth é uma função
-  const [screenWidth, setScreenWidth] = useState(
-    document.documentElement.clientWidth
-  );
+  const screenWidth = useScreenWidth();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -33,21 +29,6 @@ export function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  function getScreenWidth() {
-    const width = document.documentElement.clientWidth;
-
-    return width;
-  }
-
-  // useEffect fica observando uma variável, e executa uma lógica quando ocorre uma mudança no valor
-  useEffect(() => {
-    const clientWidth = () => {
-      setScreenWidth(getScreenWidth());
-    };
-
-    window.addEventListener("resize", clientWidth);
-  });
 
   return (
     <HeaderContainer>
@@ -128,7 +109,7 @@ export function Header() {
 
       <ProfileContainer>
         <img
-          src="https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=giovani"
+          src="https://api.dicebear.com/7.x/thumbs/svg?seed=Giov&scale=150&radius=50&eyes=variant1W16,variant2W10,variant2W12,variant2W14,variant2W16,variant3W10,variant3W12,variant3W14,variant3W16,variant4W10,variant4W12,variant4W14,variant4W16,variant5W10,variant5W12,variant5W14,variant5W16,variant6W10,variant6W12,variant6W14,variant6W16,variant7W10,variant7W12,variant7W14,variant7W16,variant8W10,variant8W12,variant8W14,variant8W16,variant9W10,variant9W12,variant9W14,variant9W16,variant1W12,variant1W10,variant1W14&eyesColor=FFEECC&mouthColor=FFEECC&shapeColor=FFAA66,FF5522,315FCE,183594"
           alt="Avatar"
         />
         <IconButton aria-label="notifications">
