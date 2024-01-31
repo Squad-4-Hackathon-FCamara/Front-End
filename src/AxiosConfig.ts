@@ -2,9 +2,11 @@ import axios from 'axios'
 
 // Substituir a baseUrl pela do nosso back end
 export const AxiosAPI = axios.create({
-  baseURL: 'https://api.chucknorris.io',
+  baseURL: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': 'http://localhost',
+    'Access-Control-Allow-Methods': 'OPTIONS, POST, PUT, GET, DELETE, PATCH',
   },
   withCredentials: true,
 })

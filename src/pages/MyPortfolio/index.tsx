@@ -20,7 +20,7 @@ import { BaseAutocomplete } from '../../components/BaseAutocomplete'
 import Grid from '@mui/material/Unstable_Grid2/Grid2'
 import CollectionsImage from './../../assets/images/collections.svg'
 import { defaultTheme } from '../../styles/themes/default'
-import { ProjectDialog } from './components/ProjectDialog'
+import { ProjectDialog } from '../../components/ProjectDialog'
 import { MouseEvent, useContext, useState } from 'react'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { SuccessDialog } from '../../components/SuccessDialog'
@@ -29,13 +29,14 @@ import { useScreenWidth } from '../../hooks/useScreenWidth'
 import { ViewProjectDialog } from '../../components/ViewProjectDialog'
 import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
 import { DeleteDialog } from '../../components/DeleteDialog'
+import { AxiosAPI } from '../../AxiosConfig'
 
 export function MyPortfolio() {
   const {
     toggleAddProjectDialogIsOpen,
     toggleViewProjectDialogIsOpen,
-    // projectsList,
-    // toggleDeleteDialog,
+    toggleDeleteDialog,
+    storeProjectIdToDelete,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
@@ -63,12 +64,30 @@ export function MyPortfolio() {
 
   function handleEdit(event: MouseEvent<HTMLElement>) {
     event.stopPropagation()
+    toggleAddProjectDialogIsOpen(true)
   }
 
   function handleDelete(event: MouseEvent<HTMLElement>, id: string) {
     event.stopPropagation()
     console.log('Delete: ', id)
-    // toggleDeleteDialog(true, id)
+    storeProjectIdToDelete(id)
+    toggleDeleteDialog(true)
+  }
+
+  function filterByTags() {
+    const params = new URLSearchParams()
+    params.append('tags', '1')
+    params.append('tags', '2')
+    params.append('tags', '3')
+    const request = {
+      params: params,
+    }
+
+    AxiosAPI.get('project/tags', request)
+      .then()
+      .catch((error) => {
+        console.log('Erro: ', error)
+      })
   }
   // Apenas para testes, eventualmente essas informações virão do back end
   const tagsMockUp = [
@@ -149,7 +168,9 @@ export function MyPortfolio() {
       {/* Autocomplete para pesquisa */}
       <SearchBar>
         <h6>Meus projetos</h6>
-        <BaseAutocomplete items={tagsMockUp} />
+        <div onBlur={filterByTags}>
+          <BaseAutocomplete items={tagsMockUp} />
+        </div>
       </SearchBar>
 
       {/* Lista dos projetos do usuário */}
@@ -252,7 +273,7 @@ export function MyPortfolio() {
                       <h5>01/24</h5>
                     </span>
                   </div>
-                  {/* {screenWidth > 768 ? (
+                  {screenWidth > 768 ? (
                     <div id="tag-chips">
                       {project.tags.map((tag) => {
                         return <Chip key={tag.id} label={tag.name} />
@@ -265,7 +286,7 @@ export function MyPortfolio() {
                         label={project.tags[0].name}
                       />
                     </div>
-                  )} */}
+                  )}
                 </ProjectInfo>
               </Grid>
             ))}
@@ -276,7 +297,7 @@ export function MyPortfolio() {
       <ProjectDialog />
       <SuccessDialog />
       <ViewProjectDialog />
-      {/* <DeleteDialog /> */}
+      <DeleteDialog />
     </PortfolioContainer>
   )
 }

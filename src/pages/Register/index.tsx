@@ -18,6 +18,7 @@ import { ImageContainer, MainWrapper, RegisterContainer } from './style'
 import { ChangeEvent, useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import { AxiosAPI } from '../../AxiosConfig.ts'
 // import { ApplicationContext } from '../../contexts/ApplicationContext.tsx'
 
 export function Register() {
@@ -74,7 +75,21 @@ export function Register() {
 
   function handleRegisterClick(data: RegisterFormData) {
     console.log(data)
-    setIsSnackbarOpen(true)
+    // setIsSnackbarOpen(true)
+
+    const request = {
+      email: data.email,
+      password: data.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
+    }
+
+    AxiosAPI.post('/auth/register', request)
+      .then((response) => {
+        console.log(response)
+        setIsSnackbarOpen(true)
+      })
+      .catch((error) => console.error(error))
 
     // registerUser(data.firstName, data.lastName, data.email, data.password)
 

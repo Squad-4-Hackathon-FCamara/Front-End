@@ -21,6 +21,7 @@ export interface ApplicationState {
   successDialogIsOpen: boolean
   successDialogMessage: string
   deleteDialogIsOpen: boolean
+  projectIdToDelete: string
   // projectInEditor: {
   //   id: string
   //   userId: string
@@ -61,6 +62,12 @@ export function applicationReducer(state: ApplicationState, action: any) {
     case ActionTypes.TOGGLE_DELETE_DIALOG:
       return produce(state, (draft) => {
         draft.deleteDialogIsOpen = action.payload.isOpen
+      })
+
+    // Armazena id do projeto a ser excluído
+    case ActionTypes.STORE_PROJECT_ID_TO_DELETE:
+      return produce(state, (draft) => {
+        draft.projectIdToDelete = action.payload.projectId
       })
 
     // Limpa dialog de projetos

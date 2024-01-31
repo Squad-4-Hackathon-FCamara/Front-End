@@ -6,8 +6,8 @@ import {
   useState,
   useEffect,
 } from 'react'
-import { ApplicationContext } from '../../../../contexts/ApplicationContext'
-import { useScreenWidth } from '../../../../hooks/useScreenWidth'
+import { ApplicationContext } from '../../contexts/ApplicationContext'
+import { useScreenWidth } from '../../hooks/useScreenWidth'
 import * as zod from 'zod'
 import {
   ActionsWrapper,
@@ -24,10 +24,10 @@ import {
 } from '@mui/material'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
-import CollectionsImage from './../../../../assets/images/collections.svg'
+import CollectionsImage from './../../assets/images/collections.svg'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { ViewProjectDialog } from '../../../../components/ViewProjectDialog'
+import { ViewProjectDialog } from '../ViewProjectDialog'
 
 export function ProjectDialog() {
   const {

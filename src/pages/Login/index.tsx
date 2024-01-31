@@ -23,6 +23,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import IMGLogin from './../../assets/images/img-login.svg'
 import GoogleLogo from './../../assets/images/google-logo.svg'
 import { defaultTheme } from '../../styles/themes/default.ts'
+import { AxiosAPI } from '../../AxiosConfig.ts'
 // import { ApplicationContext } from "../../contexts/ApplicationContext.tsx";
 
 export function Login() {
@@ -37,11 +38,11 @@ export function Login() {
   // Regras de validação com Zod
   // Ainda não consegui exibir essas mensagens de erro
   const loginValidationSchema = zod.object({
-    email: zod
-      .string()
-      .min(1, { message: 'Digite seu email' })
-      .email({ message: 'Email inválido' }),
-    password: zod.string().min(1, { message: 'Digite sua senha' }),
+    email: zod.string(),
+    // .min(1, { message: 'Digite seu email' })
+    // .email({ message: 'Email inválido' }),
+    password: zod.string(),
+    // .min(1, { message: 'Digite sua senha' }),
   })
 
   type LoginFormData = zod.infer<typeof loginValidationSchema>
@@ -67,7 +68,19 @@ export function Login() {
 
   // Cuida do submit do formulário
   function handleLoginClick(data: LoginFormData) {
-    console.log(data)
+    const request = {
+      email: data.email,
+      password: data.password,
+    }
+
+    AxiosAPI.post('/auth/login', request)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+
     // loginWithEmail(data.email, data.password)
     // Esses ifs são apenas para exemplo de como ativar os erros e a snackbar
     // DEVEM ser apagados depois!

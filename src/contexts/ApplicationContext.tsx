@@ -18,6 +18,7 @@ import {
   toggleDeleteDialogAction,
   toggleSuccessDialogAction,
   toggleViewProjectDialogAction,
+  storeProjectIdToDeleteAction,
 } from '../reducer/application/actions'
 
 // Tipagem do contexto
@@ -25,9 +26,10 @@ interface ApplicationContextType {
   applicationState: ApplicationState
   toggleAddProjectDialogIsOpen: (isOpen: boolean) => void
   toggleViewProjectDialogIsOpen: (isOpen: boolean) => void
-  // cleanProjectDialog: () => void
   toggleSuccessDialog: (isOpen: boolean, message: string) => void
   toggleDeleteDialog: (isOpen: boolean) => void
+  storeProjectIdToDelete: (projectId: string) => void
+  // cleanProjectDialog: () => void
   // loginWithEmail: (email: string, password: string) => void
   // loginWithGoogle: () => void
   // registerUser: (
@@ -78,6 +80,7 @@ export function ApplicationContextProvider({
     successDialogIsOpen: false,
     deleteDialogIsOpen: false,
     successDialogMessage: '',
+    projectIdToDelete: '',
     // projectInEditor: {
     //   id: '',
     //   userId: '',
@@ -122,10 +125,6 @@ export function ApplicationContextProvider({
     dispatch(toggleViewProjectDialogAction(isOpen))
   }
 
-  // function cleanProjectDialog() {
-  //   dispatch(cleanProjectDialogAction())
-  // }
-
   function toggleSuccessDialog(isOpen: boolean, message: string = '') {
     dispatch(toggleSuccessDialogAction(isOpen, message))
   }
@@ -133,6 +132,13 @@ export function ApplicationContextProvider({
   function toggleDeleteDialog(isOpen: boolean) {
     dispatch(toggleDeleteDialogAction(isOpen))
   }
+
+  function storeProjectIdToDelete(projectId: string) {
+    dispatch(storeProjectIdToDeleteAction(projectId))
+  }
+  // function cleanProjectDialog() {
+  //   dispatch(cleanProjectDialogAction())
+  // }
 
   // function loginWithEmail(email: string, password: string) {
   //   dispatch(loginWithEmailAction(email, password))
@@ -184,8 +190,9 @@ export function ApplicationContextProvider({
         toggleAddProjectDialogIsOpen,
         toggleViewProjectDialogIsOpen,
         toggleDeleteDialog,
-        // cleanProjectDialog,
         toggleSuccessDialog,
+        storeProjectIdToDelete,
+        // cleanProjectDialog,
         // loginWithEmail,
         // loginWithGoogle,
         // registerUser,

@@ -3,9 +3,10 @@
 export enum ActionTypes {
   TOGGLE_ADD_PROJECT_DIALOG = 'TOGGLE_ADD_PROJECT_DIALOG',
   TOGGLE_VIEW_PROJECT_DIALOG = 'TOGGLE_VIEW_PROJECT_DIALOG',
-  // CLEAN_PROJECT_DIALOG = 'CLEAN_PROJECT_DIALOG',
   TOGGLE_SUCCESS_DIALOG = 'TOGGLE_SUCCESS_DIALOG',
   TOGGLE_DELETE_DIALOG = 'TOGGLE_DELETE_DIALOG',
+  STORE_PROJECT_ID_TO_DELETE = 'STORE_PROJECT_ID_TO_DELETE',
+  // CLEAN_PROJECT_DIALOG = 'CLEAN_PROJECT_DIALOG',
   // LOGIN_WITH_EMAIL = 'LOGIN_WITH_EMAIL',
   // LOGIN_WITH_GOOGLE = 'LOGIN_WITH_GOOGLE',
   // REGISTER_USER = 'REGISTER_USER',
@@ -33,13 +34,6 @@ export function toggleViewProjectDialogAction(isOpen: boolean) {
   }
 }
 
-// Limpa o dialog de projeto
-// export function cleanProjectDialogAction() {
-//   return {
-//     type: ActionTypes.CLEAN_PROJECT_DIALOG,
-//   }
-// }
-
 // Abre dialog de sucesso
 export function toggleSuccessDialogAction(
   isOpen: boolean,
@@ -53,9 +47,8 @@ export function toggleSuccessDialogAction(
     },
   }
 }
-
 // Abre dialog de exclusão
-export function toggleDeleteDialogAction(isOpen: boolean) {
+export function toggleDeleteDialogAction(isOpen: boolean, projectId: string) {
   return {
     type: ActionTypes.TOGGLE_DELETE_DIALOG,
     payload: {
@@ -63,6 +56,23 @@ export function toggleDeleteDialogAction(isOpen: boolean) {
     },
   }
 }
+
+// Armazena o ID do projeto que será excluído
+export function storeProjectIdToDeleteAction(projectId: string) {
+  return {
+    type: ActionTypes.STORE_PROJECT_ID_TO_DELETE,
+    payload: {
+      projectId,
+    },
+  }
+}
+
+// Limpa o dialog de projeto
+// export function cleanProjectDialogAction() {
+//   return {
+//     type: ActionTypes.CLEAN_PROJECT_DIALOG,
+//   }
+// }
 
 // Login com email
 // export function loginWithEmailAction(email: string, password: string) {
