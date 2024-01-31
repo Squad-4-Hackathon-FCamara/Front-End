@@ -86,7 +86,7 @@ export function MyPortfolio() {
     AxiosAPI.get('project/tags', request)
       .then()
       .catch((error) => {
-        console.log('Erro: ', error)
+        console.error('Erro: ', error)
       })
   }
   // Apenas para testes, eventualmente essas informações virão do back end

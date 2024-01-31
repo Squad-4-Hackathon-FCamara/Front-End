@@ -61,12 +61,16 @@ export function ApplicationContextProvider({
     applicationReducer,
     initialArg,
     (initialState) => {
-      const storedStateAsJSON = localStorage.getItem(
-        '@orange-portfolio:application-state-1.0.0',
-      )
+      try {
+        const storedStateAsJSON = localStorage.getItem(
+          '@orange-portfolio:application-state-1.0.0',
+        )
 
-      if (storedStateAsJSON) {
-        return JSON.parse(storedStateAsJSON)
+        if (storedStateAsJSON) {
+          return JSON.parse(storedStateAsJSON)
+        }
+      } catch (error) {
+        console.error('Erro: ', error)
       }
 
       return initialState
@@ -75,7 +79,9 @@ export function ApplicationContextProvider({
 
   // useEffect para salvar o estado no localStorage
   useEffect(() => {
-    const stateJSON = JSON.stringify(applicationState)
+    const stateJSON = JSON.stringify(
+      applicationState ?? ({} as ApplicationState),
+    )
 
     localStorage.setItem('@orange-portfolio:application-state-1.0.0', stateJSON)
   })

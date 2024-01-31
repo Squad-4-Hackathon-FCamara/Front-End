@@ -73,12 +73,14 @@ export function Register() {
 
   // Função para atualizar o estado que os campos usam para exibir erros
   function updateValidation(error: any, fieldName: string, stateCallback: any) {
-    if (
-      error.response.data.message?.find((msg: string) =>
-        msg.includes(fieldName),
-      )
-    ) {
-      stateCallback(false)
+    if (Array.isArray(error)) {
+      if (error?.find((msg: string) => msg.includes(fieldName))) {
+        stateCallback(false)
+      }
+    } else {
+      if (error.includes(fieldName)) {
+        stateCallback(false)
+      }
     }
   }
 
@@ -91,11 +93,9 @@ export function Register() {
     }
 
     AxiosAPI.post('/auth/register', request)
-      .then((response) => {
-        console.log('Response: ', response)
+      .then(() => {
         setIsSnackbarOpen(true)
-        // Adicionar um delay para fazer a navegação?
-        navigate('/login')
+        setTimeout(() => navigate('/login'), 5000)
       })
       .catch((error) => {
         updateValidation(error, 'firstName', setIsFirstNameValid)

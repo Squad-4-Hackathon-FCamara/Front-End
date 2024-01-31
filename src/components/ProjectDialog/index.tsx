@@ -68,15 +68,13 @@ export function ProjectDialog() {
 
   const imageInputRef = useRef<HTMLInputElement>(null)
   function handleUploadImage(event: MouseEvent<HTMLDivElement>) {
-    console.log(event)
-    imageInputRef.current?.click()
+    if (event) imageInputRef.current?.click()
   }
 
   function handleChangeImage(event: ChangeEvent<HTMLInputElement>) {
     const image = event.target?.files?.[0]
     if (image) {
       setThumbnail(image)
-      console.log('Imagem: ', image)
     }
   }
 
@@ -93,17 +91,13 @@ export function ProjectDialog() {
   const checkedIcon = <CheckBoxIcon fontSize="small" />
 
   function handleSaveProject(data: ProjectFormData) {
-    console.log(data)
-
-    if (thumbnail) {
-      console.log('Estado: ', thumbnail)
-    }
-
     // Se o projeto tiver id, a mensagem do toggleSuccessDialog será:
     // "Edição concluída com sucesso!"
 
-    toggleAddProjectDialogIsOpen(false)
-    toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
+    if (data) {
+      toggleAddProjectDialogIsOpen(false)
+      toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
+    }
   }
 
   // useEffect para limpar o formulário quando a página for recarregada

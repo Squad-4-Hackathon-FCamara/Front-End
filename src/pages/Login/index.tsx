@@ -12,6 +12,7 @@ import {
   Alert,
   Button,
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -25,11 +26,8 @@ import GoogleLogo from './../../assets/images/google-logo.svg'
 import { defaultTheme } from '../../styles/themes/default.ts'
 import { AxiosAPI } from '../../AxiosConfig.ts'
 import { useNavigate } from 'react-router'
-// import { ApplicationContext } from "../../contexts/ApplicationContext.tsx";
 
 export function Login() {
-  // const { loginWithEmail } = useContext(ApplicationContext);
-
   // Estados para o form, talvez possa ser substituído por um reducer no futuro
   const [showPassword, setShowPassword] = useState(false)
   const [isEmailValid, setIsEmailValid] = useState(true)
@@ -39,13 +37,9 @@ export function Login() {
   const navigate = useNavigate()
 
   // Regras de validação com Zod
-  // Ainda não consegui exibir essas mensagens de erro
   const loginValidationSchema = zod.object({
     email: zod.string(),
-    // .min(1, { message: 'Digite seu email' })
-    // .email({ message: 'Email inválido' }),
     password: zod.string(),
-    // .min(1, { message: 'Digite sua senha' }),
   })
 
   type LoginFormData = zod.infer<typeof loginValidationSchema>
@@ -69,6 +63,19 @@ export function Login() {
     if (event.target.value) setIsPasswordValid(true)
   }
 
+  // Função para atualizar o estado que os campos usam para exibir erros
+  function updateValidation(error: any, fieldName: string, stateCallback: any) {
+    if (Array.isArray(error)) {
+      if (error?.find((msg: string) => msg.includes(fieldName))) {
+        stateCallback(false)
+      }
+    } else {
+      if (error.includes(fieldName)) {
+        stateCallback(false)
+      }
+    }
+  }
+
   // Cuida do submit do formulário
   function handleLoginClick(data: LoginFormData) {
     const request = {
@@ -77,26 +84,18 @@ export function Login() {
     }
 
     AxiosAPI.post('/auth/login', request)
-      .then((response) => {
-        console.log(response)
+      .then(() => {
         navigate('/')
       })
       .catch((error) => {
-        console.error(error)
+        updateValidation(error.response.data.message, 'email', setIsEmailValid)
+        updateValidation(
+          error.response.data.message,
+          'password',
+          setIsPasswordValid,
+        )
+        setIsSnackbarOpen(true)
       })
-
-    // loginWithEmail(data.email, data.password)
-    // Esses ifs são apenas para exemplo de como ativar os erros e a snackbar
-    // DEVEM ser apagados depois!
-    // if (data.email !== "teste@teste.com") {
-    //   setIsEmailValid(false);
-    // }
-    // if (data.password !== "123") {
-    //   setIsPasswordValid(false);
-    // }
-    // if (data.email !== "teste@teste.com" || data.password !== "123") {
-    //   setIsSnackbarOpen(true);
-    // }
   }
 
   // Cuida do fechamento da snackbar
@@ -154,6 +153,7 @@ export function Login() {
             label="Email address"
             variant="outlined"
             error={!isEmailValid}
+            helperText={!isEmailValid ? 'Email inválido ou incorreto' : ''}
             {...register('email')}
             onChange={handleEmailInputChange}
             sx={{ width: '100%', marginBottom: '16px' }}
@@ -186,6 +186,9 @@ export function Login() {
               label="Password"
               {...register('password')}
             />
+            <FormHelperText>
+              {!isPasswordValid ? 'Senha inválida ou incorreta' : ''}
+            </FormHelperText>
           </FormControl>
 
           <Button
