@@ -13,6 +13,7 @@ import {
   toggleSuccessDialogAction,
   toggleViewProjectDialogAction,
   storeProjectIdToDeleteAction,
+  storeUserDataAction,
 } from '../reducer/application/actions'
 
 // Tipagem do contexto
@@ -23,6 +24,13 @@ interface ApplicationContextType {
   toggleSuccessDialog: (isOpen: boolean, message: string) => void
   toggleDeleteDialog: (isOpen: boolean) => void
   storeProjectIdToDelete: (projectId: string) => void
+  storeUserData: (
+    id: string,
+    firstName: string,
+    lastName: string,
+    avatarUrl: string,
+    projects: any,
+  ) => void
 }
 
 // Tipagem do context provider
@@ -107,6 +115,16 @@ export function ApplicationContextProvider({
     dispatch(storeProjectIdToDeleteAction(projectId))
   }
 
+  function storeUserData(
+    id: string,
+    firstName: string,
+    lastName: string,
+    avatarUrl: string,
+    projects: any,
+  ) {
+    dispatch(storeUserDataAction(id, firstName, lastName, avatarUrl, projects))
+  }
+
   return (
     <ApplicationContext.Provider
       value={{
@@ -116,6 +134,7 @@ export function ApplicationContextProvider({
         toggleDeleteDialog,
         toggleSuccessDialog,
         storeProjectIdToDelete,
+        storeUserData,
       }}
     >
       {children}

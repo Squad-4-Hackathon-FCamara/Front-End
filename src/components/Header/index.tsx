@@ -1,34 +1,56 @@
-import { MouseEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  HeaderContainer,
-  NavigationContainer,
-  ProfileContainer,
-} from "./style";
+import { MouseEvent, useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { HeaderContainer, NavigationContainer, ProfileContainer } from './style'
 import {
   Menu as MenuComponent,
   IconButton,
   MenuItem,
   Divider,
-} from "@mui/material";
-import OrangeLogo from "./../../assets/images/orange-logo.svg";
-import { Menu, Notifications } from "@mui/icons-material";
-import { useScreenWidth } from "../../hooks/useScreenWidth";
+} from '@mui/material'
+import OrangeLogo from './../../assets/images/orange-logo.svg'
+import { Menu, Notifications } from '@mui/icons-material'
+import { useScreenWidth } from '../../hooks/useScreenWidth'
+import { AxiosAPI } from '../../AxiosConfig'
+import { ApplicationContext } from '../../contexts/ApplicationContext'
 
 export function Header() {
-  const navigate = useNavigate();
-  const screenWidth = useScreenWidth();
+  const { applicationState, storeUserData } = useContext(ApplicationContext)
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const navigate = useNavigate()
+  const screenWidth = useScreenWidth()
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
 
   const handleOpenMenu = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
+
+  async function getUserData() {
+    await AxiosAPI.get('user/me/data')
+      .then((response) => {
+        console.log('Response: ', response.data)
+        storeUserData(
+          response.data.id,
+          response.data.firstName,
+          response.data.lastName,
+          response.data.avatar_url,
+          response.data.projects,
+        )
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
+  // Busca dados do usuário logado
+  useEffect(() => {
+    getUserData()
+  }, [])
 
   return (
     <HeaderContainer>
@@ -38,9 +60,9 @@ export function Header() {
             <IconButton
               id="basic-button"
               aria-label="notifications"
-              aria-controls={open ? "basic-menu" : undefined}
+              aria-controls={open ? 'basic-menu' : undefined}
               aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
+              aria-expanded={open ? 'true' : undefined}
               onClick={handleOpenMenu}
             >
               <Menu id="menu-icon"></Menu>
@@ -55,23 +77,23 @@ export function Header() {
               anchorReference="anchorPosition"
               anchorPosition={{ top: 74, left: 0 }}
               anchorOrigin={{
-                vertical: "top",
-                horizontal: "left",
+                vertical: 'top',
+                horizontal: 'left',
               }}
               transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
+                vertical: 'top',
+                horizontal: 'left',
               }}
               open={open}
               onClose={handleClose}
               MenuListProps={{
-                "aria-labelledby": "basic-button",
+                'aria-labelledby': 'basic-button',
               }}
             >
               <MenuItem
                 onClick={() => {
-                  handleClose();
-                  navigate("/");
+                  handleClose()
+                  navigate('/')
                 }}
               >
                 <p>Meus Projetos</p>
@@ -79,8 +101,8 @@ export function Header() {
 
               <MenuItem
                 onClick={() => {
-                  handleClose();
-                  navigate("/discover");
+                  handleClose()
+                  navigate('/discover')
                 }}
               >
                 <p>Descobrir</p>
@@ -90,7 +112,7 @@ export function Header() {
 
               <MenuItem
                 onClick={() => {
-                  handleClose();
+                  handleClose()
                 }}
               >
                 <p>Configurações</p>
@@ -108,14 +130,11 @@ export function Header() {
       </NavigationContainer>
 
       <ProfileContainer>
-        <img
-          src="https://api.dicebear.com/7.x/thumbs/svg?seed=Giov&scale=150&radius=50&eyes=variant1W16,variant2W10,variant2W12,variant2W14,variant2W16,variant3W10,variant3W12,variant3W14,variant3W16,variant4W10,variant4W12,variant4W14,variant4W16,variant5W10,variant5W12,variant5W14,variant5W16,variant6W10,variant6W12,variant6W14,variant6W16,variant7W10,variant7W12,variant7W14,variant7W16,variant8W10,variant8W12,variant8W14,variant8W16,variant9W10,variant9W12,variant9W14,variant9W16,variant1W12,variant1W10,variant1W14&eyesColor=FFEECC&mouthColor=FFEECC&shapeColor=FFAA66,FF5522,315FCE,183594"
-          alt="Avatar"
-        />
+        <img src={applicationState.userData.avatarUrl} alt="Avatar" />
         <IconButton aria-label="notifications">
           <Notifications id="notifications-icon" />
         </IconButton>
       </ProfileContainer>
     </HeaderContainer>
-  );
+  )
 }

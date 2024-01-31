@@ -6,6 +6,7 @@ export enum ActionTypes {
   TOGGLE_SUCCESS_DIALOG = 'TOGGLE_SUCCESS_DIALOG',
   TOGGLE_DELETE_DIALOG = 'TOGGLE_DELETE_DIALOG',
   STORE_PROJECT_ID_TO_DELETE = 'STORE_PROJECT_ID_TO_DELETE',
+  STORE_USER_DATA = 'STORE_USER_DATA',
 }
 
 // Abre dialog de criação de projetos
@@ -57,6 +58,26 @@ export function storeProjectIdToDeleteAction(projectId: string) {
     type: ActionTypes.STORE_PROJECT_ID_TO_DELETE,
     payload: {
       projectId,
+    },
+  }
+}
+
+// Armazena dados do usuário logado
+export function storeUserDataAction(
+  id: string,
+  firstName: string,
+  lastName: string,
+  avatarUrl: string,
+  projects: any,
+) {
+  return {
+    type: ActionTypes.STORE_USER_DATA,
+    payload: {
+      id,
+      firstName,
+      lastName,
+      avatarUrl,
+      projects,
     },
   }
 }
