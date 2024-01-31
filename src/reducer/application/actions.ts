@@ -48,7 +48,7 @@ export function toggleSuccessDialogAction(
   }
 }
 // Abre dialog de exclusão
-export function toggleDeleteDialogAction(isOpen: boolean, projectId: string) {
+export function toggleDeleteDialogAction(isOpen: boolean) {
   return {
     type: ActionTypes.TOGGLE_DELETE_DIALOG,
     payload: {
