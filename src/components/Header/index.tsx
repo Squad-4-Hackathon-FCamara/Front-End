@@ -8,7 +8,7 @@ import {
   Divider,
 } from '@mui/material'
 import OrangeLogo from './../../assets/images/orange-logo.svg'
-import { Menu, Notifications } from '@mui/icons-material'
+import { Logout, Menu, Notifications } from '@mui/icons-material'
 import { useScreenWidth } from '../../hooks/useScreenWidth'
 import { AxiosAPI } from '../../AxiosConfig'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
@@ -116,6 +116,16 @@ export function Header() {
                 }}
               >
                 <p>Configurações</p>
+              </MenuItem>
+
+              <Divider />
+
+              <MenuItem
+                onClick={() => {
+                  handleClose()
+                }}
+              >
+                <p>Sair</p>
               </MenuItem>
             </MenuComponent>
           </>

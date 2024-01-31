@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: ${(props) => props.theme["color-primary-100"]};
+  background: ${(props) => props.theme['color-primary-100']};
   padding: 16px 32px;
   position: fixed;
   width: 100%;
@@ -15,7 +15,7 @@ export const HeaderContainer = styled.header`
   @media (max-width: 768px) {
     padding: 12px 24px;
   }
-`;
+`
 
 export const NavigationContainer = styled.section`
   display: flex;
@@ -25,7 +25,7 @@ export const NavigationContainer = styled.section`
 
   a {
     text-decoration: none;
-    color: ${(props) => props.theme["color-neutral-60"]};
+    color: ${(props) => props.theme['color-neutral-60']};
     margin-left: 24px;
 
     font-family: Roboto;
@@ -38,7 +38,7 @@ export const NavigationContainer = styled.section`
   }
 
   a:hover {
-    color: ${(props) => props.theme["color-neutral-80"]};
+    color: ${(props) => props.theme['color-neutral-80']};
   }
 
   #menu-icon {
@@ -48,7 +48,7 @@ export const NavigationContainer = styled.section`
   @media (max-width: 768px) {
     gap: 9px;
   }
-`;
+`
 
 export const ProfileContainer = styled.section`
   display: flex;
@@ -65,7 +65,7 @@ export const ProfileContainer = styled.section`
   }
 
   #notifications-icon {
-    color: ${(props) => props.theme["color-neutral-60"]};
+    color: ${(props) => props.theme['color-neutral-60']};
   }
 
   @media (max-width: 768px) {
@@ -73,4 +73,4 @@ export const ProfileContainer = styled.section`
       margin-left: 9px;
     }
   }
-`;
+`

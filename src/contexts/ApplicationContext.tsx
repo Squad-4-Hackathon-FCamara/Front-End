@@ -5,6 +5,7 @@
 import { ReactNode, createContext, useEffect, useReducer } from 'react'
 import {
   ApplicationState,
+  UserData,
   applicationReducer,
 } from '../reducer/application/reducer'
 import {
@@ -63,6 +64,13 @@ export function ApplicationContextProvider({
     deleteDialogIsOpen: false,
     successDialogMessage: '',
     projectIdToDelete: '',
+    userData: {
+      id: '',
+      firstName: '',
+      lastName: '',
+      avatarUrl: '',
+      projects: [],
+    } as UserData,
   }
 
   const [applicationState, dispatch] = useReducer(
