@@ -15,6 +15,7 @@ import {
   toggleViewProjectDialogAction,
   storeProjectIdToDeleteAction,
   storeUserDataAction,
+  storeProjectIdToViewAction,
 } from '../reducer/application/actions'
 
 // Tipagem do contexto
@@ -32,6 +33,7 @@ interface ApplicationContextType {
     avatarUrl: string,
     projects: any,
   ) => void
+  storeProjectIdToView: (projectId: string) => void
 }
 
 // Tipagem do context provider
@@ -71,6 +73,7 @@ export function ApplicationContextProvider({
       avatarUrl: '',
       projects: [],
     } as UserData,
+    projectIdToView: '',
   }
 
   const [applicationState, dispatch] = useReducer(
@@ -133,6 +136,10 @@ export function ApplicationContextProvider({
     dispatch(storeUserDataAction(id, firstName, lastName, avatarUrl, projects))
   }
 
+  function storeProjectIdToView(projectId: string) {
+    dispatch(storeProjectIdToViewAction(projectId))
+  }
+
   return (
     <ApplicationContext.Provider
       value={{
@@ -143,6 +150,7 @@ export function ApplicationContextProvider({
         toggleSuccessDialog,
         storeProjectIdToDelete,
         storeUserData,
+        storeProjectIdToView,
       }}
     >
       {children}

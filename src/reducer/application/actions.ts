@@ -7,6 +7,7 @@ export enum ActionTypes {
   TOGGLE_DELETE_DIALOG = 'TOGGLE_DELETE_DIALOG',
   STORE_PROJECT_ID_TO_DELETE = 'STORE_PROJECT_ID_TO_DELETE',
   STORE_USER_DATA = 'STORE_USER_DATA',
+  STORE_PROJECT_ID_TO_VIEW = 'STORE_PROJECT_ID_TO_VIEW',
 }
 
 // Abre dialog de criação de projetos
@@ -78,6 +79,16 @@ export function storeUserDataAction(
       lastName,
       avatarUrl,
       projects,
+    },
+  }
+}
+
+// Armazena o ID do projeto que será visualizado
+export function storeProjectIdToViewAction(projectId: string) {
+  return {
+    type: ActionTypes.STORE_PROJECT_ID_TO_VIEW,
+    payload: {
+      projectId,
     },
   }
 }

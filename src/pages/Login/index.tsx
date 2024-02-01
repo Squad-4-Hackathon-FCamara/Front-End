@@ -98,6 +98,17 @@ export function Login() {
       })
   }
 
+  function handleGoogleLogin() {
+    // AxiosAPI.get('/auth/login/google')
+    //   .then((response) => {
+    //     console.log('Google Login: ', response)
+    //     navigate('/')
+    //   })
+    //   .catch(() => {
+    //     setIsSnackbarOpen(true)
+    //   })
+  }
+
   // Cuida do fechamento da snackbar
   const handleCloseSnackbar = (
     event: React.SyntheticEvent | Event,
@@ -140,7 +151,7 @@ export function Login() {
 
         <h1>Entre no Orange Portfólio</h1>
 
-        <LoginWithGoogle type="button">
+        <LoginWithGoogle type="button" onClick={handleGoogleLogin}>
           <img src={GoogleLogo}></img>
           Entrar com Google
         </LoginWithGoogle>

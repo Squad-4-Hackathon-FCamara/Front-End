@@ -28,6 +28,7 @@ import CollectionsImage from './../../assets/images/collections.svg'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { ViewProjectDialog } from '../ViewProjectDialog'
+import { AxiosAPI } from '../../AxiosConfig'
 
 export function ProjectDialog() {
   const {
@@ -91,13 +92,29 @@ export function ProjectDialog() {
   const checkedIcon = <CheckBoxIcon fontSize="small" />
 
   function handleSaveProject(data: ProjectFormData) {
-    // Se o projeto tiver id, a mensagem do toggleSuccessDialog será:
-    // "Edição concluída com sucesso!"
-
-    if (data) {
-      toggleAddProjectDialogIsOpen(false)
-      toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
+    const request = {
+      title: data.title,
+      tags: data.tagsList.map((tag) => tag.id),
+      url: data.link,
+      description: data.description,
+      file: thumbnail,
     }
+
+    console.log(request)
+    AxiosAPI.post('/project', request, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          toggleAddProjectDialogIsOpen(false)
+          toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
+          // Limpar dialog de cadastro
+          // Recarregar projetos
+        }
+      })
+      .catch((error) => console.error(error))
   }
 
   // useEffect para limpar o formulário quando a página for recarregada

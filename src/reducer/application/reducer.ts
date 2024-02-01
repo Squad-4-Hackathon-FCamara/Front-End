@@ -20,6 +20,7 @@ export interface ApplicationState {
   deleteDialogIsOpen: boolean
   projectIdToDelete: string
   userData: UserData
+  projectIdToView: string
 }
 
 // Inicia o reducer
@@ -68,6 +69,12 @@ export function applicationReducer(state: ApplicationState, action: any) {
           avatarUrl: action.payload.avatarUrl,
           projects: action.payload.projects,
         } as UserData
+      })
+
+    // Armazena id do projeto a ser visualizado
+    case ActionTypes.STORE_PROJECT_ID_TO_VIEW:
+      return produce(state, (draft) => {
+        draft.projectIdToView = action.payload.projectId
       })
 
     default:

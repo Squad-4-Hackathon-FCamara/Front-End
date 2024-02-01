@@ -45,7 +45,6 @@ export function Header() {
   async function getUserData() {
     await AxiosAPI.get('user/me/data')
       .then((response) => {
-        console.log('Response: ', response.data)
         storeUserData(
           response.data.id,
           response.data.firstName,

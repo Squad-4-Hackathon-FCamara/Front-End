@@ -30,6 +30,7 @@ import { ViewProjectDialog } from '../../components/ViewProjectDialog'
 import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
 import { DeleteDialog } from '../../components/DeleteDialog'
 import { AxiosAPI } from '../../AxiosConfig'
+import { format } from 'date-fns'
 
 export function MyPortfolio() {
   const {
@@ -38,6 +39,7 @@ export function MyPortfolio() {
     toggleViewProjectDialogIsOpen,
     toggleDeleteDialog,
     storeProjectIdToDelete,
+    storeProjectIdToView,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
@@ -59,7 +61,9 @@ export function MyPortfolio() {
     toggleAddProjectDialogIsOpen(true)
   }
 
-  function handleViewProject() {
+  function handleViewProject(projectId: string) {
+    console.log(projectId)
+    storeProjectIdToView(projectId)
     toggleViewProjectDialogIsOpen(true)
   }
 
@@ -73,6 +77,10 @@ export function MyPortfolio() {
     console.log('Delete: ', id)
     storeProjectIdToDelete(id)
     toggleDeleteDialog(true)
+  }
+
+  function formatDate(date: Date): string {
+    return format(date, 'MM/yy')
   }
 
   function filterByTags() {
@@ -91,7 +99,7 @@ export function MyPortfolio() {
       })
   }
   // Apenas para testes, eventualmente essas informações virão do back end
-  const tagsMockUp = [
+  const tags = [
     { id: '1', name: 'Front End' },
     { id: '2', name: 'Back End' },
     { id: '3', name: 'UX/UI' },
@@ -102,48 +110,48 @@ export function MyPortfolio() {
   ]
 
   // Apenas para testes, eventualmente essas informações virão do back end
-  const projectsList = [
-    {
-      id: '1',
-      title: 'Projeto 1',
-      createdAt: '01/24',
-      tags: [
-        { id: '1', name: 'Front End' },
-        { id: '2', name: 'Design' },
-      ],
-      thumbnail: 'https://source.unsplash.com/random',
-    },
-    {
-      id: '2',
-      title: 'Projeto 2',
-      createdAt: '01/24',
-      tags: [
-        { id: '1', name: 'Front End' },
-        { id: '2', name: 'Design' },
-      ],
-      thumbnail: '',
-    },
-    {
-      id: '3',
-      title: 'Projeto 3',
-      createdAt: '01/24',
-      tags: [
-        { id: '1', name: 'Front End' },
-        { id: '2', name: 'Design' },
-      ],
-      thumbnail: 'https://source.unsplash.com/random',
-    },
-    {
-      id: '4',
-      title: 'Projeto 4',
-      createdAt: '01/24',
-      tags: [
-        { id: '1', name: 'Front End' },
-        { id: '2', name: 'Design' },
-      ],
-      thumbnail: '',
-    },
-  ]
+  // const projectsList = [
+  //   {
+  //     id: '1',
+  //     title: 'Projeto 1',
+  //     createdAt: '01/24',
+  //     tags: [
+  //       { id: '1', name: 'Front End' },
+  //       { id: '2', name: 'Design' },
+  //     ],
+  //     thumbnail: 'https://source.unsplash.com/random',
+  //   },
+  //   {
+  //     id: '2',
+  //     title: 'Projeto 2',
+  //     createdAt: '01/24',
+  //     tags: [
+  //       { id: '1', name: 'Front End' },
+  //       { id: '2', name: 'Design' },
+  //     ],
+  //     thumbnail: '',
+  //   },
+  //   {
+  //     id: '3',
+  //     title: 'Projeto 3',
+  //     createdAt: '01/24',
+  //     tags: [
+  //       { id: '1', name: 'Front End' },
+  //       { id: '2', name: 'Design' },
+  //     ],
+  //     thumbnail: 'https://source.unsplash.com/random',
+  //   },
+  //   {
+  //     id: '4',
+  //     title: 'Projeto 4',
+  //     createdAt: '01/24',
+  //     tags: [
+  //       { id: '1', name: 'Front End' },
+  //       { id: '2', name: 'Design' },
+  //     ],
+  //     thumbnail: '',
+  //   },
+  // ]
 
   return (
     <PortfolioContainer>
@@ -171,7 +179,7 @@ export function MyPortfolio() {
       <SearchBar>
         <h6>Meus projetos</h6>
         <div onBlur={filterByTags}>
-          <BaseAutocomplete items={tagsMockUp} />
+          <BaseAutocomplete items={tags} />
         </div>
       </SearchBar>
 
@@ -211,9 +219,9 @@ export function MyPortfolio() {
               <Grid key={project.id} xs={12} sm={12} md={6} lg={4} xl={3}>
                 <ProjectCard
                   $thumbnailurl={
-                    project.thumbnail ? project.thumbnail : defaultThumbnail
+                    project.thumbnail ? project.thumbnail_url : defaultThumbnail
                   }
-                  onClick={handleViewProject}
+                  onClick={() => handleViewProject(project.id)}
                 >
                   <IconButton
                     id="project-menu-button"
@@ -263,16 +271,15 @@ export function MyPortfolio() {
                 </ProjectCard>
                 <ProjectInfo>
                   <div id="avatar">
-                    <img
-                      src={
-                        'https://api.dicebear.com/7.x/thumbs/svg?seed=Giov&scale=150&radius=50&eyes=variant1W16,variant2W10,variant2W12,variant2W14,variant2W16,variant3W10,variant3W12,variant3W14,variant3W16,variant4W10,variant4W12,variant4W14,variant4W16,variant5W10,variant5W12,variant5W14,variant5W16,variant6W10,variant6W12,variant6W14,variant6W16,variant7W10,variant7W12,variant7W14,variant7W16,variant8W10,variant8W12,variant8W14,variant8W16,variant9W10,variant9W12,variant9W14,variant9W16,variant1W12,variant1W10,variant1W14&eyesColor=FFEECC&mouthColor=FFEECC&shapeColor=FFAA66,FF5522,315FCE,183594'
-                      }
-                      alt=""
-                    />
+                    <img src={applicationState.userData.avatarUrl} alt="" />
                     <span>
-                      <h5>Giovani de Oliveira</h5>
+                      <h5>
+                        {applicationState.userData.firstName +
+                          ' ' +
+                          applicationState.userData.lastName}
+                      </h5>
                       {screenWidth > 768 ? <h5> • </h5> : <></>}
-                      <h5>01/24</h5>
+                      <h5>{formatDate(project.createdAt)}</h5>
                     </span>
                   </div>
                   {screenWidth > 768 ? (
