@@ -14,6 +14,7 @@ import {
   DialogContainer,
   FormWrapper,
   ThumbnailContainer,
+  ThumbnailPreview,
 } from './style'
 import {
   Autocomplete,
@@ -66,6 +67,7 @@ export function ProjectDialog() {
 
   // Mecanismo para fazer o upload de uma imagem
   const [thumbnail, setThumbnail] = useState<File | null>(null)
+  const [thumbnailPreview, setThumbnailPreview] = useState('')
 
   const imageInputRef = useRef<HTMLInputElement>(null)
   function handleUploadImage(event: MouseEvent<HTMLDivElement>) {
@@ -76,6 +78,7 @@ export function ProjectDialog() {
     const image = event.target?.files?.[0]
     if (image) {
       setThumbnail(image)
+      setThumbnailPreview(URL.createObjectURL(image ?? ({} as File)))
     }
   }
 
@@ -152,12 +155,19 @@ export function ProjectDialog() {
           <FormWrapper>
             <div>
               <p>Selecione o conteúdo que você deseja fazer upload</p>
-              <ThumbnailContainer onClick={handleUploadImage}>
-                <img src={CollectionsImage} alt="" />
-                <div>
-                  <p>Compartilhe seu talento com milhares de pessoas</p>
-                </div>
-              </ThumbnailContainer>
+              {!thumbnailPreview ? (
+                <ThumbnailContainer onClick={handleUploadImage}>
+                  <img src={CollectionsImage} alt="" />
+                  <div>
+                    <p>Compartilhe seu talento com milhares de pessoas</p>
+                  </div>
+                </ThumbnailContainer>
+              ) : (
+                <ThumbnailPreview
+                  url={thumbnailPreview}
+                  onClick={handleUploadImage}
+                />
+              )}
               <input
                 {...register('thumbnail')}
                 id="image-input"
