@@ -110,6 +110,10 @@ export function Login() {
     setIsSnackbarOpen(false)
   }
 
+  function handleLoginGoogle(){
+  window.open('http://localhost:3001/auth/login/google', '_self')
+}
+
   const handleShowPassword = () => setShowPassword((show) => !show)
 
   return (
@@ -140,7 +144,7 @@ export function Login() {
 
         <h1>Entre no Orange Portfólio</h1>
 
-        <LoginWithGoogle type="button">
+        <LoginWithGoogle type="button" onClick={handleLoginGoogle}>
           <img src={GoogleLogo}></img>
           Entrar com Google
         </LoginWithGoogle>
