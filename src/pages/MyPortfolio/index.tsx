@@ -219,7 +219,7 @@ export function MyPortfolio() {
               <Grid key={project.id} xs={12} sm={12} md={6} lg={4} xl={3}>
                 <ProjectCard
                   $thumbnailurl={
-                    project.thumbnail ? project.thumbnail_url : defaultThumbnail
+                    project.thumbnail_url ? project.thumbnail_url : defaultThumbnail
                   }
                   onClick={() => handleViewProject(project.id)}
                 >
@@ -284,16 +284,16 @@ export function MyPortfolio() {
                   </div>
                   {screenWidth > 768 ? (
                     <div id="tag-chips">
-                      {project.tags.map((tag) => {
-                        return <Chip key={tag.id} label={tag.name} />
-                      })}
+                      {/* {project.tags.map((tag) => {
+                        return <Chip key={tag.id} label={tag.tagName} />
+                      })} */}
                     </div>
                   ) : (
                     <div id="tag-chips">
-                      <Chip
+                      {/* <Chip
                         key={project.tags[0].id}
-                        label={project.tags[0].name}
-                      />
+                        label={project.tags[0].tagName}
+                      /> */}
                     </div>
                   )}
                 </ProjectInfo>
