@@ -6,6 +6,8 @@ import {
   IconButton,
   MenuItem,
   Divider,
+  ListItemIcon,
+  ListItemText,
 } from '@mui/material'
 import OrangeLogo from './../../assets/images/orange-logo.svg'
 import { Logout, Menu, Notifications } from '@mui/icons-material'
@@ -20,7 +22,9 @@ export function Header() {
   const screenWidth = useScreenWidth()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [anchorLogout, setAnchorLogout] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const logoutOpen = Boolean(anchorLogout)
 
   const handleOpenMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -28,6 +32,14 @@ export function Header() {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleOpenLogout = (event: MouseEvent<HTMLImageElement>) => {
+    setAnchorLogout(event.currentTarget)
+  }
+
+  const handleCloseLogout = () => {
+    setAnchorLogout(null)
   }
 
   async function getUserData() {
@@ -51,6 +63,17 @@ export function Header() {
   useEffect(() => {
     getUserData()
   }, [])
+
+  async function handleLogout() {
+    await AxiosAPI.post('auth/logout')
+      .then(() => {
+        navigate('/login')
+        storeUserData('', '', '', '', [])
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
 
   return (
     <HeaderContainer>
@@ -122,15 +145,19 @@ export function Header() {
 
               <MenuItem
                 onClick={() => {
-                  handleClose()
+                  handleLogout()
                 }}
               >
-                <p>Sair</p>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Sair</ListItemText>
               </MenuItem>
             </MenuComponent>
           </>
         )}
         <img src={OrangeLogo} alt="Logo" />
+
         {screenWidth >= 768 && (
           <nav>
             <a href="/">Meus projetos</a>
@@ -140,7 +167,59 @@ export function Header() {
       </NavigationContainer>
 
       <ProfileContainer>
-        <img src={applicationState.userData.avatarUrl} alt="Avatar" />
+        <img
+          src={applicationState.userData.avatarUrl}
+          alt="Avatar"
+          aria-label=""
+          aria-controls={logoutOpen ? 'logout-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={logoutOpen ? 'true' : undefined}
+          onClick={handleOpenLogout}
+        />
+        {screenWidth > 768 ? (
+          <MenuComponent
+            id="logout-menu"
+            anchorEl={anchorLogout}
+            open={logoutOpen}
+            onClose={handleCloseLogout}
+            MenuListProps={{
+              'aria-labelledby': 'logout-button',
+            }}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            sx={{ top: '50' }}
+          >
+            <MenuItem
+              onClick={() => {
+                handleClose()
+              }}
+            >
+              <p>Configurações</p>
+            </MenuItem>
+
+            <Divider />
+            <MenuItem
+              onClick={() => {
+                handleLogout()
+              }}
+              sx={{ width: '138px' }}
+            >
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Sair</ListItemText>
+            </MenuItem>
+          </MenuComponent>
+        ) : (
+          <></>
+        )}
+
         <IconButton aria-label="notifications">
           <Notifications id="notifications-icon" />
         </IconButton>
