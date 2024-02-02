@@ -135,7 +135,9 @@ export function ViewProjectDialog() {
             <br />
             <br />
             <p>Download</p>
-            <a href={projectData.url}>{projectData.url}</a>
+            <a href={projectData.url} target="blank">
+              {projectData.url}
+            </a>
           </DialogContent>
         </DialogContentWrapper>
       </DialogContainer>
