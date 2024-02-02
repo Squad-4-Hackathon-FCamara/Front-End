@@ -38,7 +38,7 @@ export function MyPortfolio() {
     toggleAddProjectDialogIsOpen,
     toggleViewProjectDialogIsOpen,
     toggleDeleteDialog,
-    storeProjectIdToDelete,
+    storeProjectIdToHandle,
     storeProjectIdToView,
   } = useContext(ApplicationContext)
 
@@ -48,8 +48,13 @@ export function MyPortfolio() {
 
   const isMenuOpen = Boolean(anchorEl)
 
-  function handleOpenProjectMenu(event: MouseEvent<HTMLButtonElement>) {
+  function handleOpenProjectMenu(
+    event: MouseEvent<HTMLButtonElement>,
+    projectId: string,
+  ) {
+    console.log(projectId)
     event.stopPropagation()
+    storeProjectIdToHandle(projectId)
     setAnchorEl(event.currentTarget)
   }
 
@@ -62,18 +67,18 @@ export function MyPortfolio() {
   }
 
   function handleViewProject(projectId: string) {
+    console.log(projectId)
     storeProjectIdToView(projectId)
     toggleViewProjectDialogIsOpen(true)
   }
 
-  function handleEdit(event: MouseEvent<HTMLElement>) {
-    event.stopPropagation()
+  function handleEdit() {
+    console.log(applicationState.projectIdToHandle)
     toggleAddProjectDialogIsOpen(true)
   }
 
-  function handleDelete(event: MouseEvent<HTMLElement>, id: string) {
-    event.stopPropagation()
-    storeProjectIdToDelete(id)
+  function handleDelete() {
+    console.log(applicationState.projectIdToHandle)
     toggleDeleteDialog(true)
   }
 
@@ -184,7 +189,7 @@ export function MyPortfolio() {
                     aria-controls={isMenuOpen ? 'project-menu' : undefined}
                     aria-haspopup="true"
                     aria-expanded={isMenuOpen ? 'true' : undefined}
-                    onClick={handleOpenProjectMenu}
+                    onClick={(e) => handleOpenProjectMenu(e, project.id)}
                   >
                     <Edit
                       sx={{
@@ -214,11 +219,14 @@ export function MyPortfolio() {
                       horizontal: 'right',
                     }}
                   >
-                    <MenuItem onClick={handleEdit} sx={{ width: '208px' }}>
+                    <MenuItem
+                      onClick={() => handleEdit()}
+                      sx={{ width: '208px' }}
+                    >
                       Editar
                     </MenuItem>
                     <MenuItem
-                      onClick={(e) => handleDelete(e, project.id)}
+                      onClick={() => handleDelete()}
                       sx={{ width: '208px' }}
                     >
                       Excluir
@@ -250,7 +258,7 @@ export function MyPortfolio() {
                         )
                       })}
                     </div>
-                  ) : (
+                  ) : project.tags.length > 0 ? (
                     <div id="tag-chips">
                       <Chip
                         key={project.tags[0].id}
@@ -258,6 +266,8 @@ export function MyPortfolio() {
                         onClick={() => {}}
                       />
                     </div>
+                  ) : (
+                    <></>
                   )}
                 </ProjectInfo>
               </Grid>

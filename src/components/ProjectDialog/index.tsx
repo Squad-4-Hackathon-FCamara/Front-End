@@ -30,6 +30,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { ViewProjectDialog } from '../ViewProjectDialog'
 import { AxiosAPI } from '../../AxiosConfig'
+import { useUserData } from '../../hooks/userDataUtils'
 
 export function ProjectDialog() {
   const {
@@ -94,6 +95,10 @@ export function ProjectDialog() {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
   const checkedIcon = <CheckBoxIcon fontSize="small" />
 
+  function useUserDataHook() {
+    useUserData()
+  }
+
   function handleSaveProject(data: ProjectFormData) {
     const request = {
       title: data.title,
@@ -110,6 +115,7 @@ export function ProjectDialog() {
     })
       .then((response) => {
         if (response.status === 201) {
+          useUserDataHook
           toggleAddProjectDialogIsOpen(false)
           toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
           // Limpar dialog de cadastro

@@ -14,7 +14,7 @@ import {
   toggleDeleteDialogAction,
   toggleSuccessDialogAction,
   toggleViewProjectDialogAction,
-  storeProjectIdToDeleteAction,
+  storeProjectIdToHandleAction,
   storeUserDataAction,
   storeProjectIdToViewAction,
   storeTagsAction,
@@ -27,7 +27,7 @@ interface ApplicationContextType {
   toggleViewProjectDialogIsOpen: (isOpen: boolean) => void
   toggleSuccessDialog: (isOpen: boolean, message: string) => void
   toggleDeleteDialog: (isOpen: boolean) => void
-  storeProjectIdToDelete: (projectId: string) => void
+  storeProjectIdToHandle: (projectId: string) => void
   storeUserData: (
     id: string,
     firstName: string,
@@ -68,7 +68,7 @@ export function ApplicationContextProvider({
     successDialogIsOpen: false,
     deleteDialogIsOpen: false,
     successDialogMessage: '',
-    projectIdToDelete: '',
+    projectIdToHandle: '',
     userData: {
       id: '',
       firstName: '',
@@ -126,8 +126,8 @@ export function ApplicationContextProvider({
     dispatch(toggleDeleteDialogAction(isOpen))
   }
 
-  function storeProjectIdToDelete(projectId: string) {
-    dispatch(storeProjectIdToDeleteAction(projectId))
+  function storeProjectIdToHandle(projectId: string) {
+    dispatch(storeProjectIdToHandleAction(projectId))
   }
 
   function storeUserData(
@@ -156,7 +156,7 @@ export function ApplicationContextProvider({
         toggleViewProjectDialogIsOpen,
         toggleDeleteDialog,
         toggleSuccessDialog,
-        storeProjectIdToDelete,
+        storeProjectIdToHandle,
         storeUserData,
         storeProjectIdToView,
         storeTags,

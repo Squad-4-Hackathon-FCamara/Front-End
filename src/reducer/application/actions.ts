@@ -7,7 +7,7 @@ export enum ActionTypes {
   TOGGLE_VIEW_PROJECT_DIALOG = 'TOGGLE_VIEW_PROJECT_DIALOG',
   TOGGLE_SUCCESS_DIALOG = 'TOGGLE_SUCCESS_DIALOG',
   TOGGLE_DELETE_DIALOG = 'TOGGLE_DELETE_DIALOG',
-  STORE_PROJECT_ID_TO_DELETE = 'STORE_PROJECT_ID_TO_DELETE',
+  STORE_PROJECT_ID_TO_HANDLE = 'STORE_PROJECT_ID_TO_HANDLE',
   STORE_USER_DATA = 'STORE_USER_DATA',
   STORE_PROJECT_ID_TO_VIEW = 'STORE_PROJECT_ID_TO_VIEW',
   STORE_TAGS = 'STORE_TAGS',
@@ -56,10 +56,10 @@ export function toggleDeleteDialogAction(isOpen: boolean) {
   }
 }
 
-// Armazena o ID do projeto que será excluído
-export function storeProjectIdToDeleteAction(projectId: string) {
+// Armazena o ID do projeto que será editado/excluído
+export function storeProjectIdToHandleAction(projectId: string) {
   return {
-    type: ActionTypes.STORE_PROJECT_ID_TO_DELETE,
+    type: ActionTypes.STORE_PROJECT_ID_TO_HANDLE,
     payload: {
       projectId,
     },

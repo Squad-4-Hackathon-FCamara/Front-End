@@ -23,7 +23,7 @@ export interface ApplicationState {
   successDialogIsOpen: boolean
   successDialogMessage: string
   deleteDialogIsOpen: boolean
-  projectIdToDelete: string
+  projectIdToHandle: string
   userData: UserData
   projectIdToView: string
   tags: Tag[]
@@ -60,9 +60,9 @@ export function applicationReducer(state: ApplicationState, action: any) {
       })
 
     // Armazena id do projeto a ser excluído
-    case ActionTypes.STORE_PROJECT_ID_TO_DELETE:
+    case ActionTypes.STORE_PROJECT_ID_TO_HANDLE:
       return produce(state, (draft) => {
-        draft.projectIdToDelete = action.payload.projectId
+        draft.projectIdToHandle = action.payload.projectId
       })
 
     // Armazena dados do usuário logado

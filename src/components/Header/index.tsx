@@ -14,6 +14,7 @@ import { Logout, Menu, Notifications } from '@mui/icons-material'
 import { useScreenWidth } from '../../hooks/useScreenWidth'
 import { AxiosAPI } from '../../AxiosConfig'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
+import { useUserData } from '../../hooks/userDataUtils'
 
 export function Header() {
   const { applicationState, storeUserData, storeTags } =
@@ -55,23 +56,23 @@ export function Header() {
   }
 
   // Obtem os dados do usuário logado
-  async function getUserData() {
-    if (isUserLoggedIn()) {
-      await AxiosAPI.get('user/me/data')
-        .then((response) => {
-          storeUserData(
-            response.data.id,
-            response.data.firstName,
-            response.data.lastName,
-            response.data.avatar_url,
-            response.data.projects,
-          )
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    }
-  }
+  // async function getUserData() {
+  //   if (isUserLoggedIn()) {
+  //     await AxiosAPI.get('user/me/data')
+  //       .then((response) => {
+  //         storeUserData(
+  //           response.data.id,
+  //           response.data.firstName,
+  //           response.data.lastName,
+  //           response.data.avatar_url,
+  //           response.data.projects,
+  //         )
+  //       })
+  //       .catch((error) => {
+  //         console.error(error)
+  //       })
+  //   }
+  // }
 
   // Obtem as tags
   async function getTags() {
@@ -87,8 +88,10 @@ export function Header() {
   }
 
   // Busca dados do usuário logado
+  useUserData()
+
   useEffect(() => {
-    getUserData()
+    // getUserData()
     getTags()
   }, [])
 

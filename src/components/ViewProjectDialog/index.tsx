@@ -13,12 +13,16 @@ import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
 import { format } from 'date-fns'
 
 export function ViewProjectDialog() {
-  const { applicationState, toggleViewProjectDialogIsOpen } =
-    useContext(ApplicationContext)
+  const {
+    applicationState,
+    toggleViewProjectDialogIsOpen,
+    storeProjectIdToView,
+  } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
 
   function handleCloseDialog() {
+    storeProjectIdToView('')
     toggleViewProjectDialogIsOpen(false)
   }
 
@@ -53,7 +57,6 @@ export function ViewProjectDialog() {
             (obj: any) => obj.id === applicationState.projectIdToView,
           )
           setProjectData(project)
-          console.log('AQUI: ', project)
         }
       } catch (error) {
         console.error(error)

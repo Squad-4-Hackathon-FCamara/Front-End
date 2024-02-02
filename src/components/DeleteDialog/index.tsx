@@ -2,18 +2,36 @@ import { Dialog, Button } from '@mui/material'
 import { useContext } from 'react'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { DialogWrapper } from './style'
+import { AxiosAPI } from '../../AxiosConfig'
+import { useUserData } from '../../hooks/userDataUtils'
 
 export function DeleteDialog() {
-  const { applicationState, toggleDeleteDialog, toggleSuccessDialog } =
-    useContext(ApplicationContext)
+  const {
+    applicationState,
+    toggleDeleteDialog,
+    toggleSuccessDialog,
+    storeProjectIdToHandle,
+  } = useContext(ApplicationContext)
 
   function handleCloseDialog() {
     toggleDeleteDialog(false)
   }
 
+  function useUserDataHook() {
+    useUserData()
+  }
+
   function handleDelete() {
-    toggleSuccessDialog(true, 'Projeto deletado com sucesso!')
-    toggleDeleteDialog(false)
+    AxiosAPI.delete(`/project/${applicationState.projectIdToHandle}`)
+      .then((response) => {
+        useUserDataHook
+        storeProjectIdToHandle('')
+        toggleSuccessDialog(true, response.data.message)
+        toggleDeleteDialog(false)
+      })
+      .catch((error) => {
+        console.error('Erro: ', error)
+      })
   }
 
   return (
