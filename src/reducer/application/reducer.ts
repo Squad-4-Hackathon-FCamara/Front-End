@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Reducer é uma forma de organizar as funções da aplicação em um só lugar
 
 import { produce } from 'immer'

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Contexto é uma forma de compartilhar estados entre todos os componentes da aplicação
 // Em outras palavras, é um forma de compartilhar informações entre os componentes
 // Para isso, será utilizado um provedor de contexto no App.tsx

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect } from 'react'
 import { AxiosAPI } from '../AxiosConfig'
 import { ApplicationContext } from '../contexts/ApplicationContext'

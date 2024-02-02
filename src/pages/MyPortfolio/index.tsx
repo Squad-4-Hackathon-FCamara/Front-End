@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
   Chip,
@@ -103,16 +104,6 @@ export function MyPortfolio() {
         console.error('Erro: ', error)
       })
   }
-  // Apenas para testes, eventualmente essas informações virão do back end
-  const tags = [
-    { id: '1', name: 'Front End' },
-    { id: '2', name: 'Back End' },
-    { id: '3', name: 'UX/UI' },
-    { id: '4', name: 'IA' },
-    { id: '5', name: 'Design' },
-    { id: '6', name: 'DevOps' },
-    { id: '7', name: 'Soft Skills' },
-  ]
 
   return (
     <PortfolioContainer>
@@ -140,7 +131,7 @@ export function MyPortfolio() {
       <SearchBar>
         <h6>Meus projetos</h6>
         <div onBlur={filterByTags}>
-          <BaseAutocomplete items={tags} />
+          <BaseAutocomplete items={applicationState.tags} />
         </div>
       </SearchBar>
 

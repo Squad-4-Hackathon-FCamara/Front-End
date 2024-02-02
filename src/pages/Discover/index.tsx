@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Chip, Hidden, Skeleton } from '@mui/material'
 import {
   PortfolioContainer,

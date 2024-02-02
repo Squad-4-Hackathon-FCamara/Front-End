@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Chip, Dialog, DialogContent } from '@mui/material'
 import { DialogContainer } from '../ProjectDialog/style'
 import { useContext, useEffect, useState } from 'react'

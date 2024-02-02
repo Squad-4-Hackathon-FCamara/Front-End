@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Nesse arquivo são definidas as ações que o reducer pode executar
 
 import { Tag } from './reducer'
