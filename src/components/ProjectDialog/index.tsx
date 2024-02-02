@@ -210,7 +210,7 @@ export function ProjectDialog() {
                 }
                 sx={{ width: screenWidth < 960 ? '100%' : '413px' }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Buscar tags" placeholder="" />
+                  <TextField {...params} label="Tags" placeholder="" />
                 )}
                 renderOption={(props, option, { selected }) => (
                   <li {...props}>

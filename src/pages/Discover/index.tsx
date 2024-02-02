@@ -165,13 +165,15 @@ export function Discover() {
                         return <Chip key={tag.id} label={tag.tagName} />
                       })}
                     </div>
-                  ) : (
+                  ) : project.tags.length > 0 ? (
                     <div id="tag-chips">
                       <Chip
                         key={project.tags[0].id}
                         label={project.tags[0].tagName}
                       />
                     </div>
+                  ) : (
+                    <></>
                   )}
                 </ProjectInfo>
               </Grid>
