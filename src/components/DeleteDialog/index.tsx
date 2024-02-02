@@ -3,7 +3,6 @@ import { useContext } from 'react'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { DialogWrapper } from './style'
 import { AxiosAPI } from '../../AxiosConfig'
-import { useUserData } from '../../hooks/userDataUtils'
 
 export function DeleteDialog() {
   const {
