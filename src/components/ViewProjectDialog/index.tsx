@@ -99,7 +99,7 @@ export function ViewProjectDialog() {
                   alt="Avatar"
                 />
                 <div id="user-name">
-                  <h5>
+                  <h5 id="name-tag">
                     {applicationState.userData.firstName +
                       ' ' +
                       applicationState.userData.lastName}

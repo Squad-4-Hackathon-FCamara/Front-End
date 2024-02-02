@@ -88,6 +88,15 @@ export function ProjectDialog() {
     toggleViewProjectDialogIsOpen(true)
   }
 
+  function cleanForm() {
+    setValue('title', '')
+    setValue('tagsList', [])
+    setValue('link', '')
+    setValue('description', '')
+    setValue('thumbnail', null)
+    setThumbnailPreview('')
+  }
+
   // Fecha o dialog
   function handleClose() {
     toggleAddProjectDialogIsOpen(false)
@@ -133,6 +142,7 @@ export function ProjectDialog() {
           updateUserData()
           toggleAddProjectDialogIsOpen(false)
           toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
+          cleanForm()
           // Limpar dialog de cadastro
           // Recarregar projetos
         }
@@ -146,7 +156,7 @@ export function ProjectDialog() {
       toggleAddProjectDialogIsOpen(false)
       toggleViewProjectDialogIsOpen(false)
       toggleSuccessDialog(false, '')
-      // cleanProjectDialog()
+      cleanForm()
     }
 
     window.addEventListener('beforeunload', handleBeforeUnload)

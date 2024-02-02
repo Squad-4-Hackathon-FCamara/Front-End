@@ -230,7 +230,7 @@ export function MyPortfolio() {
                   <div id="avatar">
                     <img src={applicationState.userData.avatarUrl} alt="" />
                     <span>
-                      <h5>
+                      <h5 id="name-tag">
                         {applicationState.userData.firstName +
                           ' ' +
                           applicationState.userData.lastName}
@@ -241,7 +241,7 @@ export function MyPortfolio() {
                   </div>
                   {screenWidth > 768 ? (
                     <div id="tag-chips">
-                      {project.tags.map((tag: any) => {
+                      {project.tags.slice(0, 2).map((tag: any) => {
                         return (
                           <Chip
                             key={tag.id}

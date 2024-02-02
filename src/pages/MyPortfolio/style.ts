@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const PortfolioContainer = styled.main`
   display: block;
@@ -7,7 +7,7 @@ export const PortfolioContainer = styled.main`
   @media (max-width: 768px) {
     padding: 0 24px;
   }
-`;
+`
 
 export const ProfileCard = styled.section`
   display: flex;
@@ -22,9 +22,9 @@ export const ProfileCard = styled.section`
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 200px;
-    color: ${(props) => props.theme["color-neutral-120"]};
+    color: ${(props) => props.theme['color-neutral-120']};
 
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 24px;
     font-weight: 400;
     line-height: 24px;
@@ -32,10 +32,10 @@ export const ProfileCard = styled.section`
 
   h6 {
     margin: 16px 0 24px 0;
-    color: ${(props) => props.theme["color-neutral-130"]};
+    color: ${(props) => props.theme['color-neutral-130']};
     opacity: 50%;
 
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 16px;
@@ -54,7 +54,7 @@ export const ProfileCard = styled.section`
   }
 
   #add-project-button {
-    background: ${(props) => props.theme["color-secondary-100"]};
+    background: ${(props) => props.theme['color-secondary-100']};
     width: 200px;
     height: 42px;
     transition: background-color 0.2s;
@@ -62,7 +62,7 @@ export const ProfileCard = styled.section`
 
   #add-project-button p {
     color: ${(props) => props.theme.white};
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 15px;
     font-weight: 500;
     line-height: 26px;
@@ -79,7 +79,7 @@ export const ProfileCard = styled.section`
   }
 
   #add-project-button:hover {
-    background: ${(props) => props.theme["color-secondary-110"]};
+    background: ${(props) => props.theme['color-secondary-110']};
   }
 
   @media (max-width: 768px) {
@@ -101,7 +101,7 @@ export const ProfileCard = styled.section`
       margin: 8px 0;
     }
   }
-`;
+`
 
 export const SearchBar = styled.section`
   display: flex;
@@ -109,22 +109,22 @@ export const SearchBar = styled.section`
   gap: 16px;
 
   h6 {
-    color: ${(props) => props.theme["color-neutral-130"]};
+    color: ${(props) => props.theme['color-neutral-130']};
     opacity: 0.6;
 
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.15px;
   }
-`;
+`
 
 export const ProjectsList = styled.section`
   margin-top: 40px;
   gap: 24px;
-`;
+`
 
 export const AddProjectCard = styled.section`
   display: flex;
@@ -137,7 +137,7 @@ export const AddProjectCard = styled.section`
   width: 100%;
   height: 258px;
   border-radius: 4px;
-  background-color: ${(props) => props.theme["color-neutral-70"]};
+  background-color: ${(props) => props.theme['color-neutral-70']};
 
   img {
     width: 46px;
@@ -146,9 +146,9 @@ export const AddProjectCard = styled.section`
   }
 
   h6 {
-    color: ${(props) => props.theme["color-neutral-120"]};
+    color: ${(props) => props.theme['color-neutral-120']};
 
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 16px;
@@ -158,9 +158,9 @@ export const AddProjectCard = styled.section`
   }
 
   p {
-    color: ${(props) => props.theme["color-neutral-120"]};
+    color: ${(props) => props.theme['color-neutral-120']};
 
-    font-family: "Roboto";
+    font-family: 'Roboto';
     font-size: 14px;
     font-weight: 400;
     line-height: 14px;
@@ -172,10 +172,10 @@ export const AddProjectCard = styled.section`
     width: 100%;
     padding: 68px 21px;
   }
-`;
+`
 
 interface ProjectCardProps {
-  $thumbnailurl: string;
+  $thumbnailurl: string
 }
 
 export const ProjectCard = styled.div<ProjectCardProps>`
@@ -187,7 +187,7 @@ export const ProjectCard = styled.div<ProjectCardProps>`
   width: 100%;
   height: 258px;
   border-radius: 4px;
-  background-color: ${(props) => props.theme["color-neutral-70"]};
+  background-color: ${(props) => props.theme['color-neutral-70']};
   background-image: url(${(props) => props.$thumbnailurl});
   background-repeat: no-repeat;
   background-position: center;
@@ -195,16 +195,16 @@ export const ProjectCard = styled.div<ProjectCardProps>`
   padding: 16px;
 
   #project-menu-button {
-    background: ${(props) => props.theme["color-secondary-70"]};
+    background: ${(props) => props.theme['color-secondary-70']};
     width: 28px;
     height: 28px;
     transition: background-color 0.2;
   }
 
   #project-menu-button:hover {
-    background: ${(props) => props.theme["color-secondary-80"]};
+    background: ${(props) => props.theme['color-secondary-80']};
   }
-`;
+`
 
 export const ProjectInfo = styled.div`
   display: flex;
@@ -232,14 +232,21 @@ export const ProjectInfo = styled.div`
   }
 
   h5 {
-    color: ${(props) => props.theme["color-neutral-110"]};
+    color: ${(props) => props.theme['color-neutral-110']};
     text-align: center;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 16px;
     letter-spacing: 0.15px;
 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #name-tag {
+    max-width: 150px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -264,4 +271,4 @@ export const ProjectInfo = styled.div`
       gap: 4px;
     }
   }
-`;
+`

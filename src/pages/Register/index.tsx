@@ -233,6 +233,8 @@ export function Register() {
           >
             Cadastrar
           </Button>
+
+          <a href="/login">Voltar para Login</a>
         </form>
       </RegisterContainer>
     </MainWrapper>

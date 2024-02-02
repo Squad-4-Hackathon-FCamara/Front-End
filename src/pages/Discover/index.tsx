@@ -154,14 +154,16 @@ export function Discover() {
                       alt=""
                     />
                     <span>
-                      <h5>Giovani de Oliveira</h5>
+                      <h5 id="name-tag">
+                        {project.user.firstName + ' ' + project.user.lastName}
+                      </h5>
                       {screenWidth > 768 ? <h5> • </h5> : <></>}
                       <h5>01/24</h5>
                     </span>
                   </div>
                   {screenWidth > 768 ? (
                     <div id="tag-chips">
-                      {project.tags.map((tag) => {
+                      {project.tags.slice(0, 2).map((tag) => {
                         return <Chip key={tag.id} label={tag.tagName} />
                       })}
                     </div>

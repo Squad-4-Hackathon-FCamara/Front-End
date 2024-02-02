@@ -120,6 +120,13 @@ export const DialogHeader = styled.div`
     margin: 0 0 8px 0;
   }
 
+  #name-tag {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   @media (max-width: 1100px) {
     flex-direction: column-reverse;
     top: 0;

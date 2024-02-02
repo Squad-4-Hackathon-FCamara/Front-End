@@ -100,7 +100,7 @@ interface ThumbnailPreviewProps {
 export const ThumbnailPreview = styled.div<ThumbnailPreviewProps>`
   background-image: url(${(props) => props.$url});
   background-size: cover;
-  background-repeat: none;
+  background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
 
@@ -108,6 +108,10 @@ export const ThumbnailPreview = styled.div<ThumbnailPreviewProps>`
   height: 309px;
   border-radius: 4px;
   background-color: ${(props) => props.theme['color-neutral-70']};
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 
 export const ActionsWrapper = styled.div`

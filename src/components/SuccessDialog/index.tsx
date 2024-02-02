@@ -1,15 +1,16 @@
-import { Dialog, Button } from "@mui/material";
-import { useContext } from "react";
-import { ApplicationContext } from "../../contexts/ApplicationContext";
-import { DialogWrapper } from "./style";
-import SuccessGreen from "./../../assets/images/success-green.svg";
+import { Dialog, Button } from '@mui/material'
+import { useContext } from 'react'
+import { ApplicationContext } from '../../contexts/ApplicationContext'
+import { DialogWrapper } from './style'
+import SuccessGreen from './../../assets/images/success-green.svg'
+import { CheckCircleRounded } from '@mui/icons-material'
 
 export function SuccessDialog() {
   const { applicationState, toggleSuccessDialog } =
-    useContext(ApplicationContext);
+    useContext(ApplicationContext)
 
   function handleCloseDialog() {
-    toggleSuccessDialog(false, "");
+    toggleSuccessDialog(false, '')
   }
 
   return (
@@ -17,7 +18,8 @@ export function SuccessDialog() {
       <DialogWrapper>
         <h1>{applicationState.successDialogMessage}</h1>
 
-        <img src={SuccessGreen} alt="Sucesso" />
+        {/* <img src={SuccessGreen} alt="Sucesso" /> */}
+        <CheckCircleRounded id="check-icon" />
 
         <Button
           id="close-button"
@@ -28,5 +30,5 @@ export function SuccessDialog() {
         </Button>
       </DialogWrapper>
     </Dialog>
-  );
+  )
 }
