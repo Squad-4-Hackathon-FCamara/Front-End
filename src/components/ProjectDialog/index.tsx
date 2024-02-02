@@ -30,7 +30,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { ViewProjectDialog } from '../ViewProjectDialog'
 import { AxiosAPI } from '../../AxiosConfig'
-import { useUserData } from '../../hooks/userDataUtils'
 
 export function ProjectDialog() {
   const {
@@ -38,6 +37,7 @@ export function ProjectDialog() {
     toggleViewProjectDialogIsOpen,
     toggleAddProjectDialogIsOpen,
     toggleSuccessDialog,
+    storeUserData,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
@@ -95,8 +95,22 @@ export function ProjectDialog() {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
   const checkedIcon = <CheckBoxIcon fontSize="small" />
 
-  function useUserDataHook() {
-    useUserData()
+  // Quando eu tento fazer essa busca usando um hook customizado, eu tenho um loop infinito
+  // Buscar outra forma de reaproveitar essa função em outros componentes
+  const updateUserData = async () => {
+    await AxiosAPI.get('user/me/data')
+      .then((response) => {
+        storeUserData(
+          response.data.id,
+          response.data.firstName,
+          response.data.lastName,
+          response.data.avatar_url,
+          response.data.projects,
+        )
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   function handleSaveProject(data: ProjectFormData) {
@@ -115,7 +129,7 @@ export function ProjectDialog() {
     })
       .then((response) => {
         if (response.status === 201) {
-          useUserDataHook
+          updateUserData()
           toggleAddProjectDialogIsOpen(false)
           toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
           // Limpar dialog de cadastro

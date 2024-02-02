@@ -11,20 +11,35 @@ export function DeleteDialog() {
     toggleDeleteDialog,
     toggleSuccessDialog,
     storeProjectIdToHandle,
+    storeUserData,
   } = useContext(ApplicationContext)
 
   function handleCloseDialog() {
     toggleDeleteDialog(false)
   }
 
-  function useUserDataHook() {
-    useUserData()
+  // Quando eu tento fazer essa busca usando um hook customizado, eu tenho um loop infinito
+  // Buscar outra forma de reaproveitar essa função em outros componentes
+  const updateUserData = async () => {
+    await AxiosAPI.get('user/me/data')
+      .then((response) => {
+        storeUserData(
+          response.data.id,
+          response.data.firstName,
+          response.data.lastName,
+          response.data.avatar_url,
+          response.data.projects,
+        )
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   function handleDelete() {
     AxiosAPI.delete(`/project/${applicationState.projectIdToHandle}`)
       .then((response) => {
-        useUserDataHook
+        updateUserData()
         storeProjectIdToHandle('')
         toggleSuccessDialog(true, response.data.message)
         toggleDeleteDialog(false)

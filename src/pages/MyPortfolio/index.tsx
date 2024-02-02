@@ -74,11 +74,13 @@ export function MyPortfolio() {
 
   function handleEdit() {
     console.log(applicationState.projectIdToHandle)
+    setAnchorEl(null)
     toggleAddProjectDialogIsOpen(true)
   }
 
   function handleDelete() {
     console.log(applicationState.projectIdToHandle)
+    setAnchorEl(null)
     toggleDeleteDialog(true)
   }
 

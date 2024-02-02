@@ -36,26 +36,5 @@ export function useUserData() {
     }
 
     getData()
-  }, [storeUserData])
+  }, [])
 }
-
-// // Obtem os dados do usuário logado
-// export async function GetUserData() {
-//   const { storeUserData } = useContext(ApplicationContext)
-
-//   if (isUserLoggedIn()) {
-//     await AxiosAPI.get('user/me/data')
-//       .then((response) => {
-//         storeUserData(
-//           response.data.id,
-//           response.data.firstName,
-//           response.data.lastName,
-//           response.data.avatar_url,
-//           response.data.projects,
-//         )
-//       })
-//       .catch((error) => {
-//         console.error(error)
-//       })
-//   }
-// }
