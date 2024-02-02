@@ -107,7 +107,13 @@ export function ViewProjectDialog() {
               <div id="tag-chips">
                 {projectData.tags.map((tag: any, index) => {
                   if (index < 2) {
-                    return <Chip key={tag.id} label={tag.tagName} />
+                    return (
+                      <Chip
+                        key={tag.id}
+                        label={tag.tagName}
+                        onClick={() => {}}
+                      />
+                    )
                   }
                 })}
               </div>

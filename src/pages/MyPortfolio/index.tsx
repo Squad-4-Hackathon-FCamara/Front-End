@@ -240,16 +240,23 @@ export function MyPortfolio() {
                   </div>
                   {screenWidth > 768 ? (
                     <div id="tag-chips">
-                      {/* {project.tags.map((tag) => {
-                        return <Chip key={tag.id} label={tag.tagName} />
-                      })} */}
+                      {project.tags.map((tag: any) => {
+                        return (
+                          <Chip
+                            key={tag.id}
+                            label={tag.tagName}
+                            onClick={() => {}}
+                          />
+                        )
+                      })}
                     </div>
                   ) : (
                     <div id="tag-chips">
-                      {/* <Chip
+                      <Chip
                         key={project.tags[0].id}
                         label={project.tags[0].tagName}
-                      /> */}
+                        onClick={() => {}}
+                      />
                     </div>
                   )}
                 </ProjectInfo>
