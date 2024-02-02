@@ -94,11 +94,11 @@ export const ThumbnailContainer = styled.div`
 `
 
 interface ThumbnailPreviewProps {
-  url: string
+  $url: string
 }
 
 export const ThumbnailPreview = styled.div<ThumbnailPreviewProps>`
-  background-image: url(${(props) => props.url});
+  background-image: url(${(props) => props.$url});
   background-size: cover;
   background-repeat: none;
   background-position: center;

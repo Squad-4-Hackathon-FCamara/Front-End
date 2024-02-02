@@ -11,6 +11,11 @@ export type UserData = {
   projects: any
 }
 
+export type Tag = {
+  id: string
+  tagName: string
+}
+
 // Interface com as informações da aplicação
 export interface ApplicationState {
   addProjectDialogIsOpen: boolean
@@ -21,6 +26,7 @@ export interface ApplicationState {
   projectIdToDelete: string
   userData: UserData
   projectIdToView: string
+  tags: Tag[]
 }
 
 // Inicia o reducer
@@ -75,6 +81,12 @@ export function applicationReducer(state: ApplicationState, action: any) {
     case ActionTypes.STORE_PROJECT_ID_TO_VIEW:
       return produce(state, (draft) => {
         draft.projectIdToView = action.payload.projectId
+      })
+
+    // Armazena as tags
+    case ActionTypes.STORE_TAGS:
+      return produce(state, (draft) => {
+        draft.tags = action.payload.tags
       })
 
     default:

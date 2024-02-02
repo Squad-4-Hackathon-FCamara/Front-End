@@ -97,13 +97,12 @@ export function ProjectDialog() {
   function handleSaveProject(data: ProjectFormData) {
     const request = {
       title: data.title,
-      tags: data.tagsList.map((tag) => tag.id),
+      tags: data.tagsList.map((tag: any) => tag.id),
       url: data.link,
       description: data.description,
       file: thumbnail,
     }
 
-    console.log(request)
     AxiosAPI.post('/project', request, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -136,17 +135,6 @@ export function ProjectDialog() {
     }
   })
 
-  // Apenas para testes, eventualmente essas informações virão do back end
-  const tagsMockUp = [
-    { id: '1', name: 'Front End' },
-    { id: '2', name: 'Back End' },
-    { id: '3', name: 'UX/UI' },
-    { id: '4', name: 'IA' },
-    { id: '5', name: 'Design' },
-    { id: '6', name: 'DevOps' },
-    { id: '7', name: 'Soft Skills' },
-  ]
-
   return (
     <Dialog open={applicationState.addProjectDialogIsOpen} maxWidth={'xl'}>
       <form>
@@ -164,7 +152,7 @@ export function ProjectDialog() {
                 </ThumbnailContainer>
               ) : (
                 <ThumbnailPreview
-                  url={thumbnailPreview}
+                  $url={thumbnailPreview}
                   onClick={handleUploadImage}
                 />
               )}
@@ -192,12 +180,12 @@ export function ProjectDialog() {
                 freeSolo
                 limitTags={screenWidth < 960 ? 1 : 3}
                 disableCloseOnSelect
-                options={tagsMockUp}
+                options={applicationState.tags}
                 onChange={(event, values) =>
                   event ? setValue('tagsList', values) : undefined
                 }
                 getOptionLabel={(tags) =>
-                  typeof tags === 'string' ? tags : tags.name
+                  typeof tags === 'string' ? tags : tags.tagName
                 }
                 sx={{ width: screenWidth < 960 ? '100%' : '413px' }}
                 renderInput={(params) => (
@@ -211,7 +199,7 @@ export function ProjectDialog() {
                       style={{ marginRight: 8 }}
                       checked={selected}
                     />
-                    {option.name}
+                    {option.tagName}
                   </li>
                 )}
               />

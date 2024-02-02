@@ -16,7 +16,8 @@ import { AxiosAPI } from '../../AxiosConfig'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
 
 export function Header() {
-  const { applicationState, storeUserData } = useContext(ApplicationContext)
+  const { applicationState, storeUserData, storeTags } =
+    useContext(ApplicationContext)
 
   const navigate = useNavigate()
   const screenWidth = useScreenWidth()
@@ -42,25 +43,53 @@ export function Header() {
     setAnchorLogout(null)
   }
 
+  function isUserLoggedIn() {
+    const isUserLoggedIn = Boolean(
+      document.cookie
+        .split('; ')
+        .find((cookie) => cookie.startsWith('is-logged-in='))
+        ?.split('=')[1],
+    )
+
+    return isUserLoggedIn
+  }
+
+  // Obtem os dados do usuário logado
   async function getUserData() {
-    await AxiosAPI.get('user/me/data')
-      .then((response) => {
-        storeUserData(
-          response.data.id,
-          response.data.firstName,
-          response.data.lastName,
-          response.data.avatar_url,
-          response.data.projects,
-        )
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+    if (isUserLoggedIn()) {
+      await AxiosAPI.get('user/me/data')
+        .then((response) => {
+          storeUserData(
+            response.data.id,
+            response.data.firstName,
+            response.data.lastName,
+            response.data.avatar_url,
+            response.data.projects,
+          )
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
+  }
+
+  // Obtem as tags
+  async function getTags() {
+    if (isUserLoggedIn()) {
+      await AxiosAPI.get('tag')
+        .then((response) => {
+          storeTags(response.data)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
   }
 
   // Busca dados do usuário logado
   useEffect(() => {
     getUserData()
+    getTags()
   }, [])
 
   async function handleLogout() {

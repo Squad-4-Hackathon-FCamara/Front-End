@@ -5,6 +5,7 @@
 import { ReactNode, createContext, useEffect, useReducer } from 'react'
 import {
   ApplicationState,
+  Tag,
   UserData,
   applicationReducer,
 } from '../reducer/application/reducer'
@@ -16,6 +17,7 @@ import {
   storeProjectIdToDeleteAction,
   storeUserDataAction,
   storeProjectIdToViewAction,
+  storeTagsAction,
 } from '../reducer/application/actions'
 
 // Tipagem do contexto
@@ -34,6 +36,7 @@ interface ApplicationContextType {
     projects: any,
   ) => void
   storeProjectIdToView: (projectId: string) => void
+  storeTags: (tags: Tag[]) => void
 }
 
 // Tipagem do context provider
@@ -74,6 +77,7 @@ export function ApplicationContextProvider({
       projects: [],
     } as UserData,
     projectIdToView: '',
+    tags: [] as Tag[],
   }
 
   const [applicationState, dispatch] = useReducer(
@@ -140,6 +144,10 @@ export function ApplicationContextProvider({
     dispatch(storeProjectIdToViewAction(projectId))
   }
 
+  function storeTags(tags: Tag[]) {
+    dispatch(storeTagsAction(tags))
+  }
+
   return (
     <ApplicationContext.Provider
       value={{
@@ -151,6 +159,7 @@ export function ApplicationContextProvider({
         storeProjectIdToDelete,
         storeUserData,
         storeProjectIdToView,
+        storeTags,
       }}
     >
       {children}

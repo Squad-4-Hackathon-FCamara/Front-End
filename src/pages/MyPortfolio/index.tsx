@@ -62,7 +62,6 @@ export function MyPortfolio() {
   }
 
   function handleViewProject(projectId: string) {
-    console.log(projectId)
     storeProjectIdToView(projectId)
     toggleViewProjectDialogIsOpen(true)
   }
@@ -74,7 +73,6 @@ export function MyPortfolio() {
 
   function handleDelete(event: MouseEvent<HTMLElement>, id: string) {
     event.stopPropagation()
-    console.log('Delete: ', id)
     storeProjectIdToDelete(id)
     toggleDeleteDialog(true)
   }
@@ -108,50 +106,6 @@ export function MyPortfolio() {
     { id: '6', name: 'DevOps' },
     { id: '7', name: 'Soft Skills' },
   ]
-
-  // Apenas para testes, eventualmente essas informações virão do back end
-  // const projectsList = [
-  //   {
-  //     id: '1',
-  //     title: 'Projeto 1',
-  //     createdAt: '01/24',
-  //     tags: [
-  //       { id: '1', name: 'Front End' },
-  //       { id: '2', name: 'Design' },
-  //     ],
-  //     thumbnail: 'https://source.unsplash.com/random',
-  //   },
-  //   {
-  //     id: '2',
-  //     title: 'Projeto 2',
-  //     createdAt: '01/24',
-  //     tags: [
-  //       { id: '1', name: 'Front End' },
-  //       { id: '2', name: 'Design' },
-  //     ],
-  //     thumbnail: '',
-  //   },
-  //   {
-  //     id: '3',
-  //     title: 'Projeto 3',
-  //     createdAt: '01/24',
-  //     tags: [
-  //       { id: '1', name: 'Front End' },
-  //       { id: '2', name: 'Design' },
-  //     ],
-  //     thumbnail: 'https://source.unsplash.com/random',
-  //   },
-  //   {
-  //     id: '4',
-  //     title: 'Projeto 4',
-  //     createdAt: '01/24',
-  //     tags: [
-  //       { id: '1', name: 'Front End' },
-  //       { id: '2', name: 'Design' },
-  //     ],
-  //     thumbnail: '',
-  //   },
-  // ]
 
   return (
     <PortfolioContainer>
@@ -215,11 +169,13 @@ export function MyPortfolio() {
           </Grid>
         ) : (
           <Grid container spacing={2}>
-            {applicationState.userData.projects.map((project) => (
+            {applicationState.userData.projects.map((project: any) => (
               <Grid key={project.id} xs={12} sm={12} md={6} lg={4} xl={3}>
                 <ProjectCard
                   $thumbnailurl={
-                    project.thumbnail_url ? project.thumbnail_url : defaultThumbnail
+                    project.thumbnail_url
+                      ? project.thumbnail_url
+                      : defaultThumbnail
                   }
                   onClick={() => handleViewProject(project.id)}
                 >

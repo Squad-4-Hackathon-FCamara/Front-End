@@ -1,5 +1,7 @@
 // Nesse arquivo são definidas as ações que o reducer pode executar
 
+import { Tag } from './reducer'
+
 export enum ActionTypes {
   TOGGLE_ADD_PROJECT_DIALOG = 'TOGGLE_ADD_PROJECT_DIALOG',
   TOGGLE_VIEW_PROJECT_DIALOG = 'TOGGLE_VIEW_PROJECT_DIALOG',
@@ -8,6 +10,7 @@ export enum ActionTypes {
   STORE_PROJECT_ID_TO_DELETE = 'STORE_PROJECT_ID_TO_DELETE',
   STORE_USER_DATA = 'STORE_USER_DATA',
   STORE_PROJECT_ID_TO_VIEW = 'STORE_PROJECT_ID_TO_VIEW',
+  STORE_TAGS = 'STORE_TAGS',
 }
 
 // Abre dialog de criação de projetos
@@ -89,6 +92,15 @@ export function storeProjectIdToViewAction(projectId: string) {
     type: ActionTypes.STORE_PROJECT_ID_TO_VIEW,
     payload: {
       projectId,
+    },
+  }
+}
+
+export function storeTagsAction(tags: Tag[]) {
+  return {
+    type: ActionTypes.STORE_TAGS,
+    payload: {
+      tags,
     },
   }
 }
