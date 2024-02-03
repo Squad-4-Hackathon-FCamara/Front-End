@@ -62,7 +62,7 @@ export const ThumbnailContainer = styled.div`
   align-items: center;
   flex-direction: column;
   padding: 91px 60px;
-  cursor: pointer;
+  cursor: default;
 
   width: 389px;
   height: 309px;
@@ -102,7 +102,7 @@ export const ThumbnailPreview = styled.div<ThumbnailPreviewProps>`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  cursor: pointer;
+  cursor: default;
 
   width: 389px;
   height: 309px;
@@ -117,6 +117,7 @@ export const ThumbnailPreview = styled.div<ThumbnailPreviewProps>`
 export const ActionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 389px;
 
   p {
     color: ${(props) => props.theme['color-neutral-110']};
@@ -136,6 +137,16 @@ export const ActionsWrapper = styled.div`
     color: ${(props) => props.theme['color-neutral-100']};
   }
 
+  #form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #delete-image {
+    color: ${(props) => props.theme['color-neutral-110']};
+  }
+
   #action-button {
     background: ${(props) => props.theme['color-secondary-100']};
     transition: background-color 0.2s;
@@ -148,5 +159,6 @@ export const ActionsWrapper = styled.div`
 
   @media (max-width: 768px) {
     margin-bottom: 167px;
+    width: 100%;
   }
 `

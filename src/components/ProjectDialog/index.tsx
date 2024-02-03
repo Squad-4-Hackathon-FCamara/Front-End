@@ -22,7 +22,9 @@ import {
   Button,
   Checkbox,
   Dialog,
+  IconButton,
   TextField,
+  Tooltip,
 } from '@mui/material'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
@@ -31,6 +33,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { ViewProjectDialog } from '../ViewProjectDialog'
 import { AxiosAPI } from '../../AxiosConfig'
+import { DeleteOutline } from '@mui/icons-material'
 
 export function ProjectDialog() {
   const {
@@ -82,6 +85,11 @@ export function ProjectDialog() {
       setThumbnail(image)
       setThumbnailPreview(URL.createObjectURL(image ?? ({} as File)))
     }
+  }
+
+  function handleRemovePreviewImage() {
+    setThumbnail(null)
+    setThumbnailPreview('')
   }
 
   function handleOpenPreview() {
@@ -172,32 +180,37 @@ export function ProjectDialog() {
         <DialogContainer>
           <h5>{'Adicionar Projeto'}</h5>
           <FormWrapper>
-            <div>
-              <p>Selecione o conteúdo que você deseja fazer upload</p>
-              {!thumbnailPreview ? (
-                <ThumbnailContainer onClick={handleUploadImage}>
-                  <img src={CollectionsImage} alt="" />
-                  <div>
-                    <p>Compartilhe seu talento com milhares de pessoas</p>
-                  </div>
-                </ThumbnailContainer>
-              ) : (
-                <ThumbnailPreview
-                  $url={thumbnailPreview}
-                  onClick={handleUploadImage}
-                />
-              )}
-              <input
-                {...register('thumbnail')}
-                id="image-input"
-                type="file"
-                src=""
-                alt=""
-                accept="image/*"
-                ref={imageInputRef}
-                onChange={handleChangeImage}
-              ></input>
-            </div>
+            <Tooltip
+              title="Imagem nos formatos: JPG, PNG e GIF. Tamanho máximo: 1mb"
+              followCursor
+            >
+              <div>
+                <p>Selecione o conteúdo que você deseja fazer upload</p>
+                {!thumbnailPreview ? (
+                  <ThumbnailContainer onClick={handleUploadImage}>
+                    <img src={CollectionsImage} alt="" />
+                    <div>
+                      <p>Compartilhe seu talento com milhares de pessoas</p>
+                    </div>
+                  </ThumbnailContainer>
+                ) : (
+                  <ThumbnailPreview
+                    $url={thumbnailPreview}
+                    onClick={handleUploadImage}
+                  />
+                )}
+                <input
+                  {...register('thumbnail')}
+                  id="image-input"
+                  type="file"
+                  src=""
+                  alt=""
+                  accept="image/*"
+                  ref={imageInputRef}
+                  onChange={handleChangeImage}
+                ></input>
+              </div>
+            </Tooltip>
 
             <div id="fields-wrapper">
               <TextField
@@ -250,7 +263,19 @@ export function ProjectDialog() {
           </FormWrapper>
 
           <ActionsWrapper>
-            <p onClick={handleOpenPreview}>Visualizar publicação</p>
+            <div id="form-actions">
+              <p onClick={handleOpenPreview}>Visualizar publicação</p>
+              {/* <DeleteOutline id="delete-image" /> */}
+
+              <Tooltip title="Remover imagem" arrow>
+                <IconButton
+                  id="basic-button"
+                  onClick={handleRemovePreviewImage}
+                >
+                  <DeleteOutline id="delete-image" />
+                </IconButton>
+              </Tooltip>
+            </div>
             <div>
               <Button
                 id="action-button"
