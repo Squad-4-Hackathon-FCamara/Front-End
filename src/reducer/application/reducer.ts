@@ -17,6 +17,14 @@ export type Tag = {
   tagName: string
 }
 
+export type ProjectPreview = {
+  description: string
+  link: string
+  tagsList: Tag[]
+  thumbnail: string
+  title: string
+}
+
 // Interface com as informações da aplicação
 export interface ApplicationState {
   addProjectDialogIsOpen: boolean
@@ -27,6 +35,7 @@ export interface ApplicationState {
   projectIdToHandle: string
   userData: UserData
   projectIdToView: string
+  projectPreview: ProjectPreview
   tags: Tag[]
 }
 
@@ -82,6 +91,13 @@ export function applicationReducer(state: ApplicationState, action: any) {
     case ActionTypes.STORE_PROJECT_ID_TO_VIEW:
       return produce(state, (draft) => {
         draft.projectIdToView = action.payload.projectId
+      })
+
+    // Armazena o projeto não salvo para ser pré-visualizado
+    case ActionTypes.STORE_PROJECT_PREVIEW:
+      return produce(state, (draft) => {
+        draft.projectPreview = {} as ProjectPreview // Inicia projectPreview
+        draft.projectPreview = action.payload.project
       })
 
     // Armazena as tags

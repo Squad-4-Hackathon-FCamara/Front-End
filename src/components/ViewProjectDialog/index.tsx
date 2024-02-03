@@ -12,18 +12,27 @@ import { Close } from '@mui/icons-material'
 import { useScreenWidth } from '../../hooks/useScreenWidth'
 import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
 import { format } from 'date-fns'
+import { ProjectPreview } from '../../reducer/application/reducer'
 
 export function ViewProjectDialog() {
   const {
     applicationState,
     toggleViewProjectDialogIsOpen,
     storeProjectIdToView,
+    storeProjectPreview,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
 
   function handleCloseDialog() {
     storeProjectIdToView('')
+    storeProjectPreview({
+      description: '',
+      link: '',
+      tagsList: [],
+      thumbnail: '',
+      title: '',
+    } as ProjectPreview)
     toggleViewProjectDialogIsOpen(false)
   }
 
@@ -73,7 +82,6 @@ export function ViewProjectDialog() {
 
   function formatDate(date: string): string {
     if (date) return format(date, 'MM/yy')
-
     return ''
   }
 
@@ -89,7 +97,9 @@ export function ViewProjectDialog() {
         </DialogCloseWrapper>
 
         <DialogContentWrapper>
-          <h1>{projectData.title ?? ''}</h1>
+          <h1>
+            {applicationState.projectPreview.title || projectData.title || ''}
+          </h1>
           <DialogHeader>
             <div id="general-info">
               <div id="user-info">
@@ -104,12 +114,17 @@ export function ViewProjectDialog() {
                       ' ' +
                       applicationState.userData.lastName}
                   </h5>
-                  <h6>{formatDate(projectData.createdAt)}</h6>
+                  <h6>
+                    {formatDate(projectData.createdAt) ??
+                      formatDate(String(new Date()))}
+                  </h6>
                 </div>
               </div>
 
               <div id="tag-chips">
-                {projectData.tags.map((tag: any, index) => {
+                {(
+                  applicationState.projectPreview.tagsList || projectData.tags
+                ).map((tag: any, index) => {
                   if (index < 2) {
                     return (
                       <Chip
@@ -125,19 +140,32 @@ export function ViewProjectDialog() {
 
             <img
               id="project-thumbnail"
-              src={projectData.thumbnail_url ?? defaultThumbnail}
+              src={
+                applicationState.projectPreview.thumbnail ||
+                projectData.thumbnail_url ||
+                defaultThumbnail
+              }
               alt=""
             />
           </DialogHeader>
 
           <DialogContent sx={{ padding: 0, overflow: 'hidden' }}>
-            <p>{projectData.description}</p>
+            <p>
+              {applicationState.projectPreview.description ||
+                projectData.description ||
+                ''}
+            </p>
 
             <br />
             <br />
             <p>Download</p>
-            <a href={projectData.url} target="blank">
-              {projectData.url}
+            <a
+              href={
+                applicationState.projectPreview.link || projectData.url || ''
+              }
+              target="blank"
+            >
+              {applicationState.projectPreview.link || projectData.url || ''}
             </a>
           </DialogContent>
         </DialogContentWrapper>

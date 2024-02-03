@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Nesse arquivo são definidas as ações que o reducer pode executar
 
-import { Tag } from './reducer'
+import { ProjectPreview, Tag } from './reducer'
 
 export enum ActionTypes {
   TOGGLE_ADD_PROJECT_DIALOG = 'TOGGLE_ADD_PROJECT_DIALOG',
@@ -11,6 +11,7 @@ export enum ActionTypes {
   STORE_PROJECT_ID_TO_HANDLE = 'STORE_PROJECT_ID_TO_HANDLE',
   STORE_USER_DATA = 'STORE_USER_DATA',
   STORE_PROJECT_ID_TO_VIEW = 'STORE_PROJECT_ID_TO_VIEW',
+  STORE_PROJECT_PREVIEW = 'STORE_PROJECT_PREVIEW',
   STORE_TAGS = 'STORE_TAGS',
 }
 
@@ -93,6 +94,16 @@ export function storeProjectIdToViewAction(projectId: string) {
     type: ActionTypes.STORE_PROJECT_ID_TO_VIEW,
     payload: {
       projectId,
+    },
+  }
+}
+
+// Armazena o projeto não salvo para ser pré-visualizado
+export function storeProjectPreviewAction(project: ProjectPreview) {
+  return {
+    type: ActionTypes.STORE_PROJECT_PREVIEW,
+    payload: {
+      project,
     },
   }
 }

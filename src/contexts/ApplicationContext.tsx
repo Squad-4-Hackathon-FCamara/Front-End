@@ -7,6 +7,7 @@ import { ReactNode, createContext, useEffect, useReducer } from 'react'
 import {
   ApplicationState,
   Tag,
+  ProjectPreview,
   UserData,
   applicationReducer,
 } from '../reducer/application/reducer'
@@ -19,6 +20,7 @@ import {
   storeUserDataAction,
   storeProjectIdToViewAction,
   storeTagsAction,
+  storeProjectPreviewAction,
 } from '../reducer/application/actions'
 
 // Tipagem do contexto
@@ -37,6 +39,7 @@ interface ApplicationContextType {
     projects: any,
   ) => void
   storeProjectIdToView: (projectId: string) => void
+  storeProjectPreview: (project: ProjectPreview) => void
   storeTags: (tags: Tag[]) => void
 }
 
@@ -78,6 +81,13 @@ export function ApplicationContextProvider({
       projects: [],
     } as UserData,
     projectIdToView: '',
+    projectPreview: {
+      description: '',
+      link: '',
+      tagsList: [] as Tag[],
+      thumbnail: '',
+      title: '',
+    } as ProjectPreview,
     tags: [] as Tag[],
   }
 
@@ -145,6 +155,10 @@ export function ApplicationContextProvider({
     dispatch(storeProjectIdToViewAction(projectId))
   }
 
+  function storeProjectPreview(project: ProjectPreview) {
+    dispatch(storeProjectPreviewAction(project))
+  }
+
   function storeTags(tags: Tag[]) {
     dispatch(storeTagsAction(tags))
   }
@@ -160,6 +174,7 @@ export function ApplicationContextProvider({
         storeProjectIdToHandle,
         storeUserData,
         storeProjectIdToView,
+        storeProjectPreview,
         storeTags,
       }}
     >

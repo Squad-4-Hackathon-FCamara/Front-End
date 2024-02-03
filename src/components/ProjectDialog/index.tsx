@@ -34,6 +34,7 @@ import { useForm } from 'react-hook-form'
 import { ViewProjectDialog } from '../ViewProjectDialog'
 import { AxiosAPI } from '../../AxiosConfig'
 import { DeleteOutline } from '@mui/icons-material'
+import { ProjectPreview } from '../../reducer/application/reducer'
 
 export function ProjectDialog() {
   const {
@@ -42,6 +43,7 @@ export function ProjectDialog() {
     toggleAddProjectDialogIsOpen,
     toggleSuccessDialog,
     storeUserData,
+    storeProjectPreview,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
@@ -68,7 +70,7 @@ export function ProjectDialog() {
     },
   })
 
-  const { register, setValue, handleSubmit } = projectForm
+  const { register, setValue, getValues, handleSubmit } = projectForm
 
   // Mecanismo para fazer o upload de uma imagem
   const [thumbnail, setThumbnail] = useState<File | null>(null)
@@ -93,6 +95,18 @@ export function ProjectDialog() {
   }
 
   function handleOpenPreview() {
+    const projectData = getValues()
+    const previewData: ProjectPreview = {
+      description: projectData.description,
+      link: projectData.link,
+      tagsList: projectData.tagsList,
+      thumbnail: thumbnailPreview,
+      title: projectData.title,
+    }
+
+    storeProjectPreview(previewData)
+    console.log('HERE: ', applicationState.projectPreview)
+
     toggleViewProjectDialogIsOpen(true)
   }
 
@@ -107,6 +121,13 @@ export function ProjectDialog() {
 
   // Fecha o dialog
   function handleClose() {
+    storeProjectPreview({
+      description: '',
+      link: '',
+      tagsList: [],
+      thumbnail: '',
+      title: '',
+    } as ProjectPreview)
     toggleAddProjectDialogIsOpen(false)
   }
 
