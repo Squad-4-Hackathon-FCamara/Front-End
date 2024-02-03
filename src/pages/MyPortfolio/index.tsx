@@ -54,7 +54,6 @@ export function MyPortfolio() {
     event: MouseEvent<HTMLButtonElement>,
     projectId: string,
   ) {
-    console.log(projectId)
     event.stopPropagation()
     storeProjectIdToHandle(projectId)
     setAnchorEl(event.currentTarget)
@@ -69,19 +68,16 @@ export function MyPortfolio() {
   }
 
   function handleViewProject(projectId: string) {
-    console.log(projectId)
     storeProjectIdToView(projectId)
     toggleViewProjectDialogIsOpen(true)
   }
 
   function handleEdit() {
-    console.log(applicationState.projectIdToHandle)
     setAnchorEl(null)
     toggleAddProjectDialogIsOpen(true)
   }
 
   function handleDelete() {
-    console.log(applicationState.projectIdToHandle)
     setAnchorEl(null)
     toggleDeleteDialog(true)
   }
@@ -98,7 +94,6 @@ export function MyPortfolio() {
     tagIds.map((id: string) => {
       params.append('tags', id)
     })
-    console.log(params)
 
     const request = {
       params: params,
@@ -224,13 +219,25 @@ export function MyPortfolio() {
                   >
                     <MenuItem
                       onClick={() => handleEdit()}
-                      sx={{ width: '208px' }}
+                      sx={{
+                        width: '208px',
+                        '&:hover': {
+                          backgroundColor: defaultTheme['color-secondary-60'],
+                          transition: 'background-color 0.2s',
+                        },
+                      }}
                     >
                       Editar
                     </MenuItem>
                     <MenuItem
                       onClick={() => handleDelete()}
-                      sx={{ width: '208px' }}
+                      sx={{
+                        width: '208px',
+                        '&:hover': {
+                          backgroundColor: defaultTheme['color-secondary-60'],
+                          transition: 'background-color 0.2s',
+                        },
+                      }}
                     >
                       Excluir
                     </MenuItem>

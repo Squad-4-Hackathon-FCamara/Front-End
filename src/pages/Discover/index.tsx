@@ -53,7 +53,6 @@ export function Discover() {
     tagIds.map((id: string) => {
       params.append('tags', id)
     })
-    console.log(params)
 
     const request = {
       params: params,
@@ -62,7 +61,7 @@ export function Discover() {
     AxiosAPI.get('project/tags', request)
       .then()
       .catch((error) => {
-        console.log('Erro: ', error)
+        console.error('Erro: ', error)
       })
   }
 

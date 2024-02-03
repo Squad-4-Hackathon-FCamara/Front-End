@@ -105,7 +105,6 @@ export function ProjectDialog() {
     }
 
     storeProjectPreview(previewData)
-    console.log('HERE: ', applicationState.projectPreview)
 
     toggleViewProjectDialogIsOpen(true)
   }

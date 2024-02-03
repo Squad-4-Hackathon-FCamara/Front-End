@@ -102,7 +102,6 @@ export function Login() {
   // function handleGoogleLogin() {
   //   AxiosAPI.get('/auth/login/google')
   //     .then((response) => {
-  //       console.log('Google Login: ', response)
   //       navigate('/')
   //     })
   //     .catch(() => {

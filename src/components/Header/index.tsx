@@ -16,6 +16,7 @@ import { useScreenWidth } from '../../hooks/useScreenWidth'
 import { AxiosAPI } from '../../AxiosConfig'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { useUserData } from '../../hooks/userDataUtils'
+import { defaultTheme } from '../../styles/themes/default'
 
 export function Header() {
   const { applicationState, storeUserData, storeTags } =
@@ -131,6 +132,12 @@ export function Header() {
                   handleClose()
                   navigate('/')
                 }}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-60'],
+                    transition: 'background-color 0.2s',
+                  },
+                }}
               >
                 <p>Meus Projetos</p>
               </MenuItem>
@@ -139,6 +146,12 @@ export function Header() {
                 onClick={() => {
                   handleClose()
                   navigate('/discover')
+                }}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-60'],
+                    transition: 'background-color 0.2s',
+                  },
                 }}
               >
                 <p>Descobrir</p>
@@ -150,6 +163,12 @@ export function Header() {
                 onClick={() => {
                   handleClose()
                 }}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-60'],
+                    transition: 'background-color 0.2s',
+                  },
+                }}
               >
                 <p>Configurações</p>
               </MenuItem>
@@ -159,6 +178,12 @@ export function Header() {
               <MenuItem
                 onClick={() => {
                   handleLogout()
+                }}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-60'],
+                    transition: 'background-color 0.2s',
+                  },
                 }}
               >
                 <ListItemIcon>
@@ -212,6 +237,13 @@ export function Header() {
               onClick={() => {
                 handleClose()
               }}
+              sx={{
+                width: '138px',
+                '&:hover': {
+                  backgroundColor: defaultTheme['color-secondary-60'],
+                  transition: 'background-color 0.2s',
+                },
+              }}
             >
               <p>Configurações</p>
             </MenuItem>
@@ -221,7 +253,13 @@ export function Header() {
               onClick={() => {
                 handleLogout()
               }}
-              sx={{ width: '138px' }}
+              sx={{
+                width: '138px',
+                '&:hover': {
+                  backgroundColor: defaultTheme['color-secondary-60'],
+                  transition: 'background-color 0.2s',
+                },
+              }}
             >
               <ListItemIcon>
                 <Logout fontSize="small" />
