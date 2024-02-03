@@ -10,7 +10,7 @@ export enum ActionTypes {
   TOGGLE_DELETE_DIALOG = 'TOGGLE_DELETE_DIALOG',
   STORE_PROJECT_ID_TO_HANDLE = 'STORE_PROJECT_ID_TO_HANDLE',
   STORE_USER_DATA = 'STORE_USER_DATA',
-  STORE_PROJECT_ID_TO_VIEW = 'STORE_PROJECT_ID_TO_VIEW',
+  // STORE_PROJECT_ID_TO_VIEW = 'STORE_PROJECT_ID_TO_VIEW',
   STORE_PROJECT_PREVIEW = 'STORE_PROJECT_PREVIEW',
   STORE_TAGS = 'STORE_TAGS',
 }
@@ -88,15 +88,15 @@ export function storeUserDataAction(
   }
 }
 
-// Armazena o ID do projeto que será visualizado
-export function storeProjectIdToViewAction(projectId: string) {
-  return {
-    type: ActionTypes.STORE_PROJECT_ID_TO_VIEW,
-    payload: {
-      projectId,
-    },
-  }
-}
+// // Armazena o ID do projeto que será visualizado
+// export function storeProjectIdToViewAction(projectId: string) {
+//   return {
+//     type: ActionTypes.STORE_PROJECT_ID_TO_VIEW,
+//     payload: {
+//       projectId,
+//     },
+//   }
+// }
 
 // Armazena o projeto não salvo para ser pré-visualizado
 export function storeProjectPreviewAction(project: ProjectPreview) {

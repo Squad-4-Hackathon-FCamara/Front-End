@@ -14,6 +14,7 @@ export function DeleteDialog() {
   } = useContext(ApplicationContext)
 
   function handleCloseDialog() {
+    storeProjectIdToHandle('')
     toggleDeleteDialog(false)
   }
 

@@ -18,14 +18,14 @@ export function ViewProjectDialog() {
   const {
     applicationState,
     toggleViewProjectDialogIsOpen,
-    storeProjectIdToView,
+    storeProjectIdToHandle,
     storeProjectPreview,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
 
   function handleCloseDialog() {
-    storeProjectIdToView('')
+    storeProjectIdToHandle('')
     storeProjectPreview({
       description: '',
       link: '',
@@ -60,11 +60,11 @@ export function ViewProjectDialog() {
     function loadProjectData() {
       try {
         if (
-          applicationState.projectIdToView !== '' &&
+          applicationState.projectIdToHandle !== '' &&
           applicationState.userData.projects.length > 0
         ) {
           const project = applicationState.userData.projects.find(
-            (obj: any) => obj.id === applicationState.projectIdToView,
+            (obj: any) => obj.id === applicationState.projectIdToHandle,
           )
           setProjectData(project)
         }
@@ -76,7 +76,7 @@ export function ViewProjectDialog() {
     loadProjectData()
   }, [
     applicationState.viewProjectDialogIsOpen,
-    applicationState.projectIdToView,
+    applicationState.projectIdToHandle,
     applicationState.userData.projects,
   ])
 

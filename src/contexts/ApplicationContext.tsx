@@ -18,7 +18,7 @@ import {
   toggleViewProjectDialogAction,
   storeProjectIdToHandleAction,
   storeUserDataAction,
-  storeProjectIdToViewAction,
+  // storeProjectIdToViewAction,
   storeTagsAction,
   storeProjectPreviewAction,
 } from '../reducer/application/actions'
@@ -38,7 +38,7 @@ interface ApplicationContextType {
     avatarUrl: string,
     projects: any,
   ) => void
-  storeProjectIdToView: (projectId: string) => void
+  // storeProjectIdToView: (projectId: string) => void
   storeProjectPreview: (project: ProjectPreview) => void
   storeTags: (tags: Tag[]) => void
 }
@@ -80,7 +80,7 @@ export function ApplicationContextProvider({
       avatarUrl: '',
       projects: [],
     } as UserData,
-    projectIdToView: '',
+    // projectIdToView: '',
     projectPreview: {
       description: '',
       link: '',
@@ -151,9 +151,9 @@ export function ApplicationContextProvider({
     dispatch(storeUserDataAction(id, firstName, lastName, avatarUrl, projects))
   }
 
-  function storeProjectIdToView(projectId: string) {
-    dispatch(storeProjectIdToViewAction(projectId))
-  }
+  // function storeProjectIdToView(projectId: string) {
+  //   dispatch(storeProjectIdToViewAction(projectId))
+  // }
 
   function storeProjectPreview(project: ProjectPreview) {
     dispatch(storeProjectPreviewAction(project))
@@ -173,7 +173,7 @@ export function ApplicationContextProvider({
         toggleSuccessDialog,
         storeProjectIdToHandle,
         storeUserData,
-        storeProjectIdToView,
+        // storeProjectIdToView,
         storeProjectPreview,
         storeTags,
       }}

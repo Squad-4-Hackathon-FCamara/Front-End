@@ -34,7 +34,7 @@ export interface ApplicationState {
   deleteDialogIsOpen: boolean
   projectIdToHandle: string
   userData: UserData
-  projectIdToView: string
+  // projectIdToView: string
   projectPreview: ProjectPreview
   tags: Tag[]
 }
@@ -88,10 +88,10 @@ export function applicationReducer(state: ApplicationState, action: any) {
       })
 
     // Armazena id do projeto a ser visualizado
-    case ActionTypes.STORE_PROJECT_ID_TO_VIEW:
-      return produce(state, (draft) => {
-        draft.projectIdToView = action.payload.projectId
-      })
+    // case ActionTypes.STORE_PROJECT_ID_TO_VIEW:
+    //   return produce(state, (draft) => {
+    //     draft.projectIdToView = action.payload.projectId
+    //   })
 
     // Armazena o projeto não salvo para ser pré-visualizado
     case ActionTypes.STORE_PROJECT_PREVIEW:

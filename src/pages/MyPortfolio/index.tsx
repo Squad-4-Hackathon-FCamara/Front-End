@@ -41,7 +41,6 @@ export function MyPortfolio() {
     toggleViewProjectDialogIsOpen,
     toggleDeleteDialog,
     storeProjectIdToHandle,
-    storeProjectIdToView,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
@@ -60,6 +59,7 @@ export function MyPortfolio() {
   }
 
   function handleCloseProjectMenu() {
+    storeProjectIdToHandle('')
     setAnchorEl(null)
   }
 
@@ -68,7 +68,7 @@ export function MyPortfolio() {
   }
 
   function handleViewProject(projectId: string) {
-    storeProjectIdToView(projectId)
+    storeProjectIdToHandle(projectId)
     toggleViewProjectDialogIsOpen(true)
   }
 

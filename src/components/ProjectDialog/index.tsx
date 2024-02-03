@@ -44,12 +44,14 @@ export function ProjectDialog() {
     toggleSuccessDialog,
     storeUserData,
     storeProjectPreview,
+    storeProjectIdToHandle,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
 
   // Validação e formulário com Zod e React Hook Form
   const projectValidationSchema = zod.object({
+    id: zod.string(),
     title: zod.string().min(1, { message: 'Insira o nome do projeto' }),
     tagsList: zod.any(),
     link: zod.string().min(1, { message: 'Insira o link do projeto' }),
@@ -62,6 +64,7 @@ export function ProjectDialog() {
   const projectForm = useForm<ProjectFormData>({
     resolver: zodResolver(projectValidationSchema),
     defaultValues: {
+      id: '',
       title: '',
       tagsList: [] as string[],
       link: '',
@@ -110,6 +113,7 @@ export function ProjectDialog() {
   }
 
   function cleanForm() {
+    setValue('id', '')
     setValue('title', '')
     setValue('tagsList', [])
     setValue('link', '')
@@ -129,6 +133,7 @@ export function ProjectDialog() {
       title: '',
     } as ProjectPreview)
 
+    storeProjectIdToHandle('')
     cleanForm()
     toggleAddProjectDialogIsOpen(false)
   }
@@ -154,15 +159,8 @@ export function ProjectDialog() {
       })
   }
 
-  function handleSaveProject(data: ProjectFormData) {
-    const request = {
-      title: data.title,
-      tags: data.tagsList.map((tag: any) => tag.id),
-      url: data.link,
-      description: data.description,
-      file: thumbnail,
-    }
-
+  // Salva um novo projeto
+  function saveProjectPost(request: any) {
     AxiosAPI.post('/project', request, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -171,12 +169,46 @@ export function ProjectDialog() {
       .then((response) => {
         if (response.status === 201) {
           updateUserData()
+          storeProjectIdToHandle('')
           toggleAddProjectDialogIsOpen(false)
           toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
           cleanForm()
         }
       })
       .catch((error) => console.error(error))
+  }
+
+  // Edita um projeto existente
+  function updateRequestPatch(request: any) {
+    AxiosAPI.patch('/project', request, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          updateUserData()
+          storeProjectIdToHandle('')
+          toggleAddProjectDialogIsOpen(false)
+          toggleSuccessDialog(true, 'Edição concluída com sucesso!')
+          cleanForm()
+        }
+      })
+      .catch((error) => console.error(error))
+  }
+
+  function handleSaveProject(data: ProjectFormData) {
+    const createRequest = {
+      title: data.title,
+      tags: data.tagsList.map((tag: any) => tag.id),
+      url: data.link,
+      description: data.description,
+      file: thumbnail,
+    }
+
+    const updateRequest = { ...createRequest, id: data.id }
+
+    data.id ? updateRequestPatch(updateRequest) : saveProjectPost(createRequest)
   }
 
   // useEffect para limpar o formulário quando a página for recarregada
