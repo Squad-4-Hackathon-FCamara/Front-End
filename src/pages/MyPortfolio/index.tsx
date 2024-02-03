@@ -22,7 +22,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2'
 import CollectionsImage from './../../assets/images/collections.svg'
 import { defaultTheme } from '../../styles/themes/default'
 import { ProjectDialog } from '../../components/ProjectDialog'
-import { MouseEvent, useContext, useState } from 'react'
+import { MouseEvent, SyntheticEvent, useContext, useState } from 'react'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { SuccessDialog } from '../../components/SuccessDialog'
 import { Edit } from '@mui/icons-material'
@@ -32,6 +32,7 @@ import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
 import { DeleteDialog } from '../../components/DeleteDialog'
 import { AxiosAPI } from '../../AxiosConfig'
 import { format } from 'date-fns'
+import { Tag } from '../../reducer/application/reducer'
 
 export function MyPortfolio() {
   const {
@@ -89,11 +90,16 @@ export function MyPortfolio() {
     return format(date, 'MM/yy')
   }
 
-  function filterByTags() {
+  // É possível descartar um parâmetro que não será usado com underscore _
+  function filterByTags(_event: SyntheticEvent<Element, Event>, value: any) {
     const params = new URLSearchParams()
-    params.append('tags', '1')
-    params.append('tags', '2')
-    params.append('tags', '3')
+
+    const tagIds = value.map((tag: Tag) => tag.id)
+    tagIds.map((id: string) => {
+      params.append('tags', id)
+    })
+    console.log(params)
+
     const request = {
       params: params,
     }
@@ -130,9 +136,13 @@ export function MyPortfolio() {
       {/* Autocomplete para pesquisa */}
       <SearchBar>
         <h6>Meus projetos</h6>
-        <div onBlur={filterByTags}>
-          <BaseAutocomplete items={applicationState.tags} />
-        </div>
+
+        <BaseAutocomplete
+          items={applicationState.tags}
+          onChange={(event: SyntheticEvent<Element, Event>, value: any) =>
+            filterByTags(event, value)
+          }
+        />
       </SearchBar>
 
       {/* Lista dos projetos do usuário */}

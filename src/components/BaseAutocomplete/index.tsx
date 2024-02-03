@@ -3,12 +3,14 @@ import { Autocomplete, Checkbox, TextField } from '@mui/material'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import { Tag } from '../../reducer/application/reducer'
+import { SyntheticEvent } from 'react'
 
 interface BaseAutocompleteProps {
   items: Tag[]
+  onChange: (_event: SyntheticEvent<Element, Event>, value: any) => void
 }
 
-export function BaseAutocomplete({ items }: BaseAutocompleteProps) {
+export function BaseAutocomplete({ items, onChange }: BaseAutocompleteProps) {
   const screenWidth = useScreenWidth()
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
   const checkedIcon = <CheckBoxIcon fontSize="small" />
@@ -20,6 +22,7 @@ export function BaseAutocomplete({ items }: BaseAutocompleteProps) {
       limitTags={screenWidth < 768 ? 2 : 4}
       disableCloseOnSelect
       options={items}
+      onChange={onChange}
       getOptionLabel={(tags) =>
         typeof tags === 'string' ? tags : tags.tagName
       }

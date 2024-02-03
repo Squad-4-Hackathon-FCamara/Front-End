@@ -13,7 +13,7 @@ import { BaseAutocomplete } from '../../components/BaseAutocomplete'
 import Grid from '@mui/material/Unstable_Grid2/Grid2'
 import { defaultTheme } from '../../styles/themes/default'
 import { ProjectDialog } from '../../components/ProjectDialog'
-import { useContext, useEffect, useState } from 'react'
+import { SyntheticEvent, useContext, useEffect, useState } from 'react'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { SuccessDialog } from '../../components/SuccessDialog'
 import { useScreenWidth } from '../../hooks/useScreenWidth'
@@ -46,11 +46,15 @@ export function Discover() {
     toggleViewProjectDialogIsOpen(true)
   }
 
-  function filterByTags() {
+  function filterByTags(_event: SyntheticEvent<Element, Event>, value: any) {
     const params = new URLSearchParams()
-    params.append('tags', '1')
-    params.append('tags', '2')
-    params.append('tags', '3')
+
+    const tagIds = value.map((tag: Tag) => tag.id)
+    tagIds.map((id: string) => {
+      params.append('tags', id)
+    })
+    console.log(params)
+
     const request = {
       params: params,
     }
@@ -107,9 +111,12 @@ export function Discover() {
 
       {/* Autocomplete para pesquisa */}
       <SearchBar>
-        <div onBlur={filterByTags}>
-          <BaseAutocomplete items={applicationState.tags} />
-        </div>
+        <BaseAutocomplete
+          items={applicationState.tags}
+          onChange={(event: SyntheticEvent<Element, Event>, values: any) =>
+            filterByTags(event, values)
+          }
+        />
       </SearchBar>
 
       {/* Lista dos projetos do usuário */}
