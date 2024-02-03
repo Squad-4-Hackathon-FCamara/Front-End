@@ -116,6 +116,7 @@ export function ProjectDialog() {
     setValue('link', '')
     setValue('description', '')
     setValue('thumbnail', null)
+    setThumbnail(null)
     setThumbnailPreview('')
   }
 
@@ -128,6 +129,8 @@ export function ProjectDialog() {
       thumbnail: '',
       title: '',
     } as ProjectPreview)
+
+    cleanForm()
     toggleAddProjectDialogIsOpen(false)
   }
 
@@ -172,8 +175,6 @@ export function ProjectDialog() {
           toggleAddProjectDialogIsOpen(false)
           toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
           cleanForm()
-          // Limpar dialog de cadastro
-          // Recarregar projetos
         }
       })
       .catch((error) => console.error(error))
@@ -286,8 +287,6 @@ export function ProjectDialog() {
           <ActionsWrapper>
             <div id="form-actions">
               <p onClick={handleOpenPreview}>Visualizar publicação</p>
-              {/* <DeleteOutline id="delete-image" /> */}
-
               <Tooltip title="Remover imagem" arrow>
                 <IconButton
                   id="basic-button"
