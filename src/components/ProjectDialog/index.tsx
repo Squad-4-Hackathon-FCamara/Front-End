@@ -183,7 +183,10 @@ export function ProjectDialog() {
           cleanForm()
         }
       })
-      .catch((error) => console.error(error))
+      .catch((error) => {
+        setIsLoading(false)
+        console.error(error)
+      })
   }
 
   // Edita um projeto existente
@@ -202,7 +205,10 @@ export function ProjectDialog() {
           cleanForm()
         }
       })
-      .catch((error) => console.error(error))
+      .catch((error) => {
+        setIsLoading(false)
+        console.error(error)
+      })
   }
 
   function handleSaveProject(data: ProjectFormData) {
@@ -287,7 +293,7 @@ export function ProjectDialog() {
           <h5>{editProjectData.id ? 'Editar projeto' : 'Adicionar Projeto'}</h5>
           <FormWrapper>
             <Tooltip
-              title="Imagem nos formatos: JPG, PNG e GIF. Tamanho máximo: 1mb"
+              title="Imagem nos formatos: JPG e PNG. Tamanho máximo: 1mb"
               followCursor
             >
               <div>
@@ -311,7 +317,7 @@ export function ProjectDialog() {
                   type="file"
                   src=""
                   alt=""
-                  accept="image/*"
+                  accept=".jpg, .jpeg, .png"
                   ref={imageInputRef}
                   onChange={handleChangeImage}
                 ></input>

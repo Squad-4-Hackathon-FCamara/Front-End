@@ -113,6 +113,7 @@ export function Register() {
         updateValidation(error, 'lastName', setIsLastNameValid)
         updateValidation(error, 'email', setIsEmailValid)
         updateValidation(error, 'password', setIsPasswordValid)
+        setIsLoading(false)
       })
   }
 
