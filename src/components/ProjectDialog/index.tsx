@@ -39,6 +39,7 @@ import {
   ProjectPreview,
   Tag,
 } from '../../reducer/application/reducer'
+import { defaultTheme } from '../../styles/themes/default'
 
 export function ProjectDialog() {
   const {
@@ -52,6 +53,8 @@ export function ProjectDialog() {
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
+
+  const [isloading, setIsLoading] = useState(false)
 
   // Validação e formulário com Zod e React Hook Form
   const projectValidationSchema = zod.object({
@@ -125,6 +128,7 @@ export function ProjectDialog() {
     setValue('thumbnail', null)
     setThumbnail(null)
     setThumbnailPreview('')
+    setIsLoading(false)
   }
 
   // Fecha o dialog
@@ -213,6 +217,7 @@ export function ProjectDialog() {
     const updateRequest = { ...createRequest, id: data.id }
 
     data.id ? updateRequestPatch(updateRequest) : saveProjectPost(createRequest)
+    setIsLoading(true)
   }
 
   // useEffect para carregar as informações do projeto para edição
@@ -317,6 +322,7 @@ export function ProjectDialog() {
               <TextField
                 {...register('title')}
                 label="Título"
+                disabled={isloading}
                 sx={{ width: screenWidth < 960 ? '100%' : '413px' }}
               />
               <Autocomplete
@@ -326,6 +332,7 @@ export function ProjectDialog() {
                 limitTags={screenWidth < 960 ? 1 : 3}
                 disableCloseOnSelect
                 options={applicationState.tags}
+                disabled={isloading}
                 onChange={(event, values) =>
                   event ? setValue('tagsList', values) : undefined
                 }
@@ -351,6 +358,7 @@ export function ProjectDialog() {
               <TextField
                 {...register('link')}
                 label="Link"
+                disabled={isloading}
                 sx={{ width: screenWidth < 960 ? '100%' : '413px' }}
               ></TextField>
               <TextField
@@ -358,6 +366,7 @@ export function ProjectDialog() {
                 label="Descrição"
                 multiline
                 rows={4}
+                disabled={isloading}
                 sx={{ width: screenWidth < 960 ? '100%' : '413px' }}
               />
             </div>
@@ -370,6 +379,7 @@ export function ProjectDialog() {
                 <IconButton
                   id="basic-button"
                   onClick={handleRemovePreviewImage}
+                  disabled={isloading}
                 >
                   <DeleteOutline id="delete-image" />
                 </IconButton>
@@ -381,6 +391,14 @@ export function ProjectDialog() {
                 variant="contained"
                 type="submit"
                 onClick={handleSubmit(handleSaveProject)}
+                disabled={isloading}
+                sx={{
+                  backgroundColor: defaultTheme['color-secondary-100'],
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-110'],
+                  },
+                  marginRight: '16px',
+                }}
               >
                 Salvar
               </Button>
@@ -389,6 +407,14 @@ export function ProjectDialog() {
                 variant="contained"
                 onClick={handleClose}
                 type="button"
+                disabled={isloading}
+                sx={{
+                  backgroundColor: defaultTheme['color-secondary-100'],
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-110'],
+                  },
+                  marginRight: '16px',
+                }}
               >
                 Cancelar
               </Button>

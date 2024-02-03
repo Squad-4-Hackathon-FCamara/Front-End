@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const MainWrapper = styled.main`
   background: ${(props) => props.theme.white};
@@ -8,19 +8,21 @@ export const MainWrapper = styled.main`
   justify-content: space-between;
   align-items: center;
 
-  a {
-    color: ${(props) => props.theme["color-neutral-100"]};
+  span {
+    color: ${(props) => props.theme['color-neutral-100']};
 
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 16px;
     letter-spacing: 0.15px;
 
+    cursor: pointer;
+
     text-decoration: none;
     margin-top: 18px;
   }
-`;
+`
 
 export const ImageContainer = styled.section`
   height: 100vh;
@@ -33,7 +35,7 @@ export const ImageContainer = styled.section`
   @media (max-width: 1200px) {
     display: none;
   }
-`;
+`
 
 export const RegisterContainer = styled.section`
   position: relative;
@@ -53,7 +55,7 @@ export const RegisterContainer = styled.section`
   }
 
   h1 {
-    color: ${(props) => props.theme["color-primary-90"]};
+    color: ${(props) => props.theme['color-primary-90']};
     text-align: center;
     /* [Orange P] Style Guide/H3 */
     font-family: Roboto;
@@ -77,7 +79,7 @@ export const RegisterContainer = styled.section`
   }
 
   #login-button {
-    background-color: ${(props) => props.theme["color-secondary-100"]};
+    /* background-color: ${(props) => props.theme['color-secondary-100']}; */
     width: 100%;
     height: 42px;
   }
@@ -100,4 +102,4 @@ export const RegisterContainer = styled.section`
       flex-direction: column;
     }
   }
-`;
+`

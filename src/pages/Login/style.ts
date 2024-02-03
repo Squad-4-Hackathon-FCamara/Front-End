@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const MainWrapper = styled.main`
   background: ${(props) => props.theme.white};
@@ -9,9 +9,9 @@ export const MainWrapper = styled.main`
   align-items: center;
 
   a {
-    color: ${(props) => props.theme["color-neutral-100"]};
+    color: ${(props) => props.theme['color-neutral-100']};
 
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 16px;
@@ -20,7 +20,7 @@ export const MainWrapper = styled.main`
     text-decoration: none;
     margin-top: 18px;
   }
-`;
+`
 
 export const ImageContainer = styled.section`
   height: 100vh;
@@ -33,7 +33,7 @@ export const ImageContainer = styled.section`
   @media (max-width: 1200px) {
     display: none;
   }
-`;
+`
 
 export const LoginContainer = styled.section`
   position: relative;
@@ -46,23 +46,23 @@ export const LoginContainer = styled.section`
 
   h1 {
     text-align: center;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 48px;
     line-height: 40px;
 
-    color: ${(props) => props.theme["color-primary-90"]};
+    color: ${(props) => props.theme['color-primary-90']};
   }
 
   h2 {
     margin-bottom: 1.5rem;
 
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 24px;
     font-weight: 400;
     line-height: 24px;
 
-    color: ${(props) => props.theme["color-neutral-110"]};
+    color: ${(props) => props.theme['color-neutral-110']};
   }
 
   form {
@@ -74,15 +74,15 @@ export const LoginContainer = styled.section`
   }
 
   #login-button {
-    background-color: ${(props) => props.theme["color-secondary-100"]};
+    /* background-color: ${(props) => props.theme['color-secondary-100']}; */
     width: 100%;
     height: 42px;
-    transition: background-color 0.2s;
+    /* transition: background-color 0.2s; */
   }
 
-  #login-button:hover {
-    background-color: ${(props) => props.theme["color-secondary-110"]};
-  }
+  /* #login-button:hover {
+    background-color: ${(props) => props.theme['color-secondary-110']};
+  } */
 
   #snackbar {
     position: absolute;
@@ -104,7 +104,7 @@ export const LoginContainer = styled.section`
       padding: 0 24px;
     }
   }
-`;
+`
 
 export const LoginWithGoogle = styled.button`
   padding: 12px 8px;
@@ -121,7 +121,7 @@ export const LoginWithGoogle = styled.button`
 
   background: ${(props) => props.theme.white};
   color: rgba(0, 0, 0, 0.54);
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: normal;
@@ -151,7 +151,7 @@ export const LoginWithGoogle = styled.button`
     outline: 3px solid #4285f41a;
     box-shadow: none;
   }
-`;
+`
 
 export const LoginButton = styled.button`
   padding: 8px;
@@ -160,12 +160,12 @@ export const LoginButton = styled.button`
   height: 42px;
   border: none;
   border-radius: 4px;
-  background: ${(props) => props.theme["color-secondary-100"]};
+  background: ${(props) => props.theme['color-secondary-100']};
   background-position: center;
-  color: ${(props) => props.theme["color-neutral-60"]};
+  color: ${(props) => props.theme['color-neutral-60']};
   cursor: pointer;
 
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 500;
   font-size: 15px;
 
@@ -174,9 +174,9 @@ export const LoginButton = styled.button`
   transition: background-color 0.1s;
 
   &:hover {
-    background: ${(props) => props.theme["color-secondary-110"]};
+    background: ${(props) => props.theme['color-secondary-110']};
   }
 
   &:active {
   }
-`;
+`

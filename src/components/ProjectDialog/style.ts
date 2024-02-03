@@ -147,7 +147,7 @@ export const ActionsWrapper = styled.div`
     color: ${(props) => props.theme['color-neutral-110']};
   }
 
-  #action-button {
+  /* #action-button {
     background: ${(props) => props.theme['color-secondary-100']};
     transition: background-color 0.2s;
     margin-right: 16px;
@@ -155,7 +155,7 @@ export const ActionsWrapper = styled.div`
 
   #action-button:hover {
     background: ${(props) => props.theme['color-secondary-110']};
-  }
+  } */
 
   @media (max-width: 768px) {
     margin-bottom: 167px;

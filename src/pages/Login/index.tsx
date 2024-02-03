@@ -212,6 +212,12 @@ export function Login() {
             size="large"
             type="submit"
             onClick={handleSubmit(handleLoginClick)}
+            sx={{
+              backgroundColor: defaultTheme['color-secondary-100'],
+              '&:hover': {
+                backgroundColor: defaultTheme['color-secondary-110'],
+              },
+            }}
           >
             Entrar
           </Button>

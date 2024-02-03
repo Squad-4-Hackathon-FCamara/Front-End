@@ -31,6 +31,7 @@ export function Register() {
   const [isPasswordValid, setIsPasswordValid] = useState(true)
   const [isFirstNameValid, setIsFirstNameValid] = useState(true)
   const [isLastNameValid, setIsLastNameValid] = useState(true)
+  const [isloading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()
 
@@ -72,6 +73,11 @@ export function Register() {
     if (event.target.value) setIsLastNameValid(true)
   }
 
+  function handleGoToLogin() {
+    setIsLoading(false)
+    navigate('/login')
+  }
+
   // Função para atualizar o estado que os campos usam para exibir erros
   function updateValidation(error: any, fieldName: string, stateCallback: any) {
     if (Array.isArray(error)) {
@@ -96,7 +102,11 @@ export function Register() {
     AxiosAPI.post('/auth/register', request)
       .then(() => {
         setIsSnackbarOpen(true)
-        setTimeout(() => navigate('/login'), 5000)
+        setIsLoading(true)
+        setTimeout(() => {
+          setIsLoading(false)
+          navigate('/login')
+        }, 10000)
       })
       .catch((error) => {
         updateValidation(error, 'firstName', setIsFirstNameValid)
@@ -169,6 +179,7 @@ export function Register() {
               error={!isFirstNameValid}
               helperText={!isFirstNameValid ? 'Insira um nome válido' : ''}
               onChange={handleFirstNameInputChange}
+              disabled={isloading}
               sx={{ width: '100%' }}
             />
 
@@ -179,6 +190,7 @@ export function Register() {
               error={!isLastNameValid}
               helperText={!isLastNameValid ? 'Insira um sobrenome válido' : ''}
               onChange={handleLastNameInputChange}
+              disabled={isloading}
               sx={{ width: '100%' }}
             />
           </div>
@@ -191,6 +203,7 @@ export function Register() {
             error={!isEmailValid}
             helperText={!isEmailValid ? 'Insira um email válido' : ''}
             onChange={handleEmailInputChange}
+            disabled={isloading}
             sx={{ width: '100%', marginBottom: '16px' }}
           />
 
@@ -198,6 +211,7 @@ export function Register() {
             variant="outlined"
             error={!isPasswordValid}
             onChange={handlePasswordInputChange}
+            disabled={isloading}
             sx={{ width: '100%', marginBottom: '16px' }}
           >
             <InputLabel htmlFor="outlined-adornment-password">Senha</InputLabel>
@@ -230,11 +244,18 @@ export function Register() {
             size="large"
             type="submit"
             onClick={handleSubmit(handleRegisterClick)}
+            disabled={isloading}
+            sx={{
+              backgroundColor: defaultTheme['color-secondary-100'],
+              '&:hover': {
+                backgroundColor: defaultTheme['color-secondary-110'],
+              },
+            }}
           >
             Cadastrar
           </Button>
 
-          <a href="/login">Voltar para Login</a>
+          <span onClick={handleGoToLogin}>Voltar para Login</span>
         </form>
       </RegisterContainer>
     </MainWrapper>
