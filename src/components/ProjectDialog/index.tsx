@@ -220,7 +220,7 @@ export function ProjectDialog() {
     createdAt: '',
     description: '',
     id: '',
-    tags: [],
+    tags: [] as Tag[],
     thumbnail_url: '',
     title: '',
     url: '',
@@ -231,7 +231,8 @@ export function ProjectDialog() {
       try {
         if (
           applicationState.projectIdToHandle !== '' &&
-          applicationState.userData.projects.length > 0
+          applicationState.userData.projects.length > 0 &&
+          applicationState.addProjectDialogIsOpen
         ) {
           const project = applicationState.userData.projects.find(
             (obj: any) => obj.id === applicationState.projectIdToHandle,
@@ -242,7 +243,7 @@ export function ProjectDialog() {
           setValue('tagsList', project.tags ?? ([] as Tag[]))
           setValue('link', project.url ?? '')
           setValue('description', project.description ?? '')
-          setValue('thumbnail', null) // Como obter novamente o arquivo de imagem?
+          setValue('thumbnail', null)
           setThumbnailPreview(project.thumbnail_url ?? '')
           console.log(project)
         }

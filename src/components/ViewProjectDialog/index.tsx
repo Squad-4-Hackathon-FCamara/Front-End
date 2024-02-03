@@ -15,9 +15,16 @@ import { format } from 'date-fns'
 import {
   ProjectDataType,
   ProjectPreview,
+  Tag,
 } from '../../reducer/application/reducer'
 
-export function ViewProjectDialog() {
+interface ViewProjectDialogProps {
+  discoveryProjectData?: ProjectDataType[] // Prop opcional
+}
+
+export function ViewProjectDialog({
+  discoveryProjectData,
+}: ViewProjectDialogProps) {
   const {
     applicationState,
     toggleViewProjectDialogIsOpen,
@@ -43,7 +50,7 @@ export function ViewProjectDialog() {
     createdAt: '',
     description: '',
     id: '',
-    tags: [],
+    tags: [] as Tag[],
     thumbnail_url: '',
     title: '',
     url: '',
@@ -52,15 +59,29 @@ export function ViewProjectDialog() {
   useEffect(() => {
     function loadProjectData() {
       try {
+        let project: any = {}
+
         if (
           applicationState.projectIdToHandle !== '' &&
-          applicationState.userData.projects.length > 0
+          applicationState.userData.projects.length > 0 &&
+          !discoveryProjectData
         ) {
-          const project = applicationState.userData.projects.find(
+          console.log('A')
+          project = applicationState.userData.projects.find(
             (obj: any) => obj.id === applicationState.projectIdToHandle,
           )
-          setProjectData(project)
+        } else if (
+          applicationState.projectIdToHandle !== '' &&
+          discoveryProjectData
+        ) {
+          console.log('B')
+          // trocar application.userData.projects pelos projetos da tela de descoberta
+          project = discoveryProjectData.find(
+            (obj: any) => obj.id === applicationState.projectIdToHandle,
+          )
         }
+
+        setProjectData(project)
       } catch (error) {
         console.error(error)
       }
@@ -68,6 +89,7 @@ export function ViewProjectDialog() {
 
     loadProjectData()
   }, [
+    discoveryProjectData,
     applicationState.viewProjectDialogIsOpen,
     applicationState.projectIdToHandle,
     applicationState.userData.projects,
@@ -76,6 +98,39 @@ export function ViewProjectDialog() {
   function formatDate(date: string): string {
     if (date) return format(date, 'MM/yy')
     return ''
+  }
+
+  /// Agrupa todas as verificações de dados usadas no componente dentro de um objeto
+  /// Dessa forma, o return do componente fica um pouco mais legível
+  type DataSourceType = {
+    createdAt: string
+    description: string
+    tags: Tag[]
+    thumbnail: string
+    title: string
+    url: string
+    userAvatar: string
+    userName: string
+  }
+  const projectDataSource: DataSourceType = {
+    createdAt:
+      formatDate(projectData.createdAt) ?? formatDate(String(new Date())),
+    description:
+      applicationState.projectPreview.description ||
+      projectData.description ||
+      '',
+    tags: applicationState.projectPreview.tagsList || projectData.tags,
+    thumbnail:
+      applicationState.projectPreview.thumbnail ||
+      projectData.thumbnail_url ||
+      defaultThumbnail,
+    title: applicationState.projectPreview.title || projectData.title || '',
+    url: applicationState.projectPreview.link || projectData.url || '',
+    userAvatar: applicationState.userData.avatarUrl ?? '',
+    userName:
+      applicationState.userData.firstName +
+      ' ' +
+      applicationState.userData.lastName,
   }
 
   return (
@@ -90,34 +145,23 @@ export function ViewProjectDialog() {
         </DialogCloseWrapper>
 
         <DialogContentWrapper>
-          <h1>
-            {applicationState.projectPreview.title || projectData.title || ''}
-          </h1>
+          <h1>{projectDataSource.title}</h1>
           <DialogHeader>
             <div id="general-info">
               <div id="user-info">
                 <img
                   id="avatar"
-                  src={applicationState.userData.avatarUrl ?? ''}
+                  src={projectDataSource.userAvatar}
                   alt="Avatar"
                 />
                 <div id="user-name">
-                  <h5 id="name-tag">
-                    {applicationState.userData.firstName +
-                      ' ' +
-                      applicationState.userData.lastName}
-                  </h5>
-                  <h6>
-                    {formatDate(projectData.createdAt) ??
-                      formatDate(String(new Date()))}
-                  </h6>
+                  <h5 id="name-tag">{projectDataSource.userName}</h5>
+                  <h6>{projectDataSource.createdAt}</h6>
                 </div>
               </div>
 
               <div id="tag-chips">
-                {(
-                  applicationState.projectPreview.tagsList || projectData.tags
-                ).map((tag: any, index) => {
+                {projectDataSource.tags.map((tag: any, index) => {
                   if (index < 2) {
                     return (
                       <Chip
@@ -133,32 +177,19 @@ export function ViewProjectDialog() {
 
             <img
               id="project-thumbnail"
-              src={
-                applicationState.projectPreview.thumbnail ||
-                projectData.thumbnail_url ||
-                defaultThumbnail
-              }
+              src={projectDataSource.thumbnail}
               alt=""
             />
           </DialogHeader>
 
           <DialogContent sx={{ padding: 0, overflow: 'hidden' }}>
-            <p>
-              {applicationState.projectPreview.description ||
-                projectData.description ||
-                ''}
-            </p>
+            <p>{projectDataSource.description}</p>
 
             <br />
             <br />
             <p>Download</p>
-            <a
-              href={
-                applicationState.projectPreview.link || projectData.url || ''
-              }
-              target="blank"
-            >
-              {applicationState.projectPreview.link || projectData.url || ''}
+            <a href={projectDataSource.url} target="blank">
+              {projectDataSource.url}
             </a>
           </DialogContent>
         </DialogContentWrapper>

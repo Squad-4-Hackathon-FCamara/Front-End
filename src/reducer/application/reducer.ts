@@ -29,7 +29,7 @@ export type ProjectDataType = {
   createdAt: string
   description: string
   id: string
-  tags: []
+  tags: Tag[]
   thumbnail_url: string
   title: string
   url: string

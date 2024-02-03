@@ -21,28 +21,32 @@ import { ViewProjectDialog } from '../../components/ViewProjectDialog'
 import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
 import { DeleteDialog } from '../../components/DeleteDialog'
 import { AxiosAPI } from '../../AxiosConfig'
-import { Tag } from '../../reducer/application/reducer'
+import { ProjectDataType, Tag } from '../../reducer/application/reducer'
 
 export function Discover() {
-  const { applicationState, toggleViewProjectDialogIsOpen } =
-    useContext(ApplicationContext)
+  const {
+    applicationState,
+    toggleViewProjectDialogIsOpen,
+    storeProjectIdToHandle,
+  } = useContext(ApplicationContext)
 
-  type ProjectType = {
-    createdAt: string
-    id: string
-    title: string
-    description: string
-    thumbnailUrl: string
-    tags: Tag[]
-    url: string
-    user: any
-  }
+  // type ProjectType = {
+  //   createdAt: string
+  //   id: string
+  //   title: string
+  //   description: string
+  //   thumbnailUrl: string
+  //   tags: Tag[]
+  //   url: string
+  //   user: any
+  // }
 
-  const [projects, setProjects] = useState([] as ProjectType[])
+  const [projects, setProjects] = useState([] as ProjectDataType[])
 
   const screenWidth = useScreenWidth()
 
-  function handleViewProject() {
+  function handleViewProject(projectId: string) {
+    storeProjectIdToHandle(projectId)
     toggleViewProjectDialogIsOpen(true)
   }
 
@@ -68,14 +72,14 @@ export function Discover() {
   function getProjects() {
     AxiosAPI.get('/project/discovery')
       .then((response) => {
-        const projectsList: ProjectType[] = response.data.message.map(
+        const projectsList: ProjectDataType[] = response.data.message.map(
           (obj: any) => {
-            const projectData: ProjectType = {
+            const projectData: ProjectDataType = {
               createdAt: obj.createdAt,
               id: obj.id,
               title: obj.title,
               description: obj.description,
-              thumbnailUrl: obj.thumbnail_url,
+              thumbnail_url: obj.thumbnail_url,
               tags: obj.tags,
               url: obj.url,
               user: obj.user,
@@ -85,6 +89,7 @@ export function Discover() {
           },
         )
 
+        console.log('DISCOVER: ', projectsList)
         setProjects(projectsList)
       })
       .catch((error) => {
@@ -145,11 +150,11 @@ export function Discover() {
               <Grid key={project.id} xs={12} sm={12} md={6} lg={4} xl={3}>
                 <ProjectCard
                   $thumbnailurl={
-                    project.thumbnailUrl
-                      ? project.thumbnailUrl
+                    project.thumbnail_url
+                      ? project.thumbnail_url
                       : defaultThumbnail
                   }
-                  onClick={handleViewProject}
+                  onClick={() => handleViewProject(project.id)}
                 ></ProjectCard>
                 <ProjectInfo>
                   <div id="avatar">
@@ -192,7 +197,7 @@ export function Discover() {
 
       <ProjectDialog />
       <SuccessDialog />
-      <ViewProjectDialog />
+      <ViewProjectDialog discoveryProjectData={projects} />
       <DeleteDialog />
     </PortfolioContainer>
   )
