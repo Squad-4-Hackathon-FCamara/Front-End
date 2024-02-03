@@ -25,6 +25,17 @@ export type ProjectPreview = {
   title: string
 }
 
+export type ProjectDataType = {
+  createdAt: string
+  description: string
+  id: string
+  tags: []
+  thumbnail_url: string
+  title: string
+  url: string
+  user: any
+}
+
 // Interface com as informações da aplicação
 export interface ApplicationState {
   addProjectDialogIsOpen: boolean

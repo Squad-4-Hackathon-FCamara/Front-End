@@ -12,7 +12,10 @@ import { Close } from '@mui/icons-material'
 import { useScreenWidth } from '../../hooks/useScreenWidth'
 import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
 import { format } from 'date-fns'
-import { ProjectPreview } from '../../reducer/application/reducer'
+import {
+  ProjectDataType,
+  ProjectPreview,
+} from '../../reducer/application/reducer'
 
 export function ViewProjectDialog() {
   const {
@@ -36,16 +39,6 @@ export function ViewProjectDialog() {
     toggleViewProjectDialogIsOpen(false)
   }
 
-  type projectDataType = {
-    createdAt: string
-    description: string
-    id: string
-    tags: []
-    thumbnail_url: string
-    title: string
-    url: string
-    user: any
-  }
   const [projectData, setProjectData] = useState({
     createdAt: '',
     description: '',
@@ -54,7 +47,7 @@ export function ViewProjectDialog() {
     thumbnail_url: '',
     title: '',
     url: '',
-  } as projectDataType)
+  } as ProjectDataType)
 
   useEffect(() => {
     function loadProjectData() {

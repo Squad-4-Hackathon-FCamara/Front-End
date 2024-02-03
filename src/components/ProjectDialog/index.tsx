@@ -34,7 +34,11 @@ import { useForm } from 'react-hook-form'
 import { ViewProjectDialog } from '../ViewProjectDialog'
 import { AxiosAPI } from '../../AxiosConfig'
 import { DeleteOutline } from '@mui/icons-material'
-import { ProjectPreview } from '../../reducer/application/reducer'
+import {
+  ProjectDataType,
+  ProjectPreview,
+  Tag,
+} from '../../reducer/application/reducer'
 
 export function ProjectDialog() {
   const {
@@ -180,13 +184,13 @@ export function ProjectDialog() {
 
   // Edita um projeto existente
   function updateRequestPatch(request: any) {
-    AxiosAPI.patch('/project', request, {
+    AxiosAPI.patch(`/project/${request.id}`, request, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
       .then((response) => {
-        if (response.status === 201) {
+        if (response.status === 200) {
           updateUserData()
           storeProjectIdToHandle('')
           toggleAddProjectDialogIsOpen(false)
@@ -211,6 +215,50 @@ export function ProjectDialog() {
     data.id ? updateRequestPatch(updateRequest) : saveProjectPost(createRequest)
   }
 
+  // useEffect para carregar as informações do projeto para edição
+  const [editProjectData, setEditProjectData] = useState({
+    createdAt: '',
+    description: '',
+    id: '',
+    tags: [],
+    thumbnail_url: '',
+    title: '',
+    url: '',
+  } as ProjectDataType)
+
+  useEffect(() => {
+    function loadProjectData() {
+      try {
+        if (
+          applicationState.projectIdToHandle !== '' &&
+          applicationState.userData.projects.length > 0
+        ) {
+          const project = applicationState.userData.projects.find(
+            (obj: any) => obj.id === applicationState.projectIdToHandle,
+          )
+          setEditProjectData(project)
+          setValue('id', project.id ?? '')
+          setValue('title', project.title ?? '')
+          setValue('tagsList', project.tags ?? ([] as Tag[]))
+          setValue('link', project.url ?? '')
+          setValue('description', project.description ?? '')
+          setValue('thumbnail', null) // Como obter novamente o arquivo de imagem?
+          setThumbnailPreview(project.thumbnail_url ?? '')
+          console.log(project)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    loadProjectData()
+  }, [
+    setValue,
+    applicationState.addProjectDialogIsOpen,
+    applicationState.projectIdToHandle,
+    applicationState.userData.projects,
+  ])
+
   // useEffect para limpar o formulário quando a página for recarregada
   useEffect(() => {
     const handleBeforeUnload = () => {
@@ -231,7 +279,7 @@ export function ProjectDialog() {
     <Dialog open={applicationState.addProjectDialogIsOpen} maxWidth={'xl'}>
       <form>
         <DialogContainer>
-          <h5>{'Adicionar Projeto'}</h5>
+          <h5>{editProjectData.id ? 'Editar projeto' : 'Adicionar Projeto'}</h5>
           <FormWrapper>
             <Tooltip
               title="Imagem nos formatos: JPG, PNG e GIF. Tamanho máximo: 1mb"
