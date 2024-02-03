@@ -245,7 +245,6 @@ export function ProjectDialog() {
           setValue('description', project.description ?? '')
           setValue('thumbnail', null)
           setThumbnailPreview(project.thumbnail_url ?? '')
-          console.log(project)
         }
       } catch (error) {
         console.error(error)

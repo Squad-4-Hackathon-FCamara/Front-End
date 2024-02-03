@@ -46,6 +46,20 @@ export function ViewProjectDialog({
     toggleViewProjectDialogIsOpen(false)
   }
 
+  // Busca os dados do usuário autor do projeto
+  // function getUserData(userId: string) {
+  //   let authorData: any = null
+
+  //   AxiosAPI.get(`user/${userId}`)
+  //     .then((response) => {
+  //       authorData = response.data
+  //       return authorData
+  //     })
+  //     .catch((error) => console.error(error))
+
+  //   return authorData
+  // }
+
   const [projectData, setProjectData] = useState({
     createdAt: '',
     description: '',
@@ -54,19 +68,19 @@ export function ViewProjectDialog({
     thumbnail_url: '',
     title: '',
     url: '',
+    user: {},
   } as ProjectDataType)
 
   useEffect(() => {
     function loadProjectData() {
       try {
-        let project: any = {}
+        let project: ProjectDataType = {} as ProjectDataType
 
         if (
           applicationState.projectIdToHandle !== '' &&
           applicationState.userData.projects.length > 0 &&
           !discoveryProjectData
         ) {
-          console.log('A')
           project = applicationState.userData.projects.find(
             (obj: any) => obj.id === applicationState.projectIdToHandle,
           )
@@ -74,11 +88,10 @@ export function ViewProjectDialog({
           applicationState.projectIdToHandle !== '' &&
           discoveryProjectData
         ) {
-          console.log('B')
-          // trocar application.userData.projects pelos projetos da tela de descoberta
-          project = discoveryProjectData.find(
-            (obj: any) => obj.id === applicationState.projectIdToHandle,
-          )
+          project =
+            discoveryProjectData.find(
+              (obj: any) => obj.id === applicationState.projectIdToHandle,
+            ) ?? ({} as ProjectDataType)
         }
 
         setProjectData(project)
@@ -100,8 +113,6 @@ export function ViewProjectDialog({
     return ''
   }
 
-  /// Agrupa todas as verificações de dados usadas no componente dentro de um objeto
-  /// Dessa forma, o return do componente fica um pouco mais legível
   type DataSourceType = {
     createdAt: string
     description: string
@@ -112,6 +123,9 @@ export function ViewProjectDialog({
     userAvatar: string
     userName: string
   }
+
+  /// Agrupa todas as verificações de dados usadas no componente dentro de um objeto
+  /// Dessa forma, o return do componente fica um pouco mais legível
   const projectDataSource: DataSourceType = {
     createdAt:
       formatDate(projectData.createdAt) ?? formatDate(String(new Date())),
@@ -119,18 +133,21 @@ export function ViewProjectDialog({
       applicationState.projectPreview.description ||
       projectData.description ||
       '',
-    tags: applicationState.projectPreview.tagsList || projectData.tags,
+    tags: projectData.tags || applicationState.projectPreview.tagsList,
     thumbnail:
       applicationState.projectPreview.thumbnail ||
       projectData.thumbnail_url ||
       defaultThumbnail,
     title: applicationState.projectPreview.title || projectData.title || '',
     url: applicationState.projectPreview.link || projectData.url || '',
-    userAvatar: applicationState.userData.avatarUrl ?? '',
+    userAvatar:
+      projectData?.user?.avatar_url ||
+      applicationState.userData.avatarUrl ||
+      '',
     userName:
-      applicationState.userData.firstName +
+      (projectData?.user?.firstName || applicationState.userData.firstName) +
       ' ' +
-      applicationState.userData.lastName,
+      (projectData?.user?.lastName || applicationState.userData.lastName),
   }
 
   return (
