@@ -30,7 +30,6 @@ import { useScreenWidth } from '../../hooks/useScreenWidth'
 import { ViewProjectDialog } from '../../components/ViewProjectDialog'
 import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
 import { DeleteDialog } from '../../components/DeleteDialog'
-import { AxiosAPI } from '../../AxiosConfig'
 import { format } from 'date-fns'
 import { Tag } from '../../reducer/application/reducer'
 
@@ -86,24 +85,30 @@ export function MyPortfolio() {
     return format(date, 'MM/yy')
   }
 
+  const [filteredProjects, setFilteredProjects] = useState([] as Tag[])
+  const [isFiltering, setIsFiltering] = useState(false)
+
+  // filtra os projetos pelas tags
   // É possível descartar um parâmetro que não será usado com underscore _
-  function filterByTags(_event: SyntheticEvent<Element, Event>, value: any) {
-    const params = new URLSearchParams()
+  function filterByTags(
+    _event: SyntheticEvent<Element, Event>,
+    selectedTags: Tag[],
+  ) {
+    if (selectedTags.length > 0) {
+      const filtered = applicationState.userData.projects.filter(
+        (projeto: any) =>
+          selectedTags.every((tag) =>
+            projeto.tags.some((projectTag: Tag) => projectTag.id === tag.id),
+          ),
+      )
+      console.log(filtered)
 
-    const tagIds = value.map((tag: Tag) => tag.id)
-    tagIds.map((id: string) => {
-      params.append('tags', id)
-    })
-
-    const request = {
-      params: params,
+      setFilteredProjects(filtered)
+      setIsFiltering(true)
+    } else {
+      setFilteredProjects([] as Tag[])
+      setIsFiltering(false)
     }
-
-    AxiosAPI.get('project/tags', request)
-      .then()
-      .catch((error) => {
-        console.error('Erro: ', error)
-      })
   }
 
   return (
@@ -172,7 +177,10 @@ export function MyPortfolio() {
           </Grid>
         ) : (
           <Grid container spacing={2}>
-            {applicationState.userData.projects.map((project: any) => (
+            {(isFiltering
+              ? filteredProjects
+              : applicationState.userData.projects
+            ).map((project: any) => (
               <Grid key={project.id} xs={12} sm={12} md={6} lg={4} xl={3}>
                 <ProjectCard
                   $thumbnailurl={
