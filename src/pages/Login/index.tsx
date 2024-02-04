@@ -115,8 +115,14 @@ export function Login() {
     setIsSnackbarOpen(false)
   }
 
+  // function handleLoginGoogle() {
+  //   window.open('http://localhost:3001/auth/login/google', '_self')
+  // }
   function handleLoginGoogle() {
-    window.open('http://localhost:3001/auth/login/google', '_self')
+    window.open(
+      'https://orange-portfolio-3fgq.onrender.com/auth/login/google',
+      '_self',
+    )
   }
 
   const handleShowPassword = () => setShowPassword((show) => !show)
