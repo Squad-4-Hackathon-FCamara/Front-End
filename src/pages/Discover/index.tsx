@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Chip, Hidden, Skeleton } from '@mui/material'
+import { Chip, Hidden, Skeleton, Tooltip } from '@mui/material'
 import {
   PortfolioContainer,
   ProfileCard,
@@ -157,7 +157,10 @@ export function Discover() {
                     <img src={project.user.avatar_url} alt="" />
                     <span>
                       <h5 id="name-tag">
-                        {project.user.firstName + ' ' + project.user.lastName}
+                        {project.user.firstName +
+                          ' ' +
+                          project.user.lastName[0] +
+                          '.'}
                       </h5>
                       {screenWidth > 768 ? <h5> • </h5> : <></>}
                       <h5>01/24</h5>
@@ -166,8 +169,21 @@ export function Discover() {
                   {screenWidth > 768 ? (
                     <div id="tag-chips">
                       {project.tags.slice(0, 2).map((tag) => {
-                        return <Chip key={tag.id} label={tag.tagName} />
+                        return (
+                          <Chip
+                            key={tag.id}
+                            label={tag.tagName}
+                            onClick={() => {}}
+                          />
+                        )
                       })}
+                      <Tooltip
+                        title="Mais tags..."
+                        arrow
+                        placement="bottom-end"
+                      >
+                        <Chip label="+2" onClick={() => {}} />
+                      </Tooltip>
                     </div>
                   ) : project.tags.length > 0 ? (
                     <div id="tag-chips">
@@ -175,6 +191,13 @@ export function Discover() {
                         key={project.tags[0].id}
                         label={project.tags[0].tagName}
                       />
+                      <Tooltip
+                        title="Mais tags..."
+                        arrow
+                        placement="bottom-end"
+                      >
+                        <Chip label="+3" onClick={() => {}} />
+                      </Tooltip>
                     </div>
                   ) : (
                     <></>

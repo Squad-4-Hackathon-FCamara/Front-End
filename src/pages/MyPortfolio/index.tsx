@@ -7,6 +7,7 @@ import {
   Menu,
   MenuItem,
   Skeleton,
+  Tooltip,
 } from '@mui/material'
 import {
   AddProjectCard,
@@ -258,7 +259,8 @@ export function MyPortfolio() {
                       <h5 id="name-tag">
                         {applicationState.userData.firstName +
                           ' ' +
-                          applicationState.userData.lastName}
+                          applicationState.userData.lastName[0] +
+                          '.'}
                       </h5>
                       {screenWidth > 768 ? <h5> • </h5> : <></>}
                       <h5>{formatDate(project.createdAt)}</h5>
@@ -275,6 +277,13 @@ export function MyPortfolio() {
                           />
                         )
                       })}
+                      <Tooltip
+                        title="Mais tags..."
+                        arrow
+                        placement="bottom-end"
+                      >
+                        <Chip label="+2" onClick={() => {}} />
+                      </Tooltip>
                     </div>
                   ) : project.tags.length > 0 ? (
                     <div id="tag-chips">
@@ -283,6 +292,13 @@ export function MyPortfolio() {
                         label={project.tags[0].tagName}
                         onClick={() => {}}
                       />
+                      <Tooltip
+                        title="Mais tags..."
+                        arrow
+                        placement="bottom-end"
+                      >
+                        <Chip label="+3" onClick={() => {}} />
+                      </Tooltip>
                     </div>
                   ) : (
                     <></>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Chip, Dialog, DialogContent } from '@mui/material'
+import { Chip, Dialog, DialogContent, Tooltip } from '@mui/material'
 import { DialogContainer } from '../ProjectDialog/style'
 import { useContext, useEffect, useState } from 'react'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
@@ -189,6 +189,9 @@ export function ViewProjectDialog({
                     )
                   }
                 })}
+                <Tooltip title="Mais tags..." arrow placement="bottom-end">
+                  <Chip label="+2" onClick={() => {}} />
+                </Tooltip>
               </div>
             </div>
 
