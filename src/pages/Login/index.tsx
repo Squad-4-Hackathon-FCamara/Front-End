@@ -57,11 +57,13 @@ export function Login() {
 
   // Conjunto de funções para manipular os inputs e o formulário
   function handleEmailInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsEmailValid(true)
+    if (event) setIsEmailValid(true)
+    setIsSnackbarOpen(false)
   }
 
   function handlePasswordInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsPasswordValid(true)
+    if (event) setIsPasswordValid(true)
+    setIsSnackbarOpen(false)
   }
 
   // Função para atualizar o estado que os campos usam para exibir erros
@@ -75,6 +77,8 @@ export function Login() {
         stateCallback(false)
       }
     }
+
+    setIsSnackbarOpen(true)
   }
 
   // Cuida do submit do formulário
@@ -98,16 +102,6 @@ export function Login() {
         setIsSnackbarOpen(true)
       })
   }
-
-  // function handleGoogleLogin() {
-  //   AxiosAPI.get('/auth/login/google')
-  //     .then((response) => {
-  //       navigate('/')
-  //     })
-  //     .catch(() => {
-  //       setIsSnackbarOpen(true)
-  //     })
-  // }
 
   // Cuida do fechamento da snackbar
   const handleCloseSnackbar = (

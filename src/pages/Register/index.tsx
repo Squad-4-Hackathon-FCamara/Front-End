@@ -57,20 +57,24 @@ export function Register() {
   const { register, handleSubmit } = registerForm
 
   /* Essas funções serão passadas pra validação no front end */
-  function handleEmailInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsEmailValid(true)
+  function handleEmailInputChange(event: any) {
+    if (event) setIsEmailValid(true)
+    setIsSnackbarOpen(false)
   }
 
-  function handlePasswordInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsPasswordValid(true)
+  function handlePasswordInputChange(event: any) {
+    if (event) setIsPasswordValid(true)
+    setIsSnackbarOpen(false)
   }
 
-  function handleFirstNameInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsFirstNameValid(true)
+  function handleFirstNameInputChange(event: any) {
+    if (event) setIsFirstNameValid(true)
+    setIsSnackbarOpen(false)
   }
 
-  function handleLastNameInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsLastNameValid(true)
+  function handleLastNameInputChange(event: any) {
+    if (event) setIsLastNameValid(true)
+    setIsSnackbarOpen(false)
   }
 
   function handleGoToLogin() {
@@ -80,15 +84,21 @@ export function Register() {
 
   // Função para atualizar o estado que os campos usam para exibir erros
   function updateValidation(error: any, fieldName: string, stateCallback: any) {
+    console.log('function start')
     if (Array.isArray(error)) {
       if (error?.find((msg: string) => msg.includes(fieldName))) {
         stateCallback(false)
+        console.log('if')
       }
     } else {
       if (error.includes(fieldName)) {
         stateCallback(false)
+        console.log('else')
       }
     }
+
+    setIsSnackbarOpen(true)
+    console.log('function end')
   }
 
   function handleRegisterClick(data: RegisterFormData) {
