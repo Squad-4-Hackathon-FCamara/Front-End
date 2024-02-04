@@ -17,7 +17,7 @@ import {
 } from '@mui/material'
 import IMGRegister from './../../assets/images/img-cadastro.svg'
 import { ImageContainer, MainWrapper, RegisterContainer } from './style'
-import { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import { AxiosAPI } from '../../AxiosConfig.ts'

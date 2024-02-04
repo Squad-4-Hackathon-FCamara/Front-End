@@ -2,7 +2,6 @@ import { Dialog, Button } from '@mui/material'
 import { useContext } from 'react'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { DialogWrapper } from './style'
-import SuccessGreen from './../../assets/images/success-green.svg'
 import { CheckCircleRounded } from '@mui/icons-material'
 
 export function SuccessDialog() {
