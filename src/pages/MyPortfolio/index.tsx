@@ -85,7 +85,7 @@ export function MyPortfolio() {
     return format(date, 'MM/yy')
   }
 
-  const [filteredProjects, setFilteredProjects] = useState([] as Tag[])
+  const [filteredProjects, setFilteredProjects] = useState([])
   const [isFiltering, setIsFiltering] = useState(false)
 
   // filtra os projetos pelas tags
@@ -106,7 +106,7 @@ export function MyPortfolio() {
       setFilteredProjects(filtered)
       setIsFiltering(true)
     } else {
-      setFilteredProjects([] as Tag[])
+      setFilteredProjects([])
       setIsFiltering(false)
     }
   }

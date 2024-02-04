@@ -30,17 +30,6 @@ export function Discover() {
     storeProjectIdToHandle,
   } = useContext(ApplicationContext)
 
-  // type ProjectType = {
-  //   createdAt: string
-  //   id: string
-  //   title: string
-  //   description: string
-  //   thumbnailUrl: string
-  //   tags: Tag[]
-  //   url: string
-  //   user: any
-  // }
-
   const [projects, setProjects] = useState([] as ProjectDataType[])
 
   const screenWidth = useScreenWidth()
@@ -50,23 +39,31 @@ export function Discover() {
     toggleViewProjectDialogIsOpen(true)
   }
 
-  function filterByTags(_event: SyntheticEvent<Element, Event>, value: any) {
-    const params = new URLSearchParams()
+  const [filteredProjects, setFilteredProjects] = useState(
+    [] as ProjectDataType[],
+  )
+  const [isFiltering, setIsFiltering] = useState(false)
 
-    const tagIds = value.map((tag: Tag) => tag.id)
-    tagIds.map((id: string) => {
-      params.append('tags', id)
-    })
+  // filtra os projetos pelas tags
+  // É possível descartar um parâmetro que não será usado com underscore _
+  function filterByTags(
+    _event: SyntheticEvent<Element, Event>,
+    selectedTags: Tag[],
+  ) {
+    if (selectedTags.length > 0) {
+      const filtered = projects.filter((projeto: any) =>
+        selectedTags.every((tag) =>
+          projeto.tags.some((projectTag: Tag) => projectTag.id === tag.id),
+        ),
+      )
+      console.log(filtered)
 
-    const request = {
-      params: params,
+      setFilteredProjects(filtered)
+      setIsFiltering(true)
+    } else {
+      setFilteredProjects([])
+      setIsFiltering(false)
     }
-
-    AxiosAPI.get('project/tags', request)
-      .then()
-      .catch((error) => {
-        console.error('Erro: ', error)
-      })
   }
 
   function getProjects() {
@@ -145,7 +142,7 @@ export function Discover() {
           </Grid>
         ) : (
           <Grid container spacing={2}>
-            {projects.map((project) => (
+            {(isFiltering ? filteredProjects : projects).map((project) => (
               <Grid key={project.id} xs={12} sm={12} md={6} lg={4} xl={3}>
                 <ProjectCard
                   $thumbnailurl={
