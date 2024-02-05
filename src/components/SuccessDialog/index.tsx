@@ -5,9 +5,11 @@ import { DialogWrapper } from './style'
 import { CheckCircleRounded } from '@mui/icons-material'
 
 export function SuccessDialog() {
+  // Contexto da aplicação
   const { applicationState, toggleSuccessDialog } =
     useContext(ApplicationContext)
 
+  // Fecha a janela
   function handleCloseDialog() {
     toggleSuccessDialog(false, '')
   }

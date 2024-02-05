@@ -23,17 +23,21 @@ import { signOut } from '@firebase/auth'
 import { auth } from '../../firebase'
 
 export function Header() {
+  // contexto da aplicação
   const { applicationState, storeUserData, storeTags } =
     useContext(ApplicationContext)
 
+  // hooks
   const navigate = useNavigate()
   const screenWidth = useScreenWidth()
 
+  // Estados responsáveis por menus dropdown
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [anchorLogout, setAnchorLogout] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const logoutOpen = Boolean(anchorLogout)
 
+  // Conjunto de funções para lidar com os menus
   const handleOpenMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -50,6 +54,7 @@ export function Header() {
     setAnchorLogout(null)
   }
 
+  // Verifica se o usuário está logado
   function isUserLoggedIn() {
     const isUserLoggedIn = Boolean(
       document.cookie
@@ -83,14 +88,14 @@ export function Header() {
     }
   }
 
-  // Busca dados do usuário logado
+  // Hook, busca dados do usuário logado
   useUserData()
 
   useEffect(() => {
-    // getUserData()
     getTags()
   }, [])
 
+  // Função para logout
   async function handleLogout() {
     const cookies = new Cookies()
 
@@ -154,7 +159,8 @@ export function Header() {
               <MenuItem
                 onClick={() => {
                   handleClose()
-                  redirect('/')
+                  // redirect('/')
+                  navigate('/discover')
                 }}
                 sx={{
                   '&:hover': {
@@ -169,7 +175,8 @@ export function Header() {
               <MenuItem
                 onClick={() => {
                   handleClose()
-                  redirect('/discover')
+                  // redirect('/discover')
+                  navigate('/discover')
                 }}
                 sx={{
                   '&:hover': {

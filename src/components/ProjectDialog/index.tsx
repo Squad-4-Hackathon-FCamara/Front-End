@@ -41,7 +41,9 @@ import {
 } from '../../reducer/application/reducer'
 import { defaultTheme } from '../../styles/themes/default'
 
+// Maior componente da nossa aplicação xD
 export function ProjectDialog() {
+  // Contexto da aplicação
   const {
     applicationState,
     toggleViewProjectDialogIsOpen,
@@ -52,11 +54,13 @@ export function ProjectDialog() {
     storeProjectIdToHandle,
   } = useContext(ApplicationContext)
 
+  // Hook para obter a largura da tela em tempo real
   const screenWidth = useScreenWidth()
 
+  // Estado de carregamento
   const [isloading, setIsLoading] = useState(false)
 
-  // Validação e formulário com Zod e React Hook Form
+  // Validação e formulário com Zod
   const projectValidationSchema = zod.object({
     id: zod.string(),
     title: zod.string().min(1, { message: 'Insira o nome do projeto' }),
@@ -66,8 +70,10 @@ export function ProjectDialog() {
     thumbnail: zod.any(),
   })
 
+  // Obtpem o tipo do validation schema
   type ProjectFormData = zod.infer<typeof projectValidationSchema>
 
+  // Define os tipos do formulário
   const projectForm = useForm<ProjectFormData>({
     resolver: zodResolver(projectValidationSchema),
     defaultValues: {
@@ -80,6 +86,7 @@ export function ProjectDialog() {
     },
   })
 
+  // Inicia o formulário
   const { register, setValue, getValues, handleSubmit } = projectForm
 
   // Mecanismo para fazer o upload de uma imagem
@@ -99,11 +106,13 @@ export function ProjectDialog() {
     }
   }
 
+  // Remove a imagem selecionada
   function handleRemovePreviewImage() {
     setThumbnail(null)
     setThumbnailPreview('')
   }
 
+  // Abre a pré-visualização do projeto
   function handleOpenPreview() {
     const projectData = getValues()
     const previewData: ProjectPreview = {
@@ -119,6 +128,7 @@ export function ProjectDialog() {
     toggleViewProjectDialogIsOpen(true)
   }
 
+  // Limpa o formulário
   function cleanForm() {
     setValue('id', '')
     setValue('title', '')
@@ -149,8 +159,7 @@ export function ProjectDialog() {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
   const checkedIcon = <CheckBoxIcon fontSize="small" />
 
-  // Quando eu tento fazer essa busca usando um hook customizado, eu tenho um loop infinito
-  // Buscar outra forma de reaproveitar essa função em outros componentes
+  // Atualiza a lista de projetos do usuário
   const updateUserData = async () => {
     const token = document.cookie
       .split('; ')
@@ -230,6 +239,7 @@ export function ProjectDialog() {
       })
   }
 
+  // Decide se estamos adicionando ou editando um projeto
   function handleSaveProject(data: ProjectFormData) {
     const createRequest = {
       title: data.title,
@@ -245,7 +255,7 @@ export function ProjectDialog() {
     setIsLoading(true)
   }
 
-  // useEffect para carregar as informações do projeto para edição
+  // useState e useEffect para carregar as informações do projeto para edição
   const [editProjectData, setEditProjectData] = useState({
     createdAt: '',
     description: '',

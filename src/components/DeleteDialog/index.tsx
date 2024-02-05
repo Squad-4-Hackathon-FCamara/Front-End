@@ -5,6 +5,7 @@ import { DialogWrapper } from './style'
 import { AxiosAPI } from '../../AxiosConfig'
 
 export function DeleteDialog() {
+  // Contexto da aplicação
   const {
     applicationState,
     toggleDeleteDialog,
@@ -13,18 +14,19 @@ export function DeleteDialog() {
     storeUserData,
   } = useContext(ApplicationContext)
 
+  // Fecha a janela
   function handleCloseDialog() {
     storeProjectIdToHandle('')
     toggleDeleteDialog(false)
   }
 
-  // Quando eu tento fazer essa busca usando um hook customizado, eu tenho um loop infinito
-  // Buscar outra forma de reaproveitar essa função em outros componentes
+  // Obtém o token de autenticação do usuário
   const token = document.cookie
     .split('; ')
     .find((cookie) => cookie.startsWith('token='))
     ?.split('=')[1]
 
+  // Requisição para login
   const updateUserData = async () => {
     await AxiosAPI.get('user/me/data', {
       headers: {
@@ -45,12 +47,8 @@ export function DeleteDialog() {
       })
   }
 
+  // Exclui um projeto pelo seu ID
   function handleDelete() {
-    const token = document.cookie
-      .split('; ')
-      .find((cookie) => cookie.startsWith('token='))
-      ?.split('=')[1]
-
     AxiosAPI.delete(`/project/${applicationState.projectIdToHandle}`, {
       headers: {
         'Authorization': `Bearer ${token}`,

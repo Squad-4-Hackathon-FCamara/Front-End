@@ -25,6 +25,7 @@ interface ViewProjectDialogProps {
 export function ViewProjectDialog({
   discoveryProjectData,
 }: ViewProjectDialogProps) {
+  // Contexto da aplicação
   const {
     applicationState,
     toggleViewProjectDialogIsOpen,
@@ -32,8 +33,10 @@ export function ViewProjectDialog({
     storeProjectPreview,
   } = useContext(ApplicationContext)
 
+  // Hook para obter largura da tela
   const screenWidth = useScreenWidth()
 
+  // Fecha a janela
   function handleCloseDialog() {
     storeProjectIdToHandle('')
     storeProjectPreview({
@@ -46,20 +49,7 @@ export function ViewProjectDialog({
     toggleViewProjectDialogIsOpen(false)
   }
 
-  // Busca os dados do usuário autor do projeto
-  // function getUserData(userId: string) {
-  //   let authorData: any = null
-
-  //   AxiosAPI.get(`user/${userId}`)
-  //     .then((response) => {
-  //       authorData = response.data
-  //       return authorData
-  //     })
-  //     .catch((error) => console.error(error))
-
-  //   return authorData
-  // }
-
+  // Estado com as informações para pré-visualização
   const [projectData, setProjectData] = useState({
     createdAt: '',
     description: '',
@@ -71,12 +61,14 @@ export function ViewProjectDialog({
     user: {},
   } as ProjectDataType)
 
+  // Busca os dados para visualização
   useEffect(() => {
     function loadProjectData() {
       try {
         let project: ProjectDataType = {} as ProjectDataType
 
         if (
+          // Projetos do usuário logado
           applicationState.projectIdToHandle !== '' &&
           applicationState.userData.projects.length > 0 &&
           !discoveryProjectData
@@ -85,6 +77,7 @@ export function ViewProjectDialog({
             (obj: any) => obj.id === applicationState.projectIdToHandle,
           )
         } else if (
+          // Projetos de todos os usuários
           applicationState.projectIdToHandle !== '' &&
           discoveryProjectData
         ) {
@@ -108,11 +101,13 @@ export function ViewProjectDialog({
     applicationState.userData.projects,
   ])
 
+  // Formata a data de criação dos projetos
   function formatDate(date: string): string {
     if (date) return format(date, 'MM/yy')
     return ''
   }
 
+  // Tipo usado abaixo
   type DataSourceType = {
     createdAt: string
     description: string

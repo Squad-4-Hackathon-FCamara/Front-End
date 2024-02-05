@@ -14,6 +14,7 @@ export function isUserLoggedIn() {
   return isUserLoggedIn
 }
 
+// Hook customizado, busca os dados do usuário logado
 export function useUserData() {
   const { storeUserData } = useContext(ApplicationContext)
 

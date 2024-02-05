@@ -24,21 +24,26 @@ import { AxiosAPI } from '../../AxiosConfig'
 import { ProjectDataType, Tag } from '../../reducer/application/reducer'
 
 export function Discover() {
+  // Contexto da aplicação
   const {
     applicationState,
     toggleViewProjectDialogIsOpen,
     storeProjectIdToHandle,
   } = useContext(ApplicationContext)
 
+  // Estado que armazena os projetos
   const [projects, setProjects] = useState([] as ProjectDataType[])
 
+  // Hook para ober largura da tela
   const screenWidth = useScreenWidth()
 
+  // Abre janela de visualização
   function handleViewProject(projectId: string) {
     storeProjectIdToHandle(projectId)
     toggleViewProjectDialogIsOpen(true)
   }
 
+  // Estado que armazena projetos filtrados
   const [filteredProjects, setFilteredProjects] = useState(
     [] as ProjectDataType[],
   )
@@ -66,6 +71,7 @@ export function Discover() {
     }
   }
 
+  // Obtem todos os projetos
   function getProjects() {
     const token = document.cookie
       .split('; ')
