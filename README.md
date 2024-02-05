@@ -46,10 +46,16 @@ npm run dev
 ```
 4º passo - Acesse a url localhost que foi gerada.
 
-## Contribuidores
+## 🤝 Colaboradores
 
-* [Gustavo Lima](https://github.com/gustas01)<br>
-* [Giovani de Oliveira](https://github.com/Giovani-O)<br>
-* [Paulo Ricardo](https://github.com/Paulo-Ricard0)<br>
-* [Thayna Baima](https://github.com/thaynahakan)<br>
-* [Carlos Richard](https://github.com/Crichard7)<br>
+Este projeto foi desenvolvido com a colaboração de:
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/gustas01"><img src="https://firebasestorage.googleapis.com/v0/b/uploads-58ebc.appspot.com/o/gustavo.jpeg?alt=media&token=f3033590-35d0-4456-8814-eb29e7274879" width="80px;" alt="Foto Gustavo Lima"/><br /><sub><b>Gustavo Lima</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/Paulo-Ricard0"><img src="https://firebasestorage.googleapis.com/v0/b/uploads-58ebc.appspot.com/o/paulo.jpeg?alt=media&token=8658818a-1377-478a-884e-03efc40f2980" width="80px" alt="Foto Paulo Ricardo"/><br /><sub><b>Paulo Ricardo</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/Giovani-O"><img src="https://firebasestorage.googleapis.com/v0/b/uploads-58ebc.appspot.com/o/giovani.jpeg?alt=media&token=c4e4f454-0f67-46da-9313-652a384aa7f4" width="80px" alt="Foto Giovani Oliveira"/><br /><sub><b>Giovani Oliveira</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/thaynahakan"><img src="https://firebasestorage.googleapis.com/v0/b/uploads-58ebc.appspot.com/o/thayna.jpeg?alt=media&token=7d83c892-4fbf-4bb9-a1de-e2f79a1d34df" width="80px" alt="Foto Thayna Bittencourt"/><br /><sub><b>Thayna Bittencourt</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/Crichard7"><img src="https://firebasestorage.googleapis.com/v0/b/uploads-58ebc.appspot.com/o/carlos.jpeg?alt=media&token=0128e2be-29f6-405b-b319-1e32b8eaf5bd" width="80px" alt="Foto Carlos Richard"/><br /><sub><b>Carlos Richard</b></sub></a><br /></td>
+  </tr>
+</table>
