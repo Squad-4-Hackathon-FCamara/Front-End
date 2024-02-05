@@ -137,7 +137,7 @@ export function Login() {
   }
 
   function handleLoginGoogle() {
-    window.open('http://localhost:3001/auth/login/google', '_self')
+    window.open('https://orange-portfolio-3fgq.onrender.com/', '_self')
   }
   // function handleLoginGoogle() {
   //   window.open(
