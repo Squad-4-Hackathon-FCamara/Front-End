@@ -5,6 +5,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import { Tag } from '../../reducer/application/reducer'
 import { SyntheticEvent } from 'react'
 
+// Interface do autocomplete
 interface BaseAutocompleteProps {
   items: Tag[]
   onChange: (_event: SyntheticEvent<Element, Event>, value: any) => void

@@ -1,7 +1,8 @@
-import { Outlet } from "react-router-dom";
-import { LayoutContainer, Spacer } from "./style";
-import { Header } from "../../components/Header";
+import { Outlet } from 'react-router-dom'
+import { LayoutContainer, Spacer } from './style'
+import { Header } from '../../components/Header'
 
+// layou padrão da aplicação
 export function DefaultLayout() {
   return (
     <LayoutContainer>
@@ -9,5 +10,5 @@ export function DefaultLayout() {
       <Spacer />
       <Outlet />
     </LayoutContainer>
-  );
+  )
 }

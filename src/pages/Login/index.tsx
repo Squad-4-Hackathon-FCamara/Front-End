@@ -30,7 +30,7 @@ import { useNavigate } from 'react-router'
 import Cookies from 'universal-cookie'
 
 export function Login() {
-  // Estados para o form, talvez possa ser substituído por um reducer no futuro
+  // Estados para o form
   const [showPassword, setShowPassword] = useState(false)
   const [isEmailValid, setIsEmailValid] = useState(true)
   const [isPasswordValid, setIsPasswordValid] = useState(true)
@@ -45,8 +45,10 @@ export function Login() {
     password: zod.string(),
   })
 
+  // Obtem tipo do validation schema
   type LoginFormData = zod.infer<typeof loginValidationSchema>
 
+  // Define os tipos do formulário
   const loginForm = useForm<LoginFormData>({
     resolver: zodResolver(loginValidationSchema),
     defaultValues: {
@@ -55,6 +57,7 @@ export function Login() {
     },
   })
 
+  // Cria o formulário
   const { register, handleSubmit } = loginForm
 
   // Conjunto de funções para manipular os inputs e o formulário

@@ -35,6 +35,7 @@ import { format } from 'date-fns'
 import { Tag } from '../../reducer/application/reducer'
 
 export function MyPortfolio() {
+  // Contexto da aplicação
   const {
     applicationState,
     toggleAddProjectDialogIsOpen,
@@ -43,12 +44,15 @@ export function MyPortfolio() {
     storeProjectIdToHandle,
   } = useContext(ApplicationContext)
 
+  // Hook para obter largura da tela
   const screenWidth = useScreenWidth()
 
+  // Ancora de abertura do menu dos projetos
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const isMenuOpen = Boolean(anchorEl)
 
+  // Funções utilizadas no card de projetos
   function handleOpenProjectMenu(
     event: MouseEvent<HTMLButtonElement>,
     projectId: string,
@@ -82,10 +86,12 @@ export function MyPortfolio() {
     toggleDeleteDialog(true)
   }
 
+  // Formata a data de criação
   function formatDate(date: Date): string {
     return format(date, 'MM/yy')
   }
 
+  // Estados para gerenciar os filtros
   const [filteredProjects, setFilteredProjects] = useState([])
   const [isFiltering, setIsFiltering] = useState(false)
 

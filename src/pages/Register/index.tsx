@@ -35,6 +35,7 @@ export function Register() {
 
   const navigate = useNavigate()
 
+  // Cria validation schema do formulário
   const registerValidationSchema = zod.object({
     firstName: zod.string(),
     lastName: zod.string(),
@@ -42,8 +43,10 @@ export function Register() {
     password: zod.string(),
   })
 
+  // Obtém tipo do schema
   type RegisterFormData = zod.infer<typeof registerValidationSchema>
 
+  // Define os tipos do formulário
   const registerForm = useForm<RegisterFormData>({
     resolver: zodResolver(registerValidationSchema),
     defaultValues: {
@@ -54,6 +57,7 @@ export function Register() {
     },
   })
 
+  // Cria o formulário
   const { register, handleSubmit } = registerForm
 
   /* Essas funções serão passadas pra validação no front end */
@@ -101,6 +105,7 @@ export function Register() {
     console.log('function end')
   }
 
+  // Cadastra um novo usuário
   function handleRegisterClick(data: RegisterFormData) {
     const request = {
       email: data.email,
@@ -127,6 +132,7 @@ export function Register() {
       })
   }
 
+  // Cuida do fechamento da snackbar
   const handleCloseSnackbar = (
     event: React.SyntheticEvent | Event,
     reason?: string,
