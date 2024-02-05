@@ -1,17 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Nesse arquivo são definidas as ações que o reducer pode executar
+
+import { ProjectPreview, Tag } from './reducer'
 
 export enum ActionTypes {
   TOGGLE_ADD_PROJECT_DIALOG = 'TOGGLE_ADD_PROJECT_DIALOG',
   TOGGLE_VIEW_PROJECT_DIALOG = 'TOGGLE_VIEW_PROJECT_DIALOG',
   TOGGLE_SUCCESS_DIALOG = 'TOGGLE_SUCCESS_DIALOG',
   TOGGLE_DELETE_DIALOG = 'TOGGLE_DELETE_DIALOG',
-  STORE_PROJECT_ID_TO_DELETE = 'STORE_PROJECT_ID_TO_DELETE',
-  // CLEAN_PROJECT_DIALOG = 'CLEAN_PROJECT_DIALOG',
-  // LOGIN_WITH_EMAIL = 'LOGIN_WITH_EMAIL',
-  // LOGIN_WITH_GOOGLE = 'LOGIN_WITH_GOOGLE',
-  // REGISTER_USER = 'REGISTER_USER',
-  // ADD_NEW_PROJECT = 'ADD_NEW_PROJECT',
-  // DELETE_PROJECT = 'DELETE_PROJECT',
+  STORE_PROJECT_ID_TO_HANDLE = 'STORE_PROJECT_ID_TO_HANDLE',
+  STORE_USER_DATA = 'STORE_USER_DATA',
+  // STORE_PROJECT_ID_TO_VIEW = 'STORE_PROJECT_ID_TO_VIEW',
+  STORE_PROJECT_PREVIEW = 'STORE_PROJECT_PREVIEW',
+  STORE_TAGS = 'STORE_TAGS',
 }
 
 // Abre dialog de criação de projetos
@@ -57,89 +58,61 @@ export function toggleDeleteDialogAction(isOpen: boolean) {
   }
 }
 
-// Armazena o ID do projeto que será excluído
-export function storeProjectIdToDeleteAction(projectId: string) {
+// Armazena o ID do projeto que será editado/excluído
+export function storeProjectIdToHandleAction(projectId: string) {
   return {
-    type: ActionTypes.STORE_PROJECT_ID_TO_DELETE,
+    type: ActionTypes.STORE_PROJECT_ID_TO_HANDLE,
     payload: {
       projectId,
     },
   }
 }
 
-// Limpa o dialog de projeto
-// export function cleanProjectDialogAction() {
-//   return {
-//     type: ActionTypes.CLEAN_PROJECT_DIALOG,
-//   }
-// }
+// Armazena dados do usuário logado
+export function storeUserDataAction(
+  id: string,
+  firstName: string,
+  lastName: string,
+  avatarUrl: string,
+  projects: any,
+) {
+  return {
+    type: ActionTypes.STORE_USER_DATA,
+    payload: {
+      id,
+      firstName,
+      lastName,
+      avatarUrl,
+      projects,
+    },
+  }
+}
 
-// Login com email
-// export function loginWithEmailAction(email: string, password: string) {
+// // Armazena o ID do projeto que será visualizado
+// export function storeProjectIdToViewAction(projectId: string) {
 //   return {
-//     type: ActionTypes.LOGIN_WITH_EMAIL,
+//     type: ActionTypes.STORE_PROJECT_ID_TO_VIEW,
 //     payload: {
-//       email,
-//       password,
+//       projectId,
 //     },
 //   }
 // }
 
-// Login com google
-// export function loginWithGoogleAction() {
-//   return {
-//     type: ActionTypes.LOGIN_WITH_EMAIL,
-//   }
-// }
+// Armazena o projeto não salvo para ser pré-visualizado
+export function storeProjectPreviewAction(project: ProjectPreview) {
+  return {
+    type: ActionTypes.STORE_PROJECT_PREVIEW,
+    payload: {
+      project,
+    },
+  }
+}
 
-// Cadastro de usuário
-// export function registerUserAction(
-//   firstName: string,
-//   lastName: string,
-//   email: string,
-//   password: string,
-// ) {
-//   return {
-//     type: ActionTypes.REGISTER_USER,
-//     payload: {
-//       firstName,
-//       lastName,
-//       email,
-//       password,
-//     },
-//   }
-// }
-
-// Adicionar novo projeto
-// export function addNewProjectAction(
-//   id: string,
-//   userId: string,
-//   title: string,
-//   tags: string[],
-//   link: string,
-//   description: string,
-//   thumbnail: File,
-// ) {
-//   return {
-//     type: ActionTypes.ADD_NEW_PROJECT,
-//     payload: {
-//       id,
-//       userId,
-//       title,
-//       tags,
-//       link,
-//       description,
-//       thumbnail,
-//     },
-//   }
-// }
-
-// Exclui um projeto pelo ID
-// export function deleteProjectAction(id: string) {
-//   return {
-//     type: ActionTypes.DELETE_PROJECT,
-//     payload: {
-//       id,
-//     },
-//   }
-// }
+export function storeTagsAction(tags: Tag[]) {
+  return {
+    type: ActionTypes.STORE_TAGS,
+    payload: {
+      tags,
+    },
+  }
+}

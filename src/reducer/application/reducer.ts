@@ -1,18 +1,40 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Reducer é uma forma de organizar as funções da aplicação em um só lugar
-// Ele ajuda muito a manter o código mais limpo nos componentes
 
 import { produce } from 'immer'
 import { ActionTypes } from './actions'
 
-// export type Project = {
-//   id: string
-//   userId: string
-//   title: string
-//   tags: string[]
-//   link: string
-//   description: string
-//   thumbnail: File
-// }
+export type UserData = {
+  id: ''
+  firstName: ''
+  lastName: ''
+  avatarUrl: ''
+  projects: any
+}
+
+export type Tag = {
+  id: string
+  tagName: string
+}
+
+export type ProjectPreview = {
+  description: string
+  link: string
+  tagsList: Tag[]
+  thumbnail: string
+  title: string
+}
+
+export type ProjectDataType = {
+  createdAt: string
+  description: string
+  id: string
+  tags: Tag[]
+  thumbnail_url: string
+  title: string
+  url: string
+  user: any
+}
 
 // Interface com as informações da aplicação
 export interface ApplicationState {
@@ -21,17 +43,11 @@ export interface ApplicationState {
   successDialogIsOpen: boolean
   successDialogMessage: string
   deleteDialogIsOpen: boolean
-  projectIdToDelete: string
-  // projectInEditor: {
-  //   id: string
-  //   userId: string
-  //   title: string
-  //   tags: string[]
-  //   link: string
-  //   description: string
-  //   thumbnail: File
-  // }
-  // projectsList: Project[]
+  projectIdToHandle: string
+  userData: UserData
+  // projectIdToView: string
+  projectPreview: ProjectPreview
+  tags: Tag[]
 }
 
 // Inicia o reducer
@@ -65,66 +81,41 @@ export function applicationReducer(state: ApplicationState, action: any) {
       })
 
     // Armazena id do projeto a ser excluído
-    case ActionTypes.STORE_PROJECT_ID_TO_DELETE:
+    case ActionTypes.STORE_PROJECT_ID_TO_HANDLE:
       return produce(state, (draft) => {
-        draft.projectIdToDelete = action.payload.projectId
+        draft.projectIdToHandle = action.payload.projectId
       })
 
-    // Limpa dialog de projetos
-    // case ActionTypes.CLEAN_PROJECT_DIALOG:
+    // Armazena dados do usuário logado
+    case ActionTypes.STORE_USER_DATA:
+      return produce(state, (draft) => {
+        draft.userData = {
+          id: action.payload.id,
+          firstName: action.payload.firstName,
+          lastName: action.payload.lastName,
+          avatarUrl: action.payload.avatarUrl,
+          projects: action.payload.projects,
+        } as UserData
+      })
+
+    // Armazena id do projeto a ser visualizado
+    // case ActionTypes.STORE_PROJECT_ID_TO_VIEW:
     //   return produce(state, (draft) => {
-    //     draft.projectInEditor = {
-    //       id: '',
-    //       userId: '',
-    //       title: '',
-    //       tags: [] as string[],
-    //       link: '',
-    //       description: '',
-    //       thumbnail: {} as File,
-    //     }
+    //     draft.projectIdToView = action.payload.projectId
     //   })
 
-    // Login com email
-    // case ActionTypes.LOGIN_WITH_EMAIL:
-    //   return state
+    // Armazena o projeto não salvo para ser pré-visualizado
+    case ActionTypes.STORE_PROJECT_PREVIEW:
+      return produce(state, (draft) => {
+        draft.projectPreview = {} as ProjectPreview // Inicia projectPreview
+        draft.projectPreview = action.payload.project
+      })
 
-    // Login com Google
-    // case ActionTypes.LOGIN_WITH_GOOGLE:
-    //   return state
-
-    // Cadastro de usuário
-    // case ActionTypes.REGISTER_USER:
-    //   return state
-
-    // Adicionar projeto
-    // case ActionTypes.ADD_NEW_PROJECT:
-    //   return produce(state, (draft) => {
-    //     console.log('Thumbnail: ', action.payload.thumbnail)
-    //     if (!draft.projectsList) draft.projectsList = []
-
-    //     const project: Project = {
-    //       id: action.payload.id
-    //         ? action.payload.id
-    //         : String(draft.projectsList.length + 1),
-    //       userId: '',
-    //       title: action.payload.title,
-    //       tags: action.payload.tags,
-    //       link: action.payload.link,
-    //       description: action.payload.description,
-    //       thumbnail: action.payload.thumbnail,
-    //     }
-
-    //     draft.projectsList.push(project)
-    //     draft.projectInEditor = project
-    //   })
-
-    // Exclui um projeto pelo ID
-    // case ActionTypes.DELETE_PROJECT:
-    //   return produce(state, (draft) => {
-    //     draft.projectsList = draft.projectsList.filter(
-    //       (project) => project.id !== action.payload.id,
-    //     )
-    //   })
+    // Armazena as tags
+    case ActionTypes.STORE_TAGS:
+      return produce(state, (draft) => {
+        draft.tags = action.payload.tags
+      })
 
     default:
       return state

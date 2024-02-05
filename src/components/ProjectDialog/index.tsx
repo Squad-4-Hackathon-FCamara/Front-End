@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   MouseEvent,
   ChangeEvent,
@@ -14,13 +15,16 @@ import {
   DialogContainer,
   FormWrapper,
   ThumbnailContainer,
+  ThumbnailPreview,
 } from './style'
 import {
   Autocomplete,
   Button,
   Checkbox,
   Dialog,
+  IconButton,
   TextField,
+  Tooltip,
 } from '@mui/material'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
@@ -28,6 +32,14 @@ import CollectionsImage from './../../assets/images/collections.svg'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { ViewProjectDialog } from '../ViewProjectDialog'
+import { AxiosAPI } from '../../AxiosConfig'
+import { DeleteOutline } from '@mui/icons-material'
+import {
+  ProjectDataType,
+  ProjectPreview,
+  Tag,
+} from '../../reducer/application/reducer'
+import { defaultTheme } from '../../styles/themes/default'
 
 export function ProjectDialog() {
   const {
@@ -35,12 +47,18 @@ export function ProjectDialog() {
     toggleViewProjectDialogIsOpen,
     toggleAddProjectDialogIsOpen,
     toggleSuccessDialog,
+    storeUserData,
+    storeProjectPreview,
+    storeProjectIdToHandle,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
 
+  const [isloading, setIsLoading] = useState(false)
+
   // Validação e formulário com Zod e React Hook Form
   const projectValidationSchema = zod.object({
+    id: zod.string(),
     title: zod.string().min(1, { message: 'Insira o nome do projeto' }),
     tagsList: zod.any(),
     link: zod.string().min(1, { message: 'Insira o link do projeto' }),
@@ -53,6 +71,7 @@ export function ProjectDialog() {
   const projectForm = useForm<ProjectFormData>({
     resolver: zodResolver(projectValidationSchema),
     defaultValues: {
+      id: '',
       title: '',
       tagsList: [] as string[],
       link: '',
@@ -61,50 +80,195 @@ export function ProjectDialog() {
     },
   })
 
-  const { register, setValue, handleSubmit } = projectForm
+  const { register, setValue, getValues, handleSubmit } = projectForm
 
   // Mecanismo para fazer o upload de uma imagem
   const [thumbnail, setThumbnail] = useState<File | null>(null)
+  const [thumbnailPreview, setThumbnailPreview] = useState('')
 
   const imageInputRef = useRef<HTMLInputElement>(null)
   function handleUploadImage(event: MouseEvent<HTMLDivElement>) {
-    console.log(event)
-    imageInputRef.current?.click()
+    if (event) imageInputRef.current?.click()
   }
 
   function handleChangeImage(event: ChangeEvent<HTMLInputElement>) {
     const image = event.target?.files?.[0]
     if (image) {
       setThumbnail(image)
-      console.log('Imagem: ', image)
+      setThumbnailPreview(URL.createObjectURL(image ?? ({} as File)))
     }
   }
 
+  function handleRemovePreviewImage() {
+    setThumbnail(null)
+    setThumbnailPreview('')
+  }
+
   function handleOpenPreview() {
+    const projectData = getValues()
+    const previewData: ProjectPreview = {
+      description: projectData.description,
+      link: projectData.link,
+      tagsList: projectData.tagsList,
+      thumbnail: thumbnailPreview,
+      title: projectData.title,
+    }
+
+    storeProjectPreview(previewData)
+
     toggleViewProjectDialogIsOpen(true)
+  }
+
+  function cleanForm() {
+    setValue('id', '')
+    setValue('title', '')
+    setValue('tagsList', [])
+    setValue('link', '')
+    setValue('description', '')
+    setValue('thumbnail', null)
+    setThumbnail(null)
+    setThumbnailPreview('')
+    setIsLoading(false)
   }
 
   // Fecha o dialog
   function handleClose() {
+    storeProjectPreview({
+      description: '',
+      link: '',
+      tagsList: [],
+      thumbnail: '',
+      title: '',
+    } as ProjectPreview)
+
+    storeProjectIdToHandle('')
+    cleanForm()
     toggleAddProjectDialogIsOpen(false)
   }
 
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
   const checkedIcon = <CheckBoxIcon fontSize="small" />
 
-  function handleSaveProject(data: ProjectFormData) {
-    console.log(data)
+  // Quando eu tento fazer essa busca usando um hook customizado, eu tenho um loop infinito
+  // Buscar outra forma de reaproveitar essa função em outros componentes
+  const updateUserData = async () => {
+    await AxiosAPI.get('user/me/data')
+      .then((response) => {
+        storeUserData(
+          response.data.id,
+          response.data.firstName,
+          response.data.lastName,
+          response.data.avatar_url,
+          response.data.projects,
+        )
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
 
-    if (thumbnail) {
-      console.log('Estado: ', thumbnail)
+  // Salva um novo projeto
+  function saveProjectPost(request: any) {
+    AxiosAPI.post('/project', request, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          updateUserData()
+          storeProjectIdToHandle('')
+          toggleAddProjectDialogIsOpen(false)
+          toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
+          cleanForm()
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false)
+        console.error(error)
+      })
+  }
+
+  // Edita um projeto existente
+  function updateRequestPatch(request: any) {
+    AxiosAPI.patch(`/project/${request.id}`, request, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          updateUserData()
+          storeProjectIdToHandle('')
+          toggleAddProjectDialogIsOpen(false)
+          toggleSuccessDialog(true, 'Edição concluída com sucesso!')
+          cleanForm()
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false)
+        console.error(error)
+      })
+  }
+
+  function handleSaveProject(data: ProjectFormData) {
+    const createRequest = {
+      title: data.title,
+      tags: data.tagsList.map((tag: any) => tag.id),
+      url: data.link,
+      description: data.description,
+      file: thumbnail,
     }
 
-    // Se o projeto tiver id, a mensagem do toggleSuccessDialog será:
-    // "Edição concluída com sucesso!"
+    const updateRequest = { ...createRequest, id: data.id }
 
-    toggleAddProjectDialogIsOpen(false)
-    toggleSuccessDialog(true, 'Projeto adicionado com sucesso!')
+    data.id ? updateRequestPatch(updateRequest) : saveProjectPost(createRequest)
+    setIsLoading(true)
   }
+
+  // useEffect para carregar as informações do projeto para edição
+  const [editProjectData, setEditProjectData] = useState({
+    createdAt: '',
+    description: '',
+    id: '',
+    tags: [] as Tag[],
+    thumbnail_url: '',
+    title: '',
+    url: '',
+  } as ProjectDataType)
+
+  useEffect(() => {
+    function loadProjectData() {
+      try {
+        if (
+          applicationState.projectIdToHandle !== '' &&
+          applicationState.userData.projects.length > 0 &&
+          applicationState.addProjectDialogIsOpen
+        ) {
+          const project = applicationState.userData.projects.find(
+            (obj: any) => obj.id === applicationState.projectIdToHandle,
+          )
+          setEditProjectData(project)
+          setValue('id', project.id ?? '')
+          setValue('title', project.title ?? '')
+          setValue('tagsList', project.tags ?? ([] as Tag[]))
+          setValue('link', project.url ?? '')
+          setValue('description', project.description ?? '')
+          setValue('thumbnail', null)
+          setThumbnailPreview(project.thumbnail_url ?? '')
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    loadProjectData()
+  }, [
+    setValue,
+    applicationState.addProjectDialogIsOpen,
+    applicationState.projectIdToHandle,
+    applicationState.userData.projects,
+  ])
 
   // useEffect para limpar o formulário quando a página for recarregada
   useEffect(() => {
@@ -112,7 +276,7 @@ export function ProjectDialog() {
       toggleAddProjectDialogIsOpen(false)
       toggleViewProjectDialogIsOpen(false)
       toggleSuccessDialog(false, '')
-      // cleanProjectDialog()
+      cleanForm()
     }
 
     window.addEventListener('beforeunload', handleBeforeUnload)
@@ -122,47 +286,49 @@ export function ProjectDialog() {
     }
   })
 
-  // Apenas para testes, eventualmente essas informações virão do back end
-  const tagsMockUp = [
-    { id: '1', name: 'Front End' },
-    { id: '2', name: 'Back End' },
-    { id: '3', name: 'UX/UI' },
-    { id: '4', name: 'IA' },
-    { id: '5', name: 'Design' },
-    { id: '6', name: 'DevOps' },
-    { id: '7', name: 'Soft Skills' },
-  ]
-
   return (
     <Dialog open={applicationState.addProjectDialogIsOpen} maxWidth={'xl'}>
       <form>
         <DialogContainer>
-          <h5>{'Adicionar Projeto'}</h5>
+          <h5>{editProjectData.id ? 'Editar projeto' : 'Adicionar Projeto'}</h5>
           <FormWrapper>
-            <div>
-              <p>Selecione o conteúdo que você deseja fazer upload</p>
-              <ThumbnailContainer onClick={handleUploadImage}>
-                <img src={CollectionsImage} alt="" />
-                <div>
-                  <p>Compartilhe seu talento com milhares de pessoas</p>
-                </div>
-              </ThumbnailContainer>
-              <input
-                {...register('thumbnail')}
-                id="image-input"
-                type="file"
-                src=""
-                alt=""
-                accept="image/*"
-                ref={imageInputRef}
-                onChange={handleChangeImage}
-              ></input>
-            </div>
+            <Tooltip
+              title="Imagem nos formatos: JPG e PNG. Tamanho máximo: 1mb"
+              followCursor
+            >
+              <div>
+                <p>Selecione o conteúdo que você deseja fazer upload</p>
+                {!thumbnailPreview ? (
+                  <ThumbnailContainer onClick={handleUploadImage}>
+                    <img src={CollectionsImage} alt="" />
+                    <div>
+                      <p>Compartilhe seu talento com milhares de pessoas</p>
+                    </div>
+                  </ThumbnailContainer>
+                ) : (
+                  <ThumbnailPreview
+                    $url={thumbnailPreview}
+                    onClick={handleUploadImage}
+                  />
+                )}
+                <input
+                  {...register('thumbnail')}
+                  id="image-input"
+                  type="file"
+                  src=""
+                  alt=""
+                  accept=".jpg, .jpeg, .png"
+                  ref={imageInputRef}
+                  onChange={handleChangeImage}
+                ></input>
+              </div>
+            </Tooltip>
 
             <div id="fields-wrapper">
               <TextField
                 {...register('title')}
                 label="Título"
+                disabled={isloading}
                 sx={{ width: screenWidth < 960 ? '100%' : '413px' }}
               />
               <Autocomplete
@@ -171,16 +337,17 @@ export function ProjectDialog() {
                 freeSolo
                 limitTags={screenWidth < 960 ? 1 : 3}
                 disableCloseOnSelect
-                options={tagsMockUp}
+                options={applicationState.tags}
+                disabled={isloading}
                 onChange={(event, values) =>
                   event ? setValue('tagsList', values) : undefined
                 }
                 getOptionLabel={(tags) =>
-                  typeof tags === 'string' ? tags : tags.name
+                  typeof tags === 'string' ? tags : tags.tagName
                 }
                 sx={{ width: screenWidth < 960 ? '100%' : '413px' }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Buscar tags" placeholder="" />
+                  <TextField {...params} label="Tags" placeholder="" />
                 )}
                 renderOption={(props, option, { selected }) => (
                   <li {...props}>
@@ -190,13 +357,14 @@ export function ProjectDialog() {
                       style={{ marginRight: 8 }}
                       checked={selected}
                     />
-                    {option.name}
+                    {option.tagName}
                   </li>
                 )}
               />
               <TextField
                 {...register('link')}
                 label="Link"
+                disabled={isloading}
                 sx={{ width: screenWidth < 960 ? '100%' : '413px' }}
               ></TextField>
               <TextField
@@ -204,19 +372,39 @@ export function ProjectDialog() {
                 label="Descrição"
                 multiline
                 rows={4}
+                disabled={isloading}
                 sx={{ width: screenWidth < 960 ? '100%' : '413px' }}
               />
             </div>
           </FormWrapper>
 
           <ActionsWrapper>
-            <p onClick={handleOpenPreview}>Visualizar publicação</p>
+            <div id="form-actions">
+              <p onClick={handleOpenPreview}>Visualizar publicação</p>
+              <Tooltip title="Remover imagem" arrow>
+                <IconButton
+                  id="basic-button"
+                  onClick={handleRemovePreviewImage}
+                  disabled={isloading}
+                >
+                  <DeleteOutline id="delete-image" />
+                </IconButton>
+              </Tooltip>
+            </div>
             <div>
               <Button
                 id="action-button"
                 variant="contained"
                 type="submit"
                 onClick={handleSubmit(handleSaveProject)}
+                disabled={isloading}
+                sx={{
+                  backgroundColor: defaultTheme['color-secondary-100'],
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-110'],
+                  },
+                  marginRight: '16px',
+                }}
               >
                 Salvar
               </Button>
@@ -225,6 +413,14 @@ export function ProjectDialog() {
                 variant="contained"
                 onClick={handleClose}
                 type="button"
+                disabled={isloading}
+                sx={{
+                  backgroundColor: defaultTheme['color-secondary-100'],
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-110'],
+                  },
+                  marginRight: '16px',
+                }}
               >
                 Cancelar
               </Button>

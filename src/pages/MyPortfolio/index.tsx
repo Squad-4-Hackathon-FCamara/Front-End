@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
   Chip,
@@ -6,6 +7,7 @@ import {
   Menu,
   MenuItem,
   Skeleton,
+  Tooltip,
 } from '@mui/material'
 import {
   AddProjectCard,
@@ -21,7 +23,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2'
 import CollectionsImage from './../../assets/images/collections.svg'
 import { defaultTheme } from '../../styles/themes/default'
 import { ProjectDialog } from '../../components/ProjectDialog'
-import { MouseEvent, useContext, useState } from 'react'
+import { MouseEvent, SyntheticEvent, useContext, useState } from 'react'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { SuccessDialog } from '../../components/SuccessDialog'
 import { Edit } from '@mui/icons-material'
@@ -29,14 +31,16 @@ import { useScreenWidth } from '../../hooks/useScreenWidth'
 import { ViewProjectDialog } from '../../components/ViewProjectDialog'
 import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
 import { DeleteDialog } from '../../components/DeleteDialog'
-import { AxiosAPI } from '../../AxiosConfig'
+import { format } from 'date-fns'
+import { Tag } from '../../reducer/application/reducer'
 
 export function MyPortfolio() {
   const {
+    applicationState,
     toggleAddProjectDialogIsOpen,
     toggleViewProjectDialogIsOpen,
     toggleDeleteDialog,
-    storeProjectIdToDelete,
+    storeProjectIdToHandle,
   } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
@@ -45,12 +49,17 @@ export function MyPortfolio() {
 
   const isMenuOpen = Boolean(anchorEl)
 
-  function handleOpenProjectMenu(event: MouseEvent<HTMLButtonElement>) {
+  function handleOpenProjectMenu(
+    event: MouseEvent<HTMLButtonElement>,
+    projectId: string,
+  ) {
     event.stopPropagation()
+    storeProjectIdToHandle(projectId)
     setAnchorEl(event.currentTarget)
   }
 
   function handleCloseProjectMenu() {
+    storeProjectIdToHandle('')
     setAnchorEl(null)
   }
 
@@ -58,102 +67,62 @@ export function MyPortfolio() {
     toggleAddProjectDialogIsOpen(true)
   }
 
-  function handleViewProject() {
+  function handleViewProject(projectId: string) {
+    storeProjectIdToHandle(projectId)
     toggleViewProjectDialogIsOpen(true)
   }
 
-  function handleEdit(event: MouseEvent<HTMLElement>) {
-    event.stopPropagation()
+  function handleEdit() {
+    setAnchorEl(null)
     toggleAddProjectDialogIsOpen(true)
   }
 
-  function handleDelete(event: MouseEvent<HTMLElement>, id: string) {
-    event.stopPropagation()
-    console.log('Delete: ', id)
-    storeProjectIdToDelete(id)
+  function handleDelete() {
+    setAnchorEl(null)
     toggleDeleteDialog(true)
   }
 
-  function filterByTags() {
-    const params = new URLSearchParams()
-    params.append('tags', '1')
-    params.append('tags', '2')
-    params.append('tags', '3')
-    const request = {
-      params: params,
-    }
-
-    AxiosAPI.get('project/tags', request)
-      .then()
-      .catch((error) => {
-        console.log('Erro: ', error)
-      })
+  function formatDate(date: Date): string {
+    return format(date, 'MM/yy')
   }
-  // Apenas para testes, eventualmente essas informações virão do back end
-  const tagsMockUp = [
-    { id: '1', name: 'Front End' },
-    { id: '2', name: 'Back End' },
-    { id: '3', name: 'UX/UI' },
-    { id: '4', name: 'IA' },
-    { id: '5', name: 'Design' },
-    { id: '6', name: 'DevOps' },
-    { id: '7', name: 'Soft Skills' },
-  ]
 
-  // Apenas para testes, eventualmente essas informações virão do back end
-  const projectsList = [
-    {
-      id: '1',
-      title: 'Projeto 1',
-      createdAt: '01/24',
-      tags: [
-        { id: '1', name: 'Front End' },
-        { id: '2', name: 'Design' },
-      ],
-      thumbnail: 'https://source.unsplash.com/random',
-    },
-    {
-      id: '2',
-      title: 'Projeto 2',
-      createdAt: '01/24',
-      tags: [
-        { id: '1', name: 'Front End' },
-        { id: '2', name: 'Design' },
-      ],
-      thumbnail: '',
-    },
-    {
-      id: '3',
-      title: 'Projeto 3',
-      createdAt: '01/24',
-      tags: [
-        { id: '1', name: 'Front End' },
-        { id: '2', name: 'Design' },
-      ],
-      thumbnail: 'https://source.unsplash.com/random',
-    },
-    {
-      id: '4',
-      title: 'Projeto 4',
-      createdAt: '01/24',
-      tags: [
-        { id: '1', name: 'Front End' },
-        { id: '2', name: 'Design' },
-      ],
-      thumbnail: '',
-    },
-  ]
+  const [filteredProjects, setFilteredProjects] = useState([])
+  const [isFiltering, setIsFiltering] = useState(false)
+
+  // filtra os projetos pelas tags
+  // É possível descartar um parâmetro que não será usado com underscore _
+  function filterByTags(
+    _event: SyntheticEvent<Element, Event>,
+    selectedTags: Tag[],
+  ) {
+    if (selectedTags.length > 0) {
+      const filtered = applicationState.userData.projects.filter(
+        (projeto: any) =>
+          selectedTags.every((tag) =>
+            projeto.tags.some((projectTag: Tag) => projectTag.id === tag.id),
+          ),
+      )
+      console.log(filtered)
+
+      setFilteredProjects(filtered)
+      setIsFiltering(true)
+    } else {
+      setFilteredProjects([])
+      setIsFiltering(false)
+    }
+  }
 
   return (
     <PortfolioContainer>
       {/* Card com as informações do perfil do usuário */}
       <ProfileCard>
-        <img
-          src="https://api.dicebear.com/7.x/thumbs/svg?seed=Giov&scale=150&radius=50&eyes=variant1W16,variant2W10,variant2W12,variant2W14,variant2W16,variant3W10,variant3W12,variant3W14,variant3W16,variant4W10,variant4W12,variant4W14,variant4W16,variant5W10,variant5W12,variant5W14,variant5W16,variant6W10,variant6W12,variant6W14,variant6W16,variant7W10,variant7W12,variant7W14,variant7W16,variant8W10,variant8W12,variant8W14,variant8W16,variant9W10,variant9W12,variant9W14,variant9W16,variant1W12,variant1W10,variant1W14&eyesColor=FFEECC&mouthColor=FFEECC&shapeColor=FFAA66,FF5522,315FCE,183594"
-          alt="Avatar"
-        />
+        <img src={applicationState.userData.avatarUrl} alt="Avatar" />
         <div>
-          <h5>Giovani de Oliveira</h5>
+          <h5>
+            {applicationState.userData.firstName +
+              ' ' +
+              applicationState.userData.lastName}
+          </h5>
           <h6>Brasil</h6>
           <Button
             id="add-project-button"
@@ -168,14 +137,18 @@ export function MyPortfolio() {
       {/* Autocomplete para pesquisa */}
       <SearchBar>
         <h6>Meus projetos</h6>
-        <div onBlur={filterByTags}>
-          <BaseAutocomplete items={tagsMockUp} />
-        </div>
+
+        <BaseAutocomplete
+          items={applicationState.tags}
+          onChange={(event: SyntheticEvent<Element, Event>, value: any) =>
+            filterByTags(event, value)
+          }
+        />
       </SearchBar>
 
       {/* Lista dos projetos do usuário */}
       <ProjectsList>
-        {projectsList.length === 0 ? (
+        {applicationState.userData.projects.length === 0 ? (
           <Grid container spacing={3}>
             <Grid xs={12} sm={12} md={6} lg={4} xl={3}>
               <AddProjectCard onClick={handleOpenDialog}>
@@ -205,20 +178,25 @@ export function MyPortfolio() {
           </Grid>
         ) : (
           <Grid container spacing={2}>
-            {projectsList.map((project) => (
+            {(isFiltering
+              ? filteredProjects
+              : applicationState.userData.projects
+            ).map((project: any) => (
               <Grid key={project.id} xs={12} sm={12} md={6} lg={4} xl={3}>
                 <ProjectCard
                   $thumbnailurl={
-                    project.thumbnail ? project.thumbnail : defaultThumbnail
+                    project.thumbnail_url
+                      ? project.thumbnail_url
+                      : defaultThumbnail
                   }
-                  onClick={handleViewProject}
+                  onClick={() => handleViewProject(project.id)}
                 >
                   <IconButton
                     id="project-menu-button"
                     aria-controls={isMenuOpen ? 'project-menu' : undefined}
                     aria-haspopup="true"
                     aria-expanded={isMenuOpen ? 'true' : undefined}
-                    onClick={handleOpenProjectMenu}
+                    onClick={(e) => handleOpenProjectMenu(e, project.id)}
                   >
                     <Edit
                       sx={{
@@ -248,12 +226,27 @@ export function MyPortfolio() {
                       horizontal: 'right',
                     }}
                   >
-                    <MenuItem onClick={handleEdit} sx={{ width: '208px' }}>
+                    <MenuItem
+                      onClick={() => handleEdit()}
+                      sx={{
+                        width: '208px',
+                        '&:hover': {
+                          backgroundColor: defaultTheme['color-secondary-60'],
+                          transition: 'background-color 0.2s',
+                        },
+                      }}
+                    >
                       Editar
                     </MenuItem>
                     <MenuItem
-                      onClick={(e) => handleDelete(e, project.id)}
-                      sx={{ width: '208px' }}
+                      onClick={() => handleDelete()}
+                      sx={{
+                        width: '208px',
+                        '&:hover': {
+                          backgroundColor: defaultTheme['color-secondary-60'],
+                          transition: 'background-color 0.2s',
+                        },
+                      }}
                     >
                       Excluir
                     </MenuItem>
@@ -261,31 +254,54 @@ export function MyPortfolio() {
                 </ProjectCard>
                 <ProjectInfo>
                   <div id="avatar">
-                    <img
-                      src={
-                        'https://api.dicebear.com/7.x/thumbs/svg?seed=Giov&scale=150&radius=50&eyes=variant1W16,variant2W10,variant2W12,variant2W14,variant2W16,variant3W10,variant3W12,variant3W14,variant3W16,variant4W10,variant4W12,variant4W14,variant4W16,variant5W10,variant5W12,variant5W14,variant5W16,variant6W10,variant6W12,variant6W14,variant6W16,variant7W10,variant7W12,variant7W14,variant7W16,variant8W10,variant8W12,variant8W14,variant8W16,variant9W10,variant9W12,variant9W14,variant9W16,variant1W12,variant1W10,variant1W14&eyesColor=FFEECC&mouthColor=FFEECC&shapeColor=FFAA66,FF5522,315FCE,183594'
-                      }
-                      alt=""
-                    />
+                    <img src={applicationState.userData.avatarUrl} alt="" />
                     <span>
-                      <h5>Giovani de Oliveira</h5>
+                      <h5 id="name-tag">
+                        {applicationState.userData.firstName +
+                          ' ' +
+                          applicationState.userData.lastName[0] +
+                          '.'}
+                      </h5>
                       {screenWidth > 768 ? <h5> • </h5> : <></>}
-                      <h5>01/24</h5>
+                      <h5>{formatDate(project.createdAt)}</h5>
                     </span>
                   </div>
                   {screenWidth > 768 ? (
                     <div id="tag-chips">
-                      {project.tags.map((tag) => {
-                        return <Chip key={tag.id} label={tag.name} />
+                      {project.tags.slice(0, 2).map((tag: any) => {
+                        return (
+                          <Chip
+                            key={tag.id}
+                            label={tag.tagName}
+                            onClick={() => {}}
+                          />
+                        )
                       })}
+                      <Tooltip
+                        title="Mais tags..."
+                        arrow
+                        placement="bottom-end"
+                      >
+                        <Chip label="+2" onClick={() => {}} />
+                      </Tooltip>
                     </div>
-                  ) : (
+                  ) : project.tags.length > 0 ? (
                     <div id="tag-chips">
                       <Chip
                         key={project.tags[0].id}
-                        label={project.tags[0].name}
+                        label={project.tags[0].tagName}
+                        onClick={() => {}}
                       />
+                      <Tooltip
+                        title="Mais tags..."
+                        arrow
+                        placement="bottom-end"
+                      >
+                        <Chip label="+3" onClick={() => {}} />
+                      </Tooltip>
                     </div>
+                  ) : (
+                    <></>
                   )}
                 </ProjectInfo>
               </Grid>

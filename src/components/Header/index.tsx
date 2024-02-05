@@ -1,34 +1,93 @@
-import { MouseEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  HeaderContainer,
-  NavigationContainer,
-  ProfileContainer,
-} from "./style";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { MouseEvent, useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { HeaderContainer, NavigationContainer, ProfileContainer } from './style'
 import {
   Menu as MenuComponent,
   IconButton,
   MenuItem,
   Divider,
-} from "@mui/material";
-import OrangeLogo from "./../../assets/images/orange-logo.svg";
-import { Menu, Notifications } from "@mui/icons-material";
-import { useScreenWidth } from "../../hooks/useScreenWidth";
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material'
+import OrangeLogo from './../../assets/images/orange-logo.svg'
+import { Logout, Menu, Notifications } from '@mui/icons-material'
+import { useScreenWidth } from '../../hooks/useScreenWidth'
+import { AxiosAPI } from '../../AxiosConfig'
+import { ApplicationContext } from '../../contexts/ApplicationContext'
+import { useUserData } from '../../hooks/userDataUtils'
+import { defaultTheme } from '../../styles/themes/default'
 
 export function Header() {
-  const navigate = useNavigate();
-  const screenWidth = useScreenWidth();
+  const { applicationState, storeUserData, storeTags } =
+    useContext(ApplicationContext)
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const navigate = useNavigate()
+  const screenWidth = useScreenWidth()
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [anchorLogout, setAnchorLogout] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+  const logoutOpen = Boolean(anchorLogout)
 
   const handleOpenMenu = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
+
+  const handleOpenLogout = (event: MouseEvent<HTMLImageElement>) => {
+    setAnchorLogout(event.currentTarget)
+  }
+
+  const handleCloseLogout = () => {
+    setAnchorLogout(null)
+  }
+
+  function isUserLoggedIn() {
+    const isUserLoggedIn = Boolean(
+      document.cookie
+        .split('; ')
+        .find((cookie) => cookie.startsWith('is-logged-in='))
+        ?.split('=')[1],
+    )
+
+    return isUserLoggedIn
+  }
+
+  // Obtem as tags
+  async function getTags() {
+    if (isUserLoggedIn()) {
+      await AxiosAPI.get('tag')
+        .then((response) => {
+          storeTags(response.data)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
+  }
+
+  // Busca dados do usuário logado
+  useUserData()
+
+  useEffect(() => {
+    // getUserData()
+    getTags()
+  }, [])
+
+  async function handleLogout() {
+    await AxiosAPI.post('auth/logout')
+      .then(() => {
+        navigate('/login')
+        storeUserData('', '', '', '', [])
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
 
   return (
     <HeaderContainer>
@@ -38,9 +97,9 @@ export function Header() {
             <IconButton
               id="basic-button"
               aria-label="notifications"
-              aria-controls={open ? "basic-menu" : undefined}
+              aria-controls={open ? 'basic-menu' : undefined}
               aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
+              aria-expanded={open ? 'true' : undefined}
               onClick={handleOpenMenu}
             >
               <Menu id="menu-icon"></Menu>
@@ -55,23 +114,29 @@ export function Header() {
               anchorReference="anchorPosition"
               anchorPosition={{ top: 74, left: 0 }}
               anchorOrigin={{
-                vertical: "top",
-                horizontal: "left",
+                vertical: 'top',
+                horizontal: 'left',
               }}
               transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
+                vertical: 'top',
+                horizontal: 'left',
               }}
               open={open}
               onClose={handleClose}
               MenuListProps={{
-                "aria-labelledby": "basic-button",
+                'aria-labelledby': 'basic-button',
               }}
             >
               <MenuItem
                 onClick={() => {
-                  handleClose();
-                  navigate("/");
+                  handleClose()
+                  navigate('/')
+                }}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-60'],
+                    transition: 'background-color 0.2s',
+                  },
                 }}
               >
                 <p>Meus Projetos</p>
@@ -79,8 +144,14 @@ export function Header() {
 
               <MenuItem
                 onClick={() => {
-                  handleClose();
-                  navigate("/discover");
+                  handleClose()
+                  navigate('/discover')
+                }}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-60'],
+                    transition: 'background-color 0.2s',
+                  },
                 }}
               >
                 <p>Descobrir</p>
@@ -90,15 +161,41 @@ export function Header() {
 
               <MenuItem
                 onClick={() => {
-                  handleClose();
+                  handleClose()
+                }}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-60'],
+                    transition: 'background-color 0.2s',
+                  },
                 }}
               >
                 <p>Configurações</p>
+              </MenuItem>
+
+              <Divider />
+
+              <MenuItem
+                onClick={() => {
+                  handleLogout()
+                }}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: defaultTheme['color-secondary-60'],
+                    transition: 'background-color 0.2s',
+                  },
+                }}
+              >
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Sair</ListItemText>
               </MenuItem>
             </MenuComponent>
           </>
         )}
         <img src={OrangeLogo} alt="Logo" />
+
         {screenWidth >= 768 && (
           <nav>
             <a href="/">Meus projetos</a>
@@ -109,13 +206,75 @@ export function Header() {
 
       <ProfileContainer>
         <img
-          src="https://api.dicebear.com/7.x/thumbs/svg?seed=Giov&scale=150&radius=50&eyes=variant1W16,variant2W10,variant2W12,variant2W14,variant2W16,variant3W10,variant3W12,variant3W14,variant3W16,variant4W10,variant4W12,variant4W14,variant4W16,variant5W10,variant5W12,variant5W14,variant5W16,variant6W10,variant6W12,variant6W14,variant6W16,variant7W10,variant7W12,variant7W14,variant7W16,variant8W10,variant8W12,variant8W14,variant8W16,variant9W10,variant9W12,variant9W14,variant9W16,variant1W12,variant1W10,variant1W14&eyesColor=FFEECC&mouthColor=FFEECC&shapeColor=FFAA66,FF5522,315FCE,183594"
+          src={applicationState.userData.avatarUrl}
           alt="Avatar"
+          aria-label=""
+          aria-controls={logoutOpen ? 'logout-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={logoutOpen ? 'true' : undefined}
+          onClick={handleOpenLogout}
         />
+        {screenWidth > 768 ? (
+          <MenuComponent
+            id="logout-menu"
+            anchorEl={anchorLogout}
+            open={logoutOpen}
+            onClose={handleCloseLogout}
+            MenuListProps={{
+              'aria-labelledby': 'logout-button',
+            }}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            sx={{ top: '50' }}
+          >
+            <MenuItem
+              onClick={() => {
+                handleClose()
+              }}
+              sx={{
+                width: '138px',
+                '&:hover': {
+                  backgroundColor: defaultTheme['color-secondary-60'],
+                  transition: 'background-color 0.2s',
+                },
+              }}
+            >
+              <p>Configurações</p>
+            </MenuItem>
+
+            <Divider />
+            <MenuItem
+              onClick={() => {
+                handleLogout()
+              }}
+              sx={{
+                width: '138px',
+                '&:hover': {
+                  backgroundColor: defaultTheme['color-secondary-60'],
+                  transition: 'background-color 0.2s',
+                },
+              }}
+            >
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Sair</ListItemText>
+            </MenuItem>
+          </MenuComponent>
+        ) : (
+          <></>
+        )}
+
         <IconButton aria-label="notifications">
           <Notifications id="notifications-icon" />
         </IconButton>
       </ProfileContainer>
     </HeaderContainer>
-  );
+  )
 }

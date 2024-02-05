@@ -1,6 +1,7 @@
-import { Chip, Dialog, DialogContent } from '@mui/material'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Chip, Dialog, DialogContent, Tooltip } from '@mui/material'
 import { DialogContainer } from '../ProjectDialog/style'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
 import {
   DialogCloseWrapper,
@@ -9,26 +10,145 @@ import {
 } from './styles'
 import { Close } from '@mui/icons-material'
 import { useScreenWidth } from '../../hooks/useScreenWidth'
+import defaultThumbnail from './../../assets/images/default-thumbnail.jpg'
+import { format } from 'date-fns'
+import {
+  ProjectDataType,
+  ProjectPreview,
+  Tag,
+} from '../../reducer/application/reducer'
 
-export function ViewProjectDialog() {
-  const { applicationState, toggleViewProjectDialogIsOpen } =
-    useContext(ApplicationContext)
+interface ViewProjectDialogProps {
+  discoveryProjectData?: ProjectDataType[] // Prop opcional
+}
+
+export function ViewProjectDialog({
+  discoveryProjectData,
+}: ViewProjectDialogProps) {
+  const {
+    applicationState,
+    toggleViewProjectDialogIsOpen,
+    storeProjectIdToHandle,
+    storeProjectPreview,
+  } = useContext(ApplicationContext)
 
   const screenWidth = useScreenWidth()
 
   function handleCloseDialog() {
+    storeProjectIdToHandle('')
+    storeProjectPreview({
+      description: '',
+      link: '',
+      tagsList: [],
+      thumbnail: '',
+      title: '',
+    } as ProjectPreview)
     toggleViewProjectDialogIsOpen(false)
   }
 
-  // Apenas para testes, eventualmente essas informações virão do back end
-  const projectTags = [
-    { id: 1, name: 'Front End' },
-    { id: 3, name: 'UX/UI' },
-    { id: 1, name: 'Front End' },
-    { id: 3, name: 'UX/UI' },
-    { id: 1, name: 'Front End' },
-    { id: 3, name: 'UX/UI' },
-  ]
+  // Busca os dados do usuário autor do projeto
+  // function getUserData(userId: string) {
+  //   let authorData: any = null
+
+  //   AxiosAPI.get(`user/${userId}`)
+  //     .then((response) => {
+  //       authorData = response.data
+  //       return authorData
+  //     })
+  //     .catch((error) => console.error(error))
+
+  //   return authorData
+  // }
+
+  const [projectData, setProjectData] = useState({
+    createdAt: '',
+    description: '',
+    id: '',
+    tags: [] as Tag[],
+    thumbnail_url: '',
+    title: '',
+    url: '',
+    user: {},
+  } as ProjectDataType)
+
+  useEffect(() => {
+    function loadProjectData() {
+      try {
+        let project: ProjectDataType = {} as ProjectDataType
+
+        if (
+          applicationState.projectIdToHandle !== '' &&
+          applicationState.userData.projects.length > 0 &&
+          !discoveryProjectData
+        ) {
+          project = applicationState.userData.projects.find(
+            (obj: any) => obj.id === applicationState.projectIdToHandle,
+          )
+        } else if (
+          applicationState.projectIdToHandle !== '' &&
+          discoveryProjectData
+        ) {
+          project =
+            discoveryProjectData.find(
+              (obj: any) => obj.id === applicationState.projectIdToHandle,
+            ) ?? ({} as ProjectDataType)
+        }
+
+        setProjectData(project)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    loadProjectData()
+  }, [
+    discoveryProjectData,
+    applicationState.viewProjectDialogIsOpen,
+    applicationState.projectIdToHandle,
+    applicationState.userData.projects,
+  ])
+
+  function formatDate(date: string): string {
+    if (date) return format(date, 'MM/yy')
+    return ''
+  }
+
+  type DataSourceType = {
+    createdAt: string
+    description: string
+    tags: Tag[]
+    thumbnail: string
+    title: string
+    url: string
+    userAvatar: string
+    userName: string
+  }
+
+  /// Agrupa todas as verificações de dados usadas no componente dentro de um objeto
+  /// Dessa forma, o return do componente fica um pouco mais legível
+  const projectDataSource: DataSourceType = {
+    createdAt:
+      formatDate(projectData.createdAt) ?? formatDate(String(new Date())),
+    description:
+      applicationState.projectPreview.description ||
+      projectData.description ||
+      '',
+    tags: projectData.tags || applicationState.projectPreview.tagsList,
+    thumbnail:
+      applicationState.projectPreview.thumbnail ||
+      projectData.thumbnail_url ||
+      defaultThumbnail,
+    title: applicationState.projectPreview.title || projectData.title || '',
+    url: applicationState.projectPreview.link || projectData.url || '',
+    userAvatar:
+      projectData?.user?.avatar_url ||
+      applicationState.userData.avatarUrl ||
+      '',
+    userName:
+      (projectData?.user?.firstName || applicationState.userData.firstName) +
+      ' ' +
+      (projectData?.user?.lastName || applicationState.userData.lastName),
+  }
 
   return (
     <Dialog
@@ -42,48 +162,55 @@ export function ViewProjectDialog() {
         </DialogCloseWrapper>
 
         <DialogContentWrapper>
-          <h1>{'Título do projeto'}</h1>
+          <h1>{projectDataSource.title}</h1>
           <DialogHeader>
             <div id="general-info">
               <div id="user-info">
                 <img
                   id="avatar"
-                  src="https://api.dicebear.com/7.x/thumbs/svg?seed=Giov&scale=150&radius=50&eyes=variant1W16,variant2W10,variant2W12,variant2W14,variant2W16,variant3W10,variant3W12,variant3W14,variant3W16,variant4W10,variant4W12,variant4W14,variant4W16,variant5W10,variant5W12,variant5W14,variant5W16,variant6W10,variant6W12,variant6W14,variant6W16,variant7W10,variant7W12,variant7W14,variant7W16,variant8W10,variant8W12,variant8W14,variant8W16,variant9W10,variant9W12,variant9W14,variant9W16,variant1W12,variant1W10,variant1W14&eyesColor=FFEECC&mouthColor=FFEECC&shapeColor=FFAA66,FF5522,315FCE,183594"
+                  src={projectDataSource.userAvatar}
                   alt="Avatar"
                 />
                 <div id="user-name">
-                  <h5>{'Giovani de Oliveira'}</h5>
-                  <h6>{'01/24'}</h6>
+                  <h5 id="name-tag">{projectDataSource.userName}</h5>
+                  <h6>{projectDataSource.createdAt}</h6>
                 </div>
               </div>
 
               <div id="tag-chips">
-                {projectTags.map((tag, index) => {
+                {projectDataSource.tags.map((tag: any, index) => {
                   if (index < 2) {
-                    return <Chip key={tag.id} label={tag.name} />
+                    return (
+                      <Chip
+                        key={tag.id}
+                        label={tag.tagName}
+                        onClick={() => {}}
+                      />
+                    )
                   }
                 })}
+                <Tooltip title="Mais tags..." arrow placement="bottom-end">
+                  <Chip label="+2" onClick={() => {}} />
+                </Tooltip>
               </div>
             </div>
 
             <img
               id="project-thumbnail"
-              src="https://source.unsplash.com/random"
+              src={projectDataSource.thumbnail}
               alt=""
             />
           </DialogHeader>
 
           <DialogContent sx={{ padding: 0, overflow: 'hidden' }}>
-            <p>
-              {
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-              }
-            </p>
+            <p>{projectDataSource.description}</p>
 
             <br />
             <br />
             <p>Download</p>
-            <a href="#">https://project-download.com</a>
+            <a href={projectDataSource.url} target="blank">
+              {projectDataSource.url}
+            </a>
           </DialogContent>
         </DialogContentWrapper>
       </DialogContainer>

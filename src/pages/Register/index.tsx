@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { defaultTheme } from '../../styles/themes/default.ts'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -12,18 +13,17 @@ import {
   TextField,
   Alert,
   Snackbar,
+  FormHelperText,
 } from '@mui/material'
 import IMGRegister from './../../assets/images/img-cadastro.svg'
 import { ImageContainer, MainWrapper, RegisterContainer } from './style'
-import { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import { AxiosAPI } from '../../AxiosConfig.ts'
-// import { ApplicationContext } from '../../contexts/ApplicationContext.tsx'
+import { useNavigate } from 'react-router'
 
 export function Register() {
-  // const { registerUser } = useContext(ApplicationContext);
-
   // Estados locais
   const [showPassword, setShowPassword] = useState(false)
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false)
@@ -31,17 +31,15 @@ export function Register() {
   const [isPasswordValid, setIsPasswordValid] = useState(true)
   const [isFirstNameValid, setIsFirstNameValid] = useState(true)
   const [isLastNameValid, setIsLastNameValid] = useState(true)
+  const [isloading, setIsLoading] = useState(false)
+
+  const navigate = useNavigate()
 
   const registerValidationSchema = zod.object({
-    firstName: zod.string().min(1, { message: 'Digite seu nome' }).max(30),
-
-    lastName: zod.string().min(1, { message: 'Digite seu sobrenome' }).max(30),
-
-    email: zod
-      .string()
-      .min(1, { message: 'Digite seu email' })
-      .email({ message: 'Email inválido' }),
-    password: zod.string().min(1, { message: 'Digite sua senha' }),
+    firstName: zod.string(),
+    lastName: zod.string(),
+    email: zod.string(),
+    password: zod.string(),
   })
 
   type RegisterFormData = zod.infer<typeof registerValidationSchema>
@@ -49,6 +47,8 @@ export function Register() {
   const registerForm = useForm<RegisterFormData>({
     resolver: zodResolver(registerValidationSchema),
     defaultValues: {
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
     },
@@ -57,26 +57,51 @@ export function Register() {
   const { register, handleSubmit } = registerForm
 
   /* Essas funções serão passadas pra validação no front end */
-  function handleEmailInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsEmailValid(true)
+  function handleEmailInputChange(event: any) {
+    if (event) setIsEmailValid(true)
+    setIsSnackbarOpen(false)
   }
 
-  function handlePasswordInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsPasswordValid(true)
+  function handlePasswordInputChange(event: any) {
+    if (event) setIsPasswordValid(true)
+    setIsSnackbarOpen(false)
   }
 
-  function handleFirstNameInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsFirstNameValid(true)
+  function handleFirstNameInputChange(event: any) {
+    if (event) setIsFirstNameValid(true)
+    setIsSnackbarOpen(false)
   }
 
-  function handleLastNameInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.value) setIsLastNameValid(true)
+  function handleLastNameInputChange(event: any) {
+    if (event) setIsLastNameValid(true)
+    setIsSnackbarOpen(false)
+  }
+
+  function handleGoToLogin() {
+    setIsLoading(false)
+    navigate('/login')
+  }
+
+  // Função para atualizar o estado que os campos usam para exibir erros
+  function updateValidation(error: any, fieldName: string, stateCallback: any) {
+    console.log('function start')
+    if (Array.isArray(error)) {
+      if (error?.find((msg: string) => msg.includes(fieldName))) {
+        stateCallback(false)
+        console.log('if')
+      }
+    } else {
+      if (error.includes(fieldName)) {
+        stateCallback(false)
+        console.log('else')
+      }
+    }
+
+    setIsSnackbarOpen(true)
+    console.log('function end')
   }
 
   function handleRegisterClick(data: RegisterFormData) {
-    console.log(data)
-    // setIsSnackbarOpen(true)
-
     const request = {
       email: data.email,
       password: data.password,
@@ -85,18 +110,21 @@ export function Register() {
     }
 
     AxiosAPI.post('/auth/register', request)
-      .then((response) => {
-        console.log(response)
+      .then(() => {
         setIsSnackbarOpen(true)
+        setIsLoading(true)
+        setTimeout(() => {
+          setIsLoading(false)
+          navigate('/login')
+        }, 10000)
       })
-      .catch((error) => console.error(error))
-
-    // registerUser(data.firstName, data.lastName, data.email, data.password)
-
-    // Exemplo de uso
-    // if (data.firstName != "Gio") {
-    //   setIsFirstNameValid(false);
-    // }
+      .catch((error) => {
+        updateValidation(error, 'firstName', setIsFirstNameValid)
+        updateValidation(error, 'lastName', setIsLastNameValid)
+        updateValidation(error, 'email', setIsEmailValid)
+        updateValidation(error, 'password', setIsPasswordValid)
+        setIsLoading(false)
+      })
   }
 
   const handleCloseSnackbar = (
@@ -157,19 +185,23 @@ export function Register() {
           <div id="names-container">
             <TextField
               {...register('firstName')}
-              label="First name"
+              label="Nome"
               variant="outlined"
               error={!isFirstNameValid}
+              helperText={!isFirstNameValid ? 'Insira um nome válido' : ''}
               onChange={handleFirstNameInputChange}
+              disabled={isloading}
               sx={{ width: '100%' }}
             />
 
             <TextField
               {...register('lastName')}
-              label="Last name"
+              label="Sobrenome"
               variant="outlined"
               error={!isLastNameValid}
+              helperText={!isLastNameValid ? 'Insira um sobrenome válido' : ''}
               onChange={handleLastNameInputChange}
+              disabled={isloading}
               sx={{ width: '100%' }}
             />
           </div>
@@ -177,10 +209,12 @@ export function Register() {
           {/* Campo para email */}
           <TextField
             {...register('email')}
-            label="Email address"
+            label="Endereço de email"
             variant="outlined"
             error={!isEmailValid}
+            helperText={!isEmailValid ? 'Insira um email válido' : ''}
             onChange={handleEmailInputChange}
+            disabled={isloading}
             sx={{ width: '100%', marginBottom: '16px' }}
           />
 
@@ -188,15 +222,14 @@ export function Register() {
             variant="outlined"
             error={!isPasswordValid}
             onChange={handlePasswordInputChange}
+            disabled={isloading}
             sx={{ width: '100%', marginBottom: '16px' }}
           >
-            <InputLabel htmlFor="outlined-adornment-password">
-              Password
-            </InputLabel>
+            <InputLabel htmlFor="outlined-adornment-password">Senha</InputLabel>
             <OutlinedInput
               {...register('password')}
               type={showPassword ? 'text' : 'password'}
-              label="Password"
+              label="Senha"
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -209,6 +242,11 @@ export function Register() {
                 </InputAdornment>
               }
             />
+            <FormHelperText>
+              {!isPasswordValid
+                ? 'Senha deve ter ao menos 8 caracteres, letras maiúsculas, letras minúsculas, números e caracteres especiais'
+                : ''}
+            </FormHelperText>
           </FormControl>
 
           <Button
@@ -217,9 +255,18 @@ export function Register() {
             size="large"
             type="submit"
             onClick={handleSubmit(handleRegisterClick)}
+            disabled={isloading}
+            sx={{
+              backgroundColor: defaultTheme['color-secondary-100'],
+              '&:hover': {
+                backgroundColor: defaultTheme['color-secondary-110'],
+              },
+            }}
           >
             Cadastrar
           </Button>
+
+          <span onClick={handleGoToLogin}>Voltar para Login</span>
         </form>
       </RegisterContainer>
     </MainWrapper>

@@ -2,17 +2,15 @@ import { useScreenWidth } from './../../hooks/useScreenWidth'
 import { Autocomplete, Checkbox, TextField } from '@mui/material'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
-
-type Items = {
-  id: string
-  name: string
-}
+import { Tag } from '../../reducer/application/reducer'
+import { SyntheticEvent } from 'react'
 
 interface BaseAutocompleteProps {
-  items: Items[]
+  items: Tag[]
+  onChange: (_event: SyntheticEvent<Element, Event>, value: any) => void
 }
 
-export function BaseAutocomplete({ items }: BaseAutocompleteProps) {
+export function BaseAutocomplete({ items, onChange }: BaseAutocompleteProps) {
   const screenWidth = useScreenWidth()
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
   const checkedIcon = <CheckBoxIcon fontSize="small" />
@@ -24,7 +22,10 @@ export function BaseAutocomplete({ items }: BaseAutocompleteProps) {
       limitTags={screenWidth < 768 ? 2 : 4}
       disableCloseOnSelect
       options={items}
-      getOptionLabel={(tags) => (typeof tags === 'string' ? tags : tags.name)}
+      onChange={onChange}
+      getOptionLabel={(tags) =>
+        typeof tags === 'string' ? tags : tags.tagName
+      }
       sx={{ width: screenWidth < 768 ? '100%' : '513px' }}
       renderInput={(params) => (
         <TextField {...params} label="Buscar tags" placeholder="" />
@@ -37,7 +38,7 @@ export function BaseAutocomplete({ items }: BaseAutocompleteProps) {
             style={{ marginRight: 8 }}
             checked={selected}
           />
-          {option.name}
+          {option.tagName}
         </li>
       )}
     />
