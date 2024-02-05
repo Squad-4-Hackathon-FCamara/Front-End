@@ -157,7 +157,7 @@ export function Header() {
                 onClick={() => {
                   handleClose()
                   // redirect('/')
-                  navigate('/discover')
+                  navigate('/')
                 }}
                 sx={{
                   '&:hover': {

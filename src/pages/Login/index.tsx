@@ -149,6 +149,8 @@ export function Login() {
   }
 
   function handleLoginGoogle() {
+    setIsLoading(true)
+
     const provider = new GoogleAuthProvider()
     signInWithPopup(auth, provider)
       .then(async (res) => {
@@ -169,6 +171,14 @@ export function Login() {
         })
           .then((res) => {
             console.log(res)
+            const cookies = new Cookies()
+            if (res.data.message.token && cookies) {
+              cookies.set('token', res.data.message.token, { path: '/' })
+
+              cookies.set('is-logged-in', true, { path: '/' })
+            }
+            setIsLoading(false)
+            navigate('/')
           })
           .catch((e) => {
             setIsSnackbarOpen(true)
@@ -177,13 +187,16 @@ export function Login() {
             setTimeout(() => {
               setIsSnackbarOpen(false)
             }, 5000)
+            setIsLoading(false)
           })
       })
       .catch((e) => {
         console.log('deu erro')
         //se o usuário recusar, cai aqui
         console.log(e)
+        setIsLoading(false)
       })
+    setIsLoading(false)
   }
 
   const handleShowPassword = () => setShowPassword((show) => !show)
