@@ -28,6 +28,8 @@ import { defaultTheme } from '../../styles/themes/default.ts'
 import { AxiosAPI } from '../../AxiosConfig.ts'
 import { useNavigate } from 'react-router'
 import Cookies from 'universal-cookie'
+import { GoogleAuthProvider, onAuthStateChanged, signInWithCustomToken, signInWithPopup, signOut } from '@firebase/auth'
+import { auth } from '../../firebase/index.ts'
 
 export function Login() {
   // Estados para o form, talvez possa ser substituído por um reducer no futuro
@@ -35,6 +37,9 @@ export function Login() {
   const [isEmailValid, setIsEmailValid] = useState(true)
   const [isPasswordValid, setIsPasswordValid] = useState(true)
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false)
+
+  const [userName, setUserName] = useState('')
+  const [userEmail, setUserEmail] = useState('')
 
   const navigate = useNavigate()
 
@@ -137,14 +142,66 @@ export function Login() {
   }
 
   function handleLoginGoogle() {
-    window.open('https://orange-portfolio-3fgq.onrender.com/', '_self')
+    const provider = new GoogleAuthProvider()
+    signInWithPopup(auth, provider).then(async res => {
+      // setUserName(res.user.displayName || '')
+      // setUserEmail(res.user.email || '')
+      // setUserEmail(res.user || '')
+      const body = {
+          email: res.user.email, 
+          firstName: res.user.displayName?.split(' ')[0],
+          lastName: res.user.displayName?.split(' ')[1],
+          //password apenas para passar em validações, será desconsiderada quando fizer login com google
+          password: '1111111111Aa!',
+          userGoogle: true
+        }
+      
+      AxiosAPI.post('auth/login', 
+      body, {headers: {
+        'Content-Type': `application/json`,
+        'same-origin-allow-popups': '*'
+      },}).then(res => {
+        console.log(res);
+        
+      }).catch(e => {
+        console.log('no catch');
+        console.log(e);
+      })
+
+      // fetch('http://localhost:3001/auth/login', {method: 'post', body: JSON.stringify(body), 
+      //  headers: {'Content-Type': 'application/json'}}).then(res => {console.log(res);
+      //  }).catch(e => {
+      //     console.log('no catch');
+      //     console.log(e);
+      //   })
+      
+      
+    }).catch(e => {
+      console.log('deu erro');
+      //se o usuário recusar, cai aqui
+      console.log(e);
+
+    })
+
+    // onAuthStateChanged(auth, user => {
+    //   console.log('no onAuthStateChanged');
+      
+    //   console.log(user);
+      
+    // })
+
+
+    // signOut(auth).then(() => {
+    //   // this.router.navigate([''])
+    //   console.log("Usuário deslogado com sucesso!")
+    // }).catch(error => {
+    //   console.log(`Ocorreu um erro. ${error.message}`, true)
+    // })
+
+    
+      
+    
   }
-  // function handleLoginGoogle() {
-  //   window.open(
-  //     'https://orange-portfolio-r0b5.onrender.com/auth/login/google',
-  //     '_self',
-  //   )
-  // }
 
   const handleShowPassword = () => setShowPassword((show) => !show)
 

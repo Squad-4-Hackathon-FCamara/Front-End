@@ -19,6 +19,8 @@ import { useUserData } from '../../hooks/userDataUtils'
 import { defaultTheme } from '../../styles/themes/default'
 import Cookies from 'universal-cookie'
 import { redirect } from 'react-router-dom'
+import { signOut } from '@firebase/auth'
+import { auth } from '../../firebase'
 
 export function Header() {
   const { applicationState, storeUserData, storeTags } =
@@ -102,6 +104,13 @@ export function Header() {
       .catch((error) => {
         console.error(error)
       })
+
+    // signOut(auth).then(() => {
+    //   // this.router.navigate([''])
+    //   console.log("Usuário deslogado com sucesso!")
+    // }).catch(error => {
+    //   console.log(`Ocorreu um erro. ${error.message}`, true)
+    // })
   }
 
   return (
