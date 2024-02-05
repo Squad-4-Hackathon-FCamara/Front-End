@@ -18,7 +18,6 @@ import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { useUserData } from '../../hooks/userDataUtils'
 import { defaultTheme } from '../../styles/themes/default'
 import Cookies from 'universal-cookie'
-import { redirect } from 'react-router-dom'
 import { signOut } from '@firebase/auth'
 import { auth } from '../../firebase'
 
@@ -99,23 +98,21 @@ export function Header() {
   async function handleLogout() {
     const cookies = new Cookies()
 
-    await AxiosAPI.post('auth/logout')
+    storeUserData('', '', '', '', [])
+    cookies.remove('token')
+    cookies.remove('is-logged-in')
+
+    signOut(auth)
       .then(() => {
+        // this.router.navigate([''])
+        console.log('Usuário deslogado com sucesso!')
         navigate('/login')
-        storeUserData('', '', '', '', [])
-        cookies.remove('token')
-        cookies.remove('is-logged-in')
       })
       .catch((error) => {
-        console.error(error)
+        console.log(`Ocorreu um erro. ${error.message}`, true)
       })
 
-    // signOut(auth).then(() => {
-    //   // this.router.navigate([''])
-    //   console.log("Usuário deslogado com sucesso!")
-    // }).catch(error => {
-    //   console.log(`Ocorreu um erro. ${error.message}`, true)
-    // })
+    navigate('/login')
   }
 
   return (

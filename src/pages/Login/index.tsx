@@ -28,13 +28,7 @@ import { defaultTheme } from '../../styles/themes/default.ts'
 import { AxiosAPI } from '../../AxiosConfig.ts'
 import { useNavigate } from 'react-router'
 import Cookies from 'universal-cookie'
-import {
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithCustomToken,
-  signInWithPopup,
-  signOut,
-} from '@firebase/auth'
+import { GoogleAuthProvider, signInWithPopup } from '@firebase/auth'
 import { auth } from '../../firebase/index.ts'
 
 export function Login() {
@@ -44,9 +38,6 @@ export function Login() {
   const [isPasswordValid, setIsPasswordValid] = useState(true)
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false)
   const [isloading, setIsLoading] = useState(false)
-
-  const [userName, setUserName] = useState('')
-  const [userEmail, setUserEmail] = useState('')
 
   const navigate = useNavigate()
 
@@ -161,9 +152,6 @@ export function Login() {
     const provider = new GoogleAuthProvider()
     signInWithPopup(auth, provider)
       .then(async (res) => {
-        // setUserName(res.user.displayName || '')
-        // setUserEmail(res.user.email || '')
-        // setUserEmail(res.user || '')
         const body = {
           email: res.user.email,
           firstName: res.user.displayName?.split(' ')[0],
@@ -190,33 +178,12 @@ export function Login() {
               setIsSnackbarOpen(false)
             }, 5000)
           })
-
-        // fetch('http://localhost:3001/auth/login', {method: 'post', body: JSON.stringify(body),
-        //  headers: {'Content-Type': 'application/json'}}).then(res => {console.log(res);
-        //  }).catch(e => {
-        //     console.log('no catch');
-        //     console.log(e);
-        //   })
       })
       .catch((e) => {
         console.log('deu erro')
         //se o usuário recusar, cai aqui
         console.log(e)
       })
-
-    // onAuthStateChanged(auth, user => {
-    //   console.log('no onAuthStateChanged');
-
-    //   console.log(user);
-
-    // })
-
-    // signOut(auth).then(() => {
-    //   // this.router.navigate([''])
-    //   console.log("Usuário deslogado com sucesso!")
-    // }).catch(error => {
-    //   console.log(`Ocorreu um erro. ${error.message}`, true)
-    // })
   }
 
   const handleShowPassword = () => setShowPassword((show) => !show)
