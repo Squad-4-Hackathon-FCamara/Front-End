@@ -8,7 +8,7 @@ export const MainWrapper = styled.main`
   justify-content: space-between;
   align-items: center;
 
-  a {
+  #register-link {
     color: ${(props) => props.theme['color-neutral-100']};
 
     font-family: 'Roboto', sans-serif;
@@ -19,6 +19,7 @@ export const MainWrapper = styled.main`
 
     text-decoration: none;
     margin-top: 18px;
+    cursor: pointer;
   }
 `
 

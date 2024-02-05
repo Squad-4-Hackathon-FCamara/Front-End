@@ -243,7 +243,14 @@ export function Login() {
             Entrar
           </Button>
 
-          <a href="/register">Cadastre-se</a>
+          <p
+            id="register-link"
+            onClick={() => {
+              navigate('/register')
+            }}
+          >
+            Cadastre-se
+          </p>
         </form>
       </LoginContainer>
     </MainWrapper>
