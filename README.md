@@ -29,9 +29,10 @@ Front end do Orange Portfólio da squad 4 da 5ª edição do Programa de formaç
 - [x] Filtragem projetos por categorias
 
 ## Como executar localmente
-Primeiramente, é necessário clonar e executar o projeto do back end, que está disponível [em seu repositório](https://github.com/Squad-4-Hackathon-FCamara/Back-End)
+Primeiramente, é necessário clonar e executar o projeto do back end, que está disponível [em seu repositório](https://github.com/Squad-4-Hackathon-FCamara/Back-End).
+Após executar o back end, execute o front end:
 
-1º passo - Depois de clonar o projeto, com o terminal na raiz do projeto, acesse a branch feature/loginByHeaders com o comando:
+1º passo - Depois de clonar o projeto do front end, com o terminal na raiz do projeto, acesse a branch feature/loginByHeaders com o comando:
 ```bash
 git checkout feature/loginByHeaders
 ```
