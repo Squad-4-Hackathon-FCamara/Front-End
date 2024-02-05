@@ -18,7 +18,7 @@ import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { useUserData } from '../../hooks/userDataUtils'
 import { defaultTheme } from '../../styles/themes/default'
 import Cookies from 'universal-cookie'
-import { redirect } from 'react-router-dom'
+// import { redirect } from 'react-router-dom'
 
 export function Header() {
   const { applicationState, storeUserData, storeTags } =
@@ -145,7 +145,8 @@ export function Header() {
               <MenuItem
                 onClick={() => {
                   handleClose()
-                  redirect('/')
+                  // redirect('/')
+                  navigate('/discover')
                 }}
                 sx={{
                   '&:hover': {
@@ -160,7 +161,8 @@ export function Header() {
               <MenuItem
                 onClick={() => {
                   handleClose()
-                  redirect('/discover')
+                  // redirect('/discover')
+                  navigate('/discover')
                 }}
                 sx={{
                   '&:hover': {
