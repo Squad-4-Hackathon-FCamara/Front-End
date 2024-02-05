@@ -152,7 +152,16 @@ export function ProjectDialog() {
   // Quando eu tento fazer essa busca usando um hook customizado, eu tenho um loop infinito
   // Buscar outra forma de reaproveitar essa função em outros componentes
   const updateUserData = async () => {
-    await AxiosAPI.get('user/me/data')
+    const token = document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith('token='))
+      ?.split('=')[1]
+
+    await AxiosAPI.get('user/me/data', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         storeUserData(
           response.data.id,
@@ -169,9 +178,14 @@ export function ProjectDialog() {
 
   // Salva um novo projeto
   function saveProjectPost(request: any) {
+    const token = document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith('token='))
+      ?.split('=')[1]
     AxiosAPI.post('/project', request, {
       headers: {
         'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`,
       },
     })
       .then((response) => {
@@ -191,9 +205,14 @@ export function ProjectDialog() {
 
   // Edita um projeto existente
   function updateRequestPatch(request: any) {
+    const token = document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith('token='))
+      ?.split('=')[1]
     AxiosAPI.patch(`/project/${request.id}`, request, {
       headers: {
         'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`,
       },
     })
       .then((response) => {

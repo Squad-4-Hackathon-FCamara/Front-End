@@ -91,14 +91,23 @@ export function Login() {
 
     // passar token no body
     // salvar por aqui utilizando universal-cookie
-    AxiosAPI.post('/auth/login', request)
+    const token = document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith('token='))
+      ?.split('=')[1]
+
+    AxiosAPI.post('/auth/login', request, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
       .then((res) => {
         // Creando a instancia
         const cookies = new Cookies()
 
         // Salva os cookies
-        if (res.data.token && cookies) {
-          cookies.set('token', res.data.token, { path: '/' })
+        if (res.data.message.token && cookies) {
+          cookies.set('token', res.data.message.token, { path: '/' })
 
           cookies.set('is-logged-in', true, { path: '/' })
         }
@@ -127,15 +136,15 @@ export function Login() {
     setIsSnackbarOpen(false)
   }
 
-  // function handleLoginGoogle() {
-  //   window.open('http://localhost:3001/auth/login/google', '_self')
-  // }
   function handleLoginGoogle() {
-    window.open(
-      'https://orange-portfolio-r0b5.onrender.com/auth/login/google',
-      '_self',
-    )
+    window.open('http://localhost:3001/auth/login/google', '_self')
   }
+  // function handleLoginGoogle() {
+  //   window.open(
+  //     'https://orange-portfolio-r0b5.onrender.com/auth/login/google',
+  //     '_self',
+  //   )
+  // }
 
   const handleShowPassword = () => setShowPassword((show) => !show)
 

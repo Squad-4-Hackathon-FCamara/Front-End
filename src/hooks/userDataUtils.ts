@@ -18,9 +18,18 @@ export function useUserData() {
   const { storeUserData } = useContext(ApplicationContext)
 
   useEffect(() => {
+    const token = document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith('token='))
+      ?.split('=')[1]
+
     const getData = async () => {
       if (isUserLoggedIn()) {
-        await AxiosAPI.get('user/me/data')
+        await AxiosAPI.get('user/me/data', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        })
           .then((response) => {
             storeUserData(
               response.data.id,

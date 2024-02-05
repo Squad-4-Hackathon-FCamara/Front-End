@@ -257,7 +257,7 @@ export function Register() {
             onClick={handleSubmit(handleRegisterClick)}
             disabled={isloading}
             sx={{
-              backgroundColor: defaultTheme['color-secondary-100'],
+              'backgroundColor': defaultTheme['color-secondary-100'],
               '&:hover': {
                 backgroundColor: defaultTheme['color-secondary-110'],
               },

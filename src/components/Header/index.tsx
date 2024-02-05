@@ -17,6 +17,7 @@ import { AxiosAPI } from '../../AxiosConfig'
 import { ApplicationContext } from '../../contexts/ApplicationContext'
 import { useUserData } from '../../hooks/userDataUtils'
 import { defaultTheme } from '../../styles/themes/default'
+import Cookies from 'universal-cookie'
 
 export function Header() {
   const { applicationState, storeUserData, storeTags } =
@@ -59,8 +60,17 @@ export function Header() {
 
   // Obtem as tags
   async function getTags() {
+    const token = document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith('token='))
+      ?.split('=')[1]
+
     if (isUserLoggedIn()) {
-      await AxiosAPI.get('tag')
+      await AxiosAPI.get('tag', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
         .then((response) => {
           storeTags(response.data)
         })
@@ -79,10 +89,14 @@ export function Header() {
   }, [])
 
   async function handleLogout() {
+    const cookies = new Cookies()
+
     await AxiosAPI.post('auth/logout')
       .then(() => {
         navigate('/login')
         storeUserData('', '', '', '', [])
+        cookies.remove('token')
+        cookies.remove('is-logged-in')
       })
       .catch((error) => {
         console.error(error)

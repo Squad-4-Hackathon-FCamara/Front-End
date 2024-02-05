@@ -20,8 +20,17 @@ export function DeleteDialog() {
 
   // Quando eu tento fazer essa busca usando um hook customizado, eu tenho um loop infinito
   // Buscar outra forma de reaproveitar essa função em outros componentes
+  const token = document.cookie
+    .split('; ')
+    .find((cookie) => cookie.startsWith('token='))
+    ?.split('=')[1]
+
   const updateUserData = async () => {
-    await AxiosAPI.get('user/me/data')
+    await AxiosAPI.get('user/me/data', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         storeUserData(
           response.data.id,
@@ -37,7 +46,16 @@ export function DeleteDialog() {
   }
 
   function handleDelete() {
-    AxiosAPI.delete(`/project/${applicationState.projectIdToHandle}`)
+    const token = document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith('token='))
+      ?.split('=')[1]
+
+    AxiosAPI.delete(`/project/${applicationState.projectIdToHandle}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         updateUserData()
         storeProjectIdToHandle('')

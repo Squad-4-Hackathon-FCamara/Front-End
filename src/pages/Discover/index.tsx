@@ -67,7 +67,15 @@ export function Discover() {
   }
 
   function getProjects() {
-    AxiosAPI.get('/project/discovery')
+    const token = document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith('token='))
+      ?.split('=')[1]
+    AxiosAPI.get('/project/discovery', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         const projectsList: ProjectDataType[] = response.data.message.map(
           (obj: any) => {
