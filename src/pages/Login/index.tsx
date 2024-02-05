@@ -27,6 +27,7 @@ import GoogleLogo from './../../assets/images/google-logo.svg'
 import { defaultTheme } from '../../styles/themes/default.ts'
 import { AxiosAPI } from '../../AxiosConfig.ts'
 import { useNavigate } from 'react-router'
+import Cookies from 'universal-cookie'
 
 export function Login() {
   // Estados para o form, talvez possa ser substituído por um reducer no futuro
@@ -88,8 +89,19 @@ export function Login() {
       password: data.password,
     }
 
+    // passar token no body
+    // salvar por aqui utilizando universal-cookie
     AxiosAPI.post('/auth/login', request)
-      .then(() => {
+      .then((res) => {
+        // Creando a instancia
+        const cookies = new Cookies()
+
+        // Salva os cookies
+        if (res.data.token && cookies) {
+          cookies.set('token', res.data.token, { path: '/' })
+
+          cookies.set('is-logged-in', true, { path: '/' })
+        }
         navigate('/')
       })
       .catch((error) => {
@@ -115,15 +127,15 @@ export function Login() {
     setIsSnackbarOpen(false)
   }
 
-  // function handleLoginGoogle() {
-  //   window.open('http://localhost:3001/auth/login/google', '_self')
-  // }
   function handleLoginGoogle() {
-    window.open(
-      'https://orange-portfolio-3fgq.onrender.com/auth/login/google',
-      '_self',
-    )
+    window.open('http://localhost:3001/auth/login/google', '_self')
   }
+  // function handleLoginGoogle() {
+  //   window.open(
+  //     'https://orange-portfolio-3fgq.onrender.com/auth/login/google',
+  //     '_self',
+  //   )
+  // }
 
   const handleShowPassword = () => setShowPassword((show) => !show)
 
