@@ -35,6 +35,7 @@ export function Login() {
   const [isEmailValid, setIsEmailValid] = useState(true)
   const [isPasswordValid, setIsPasswordValid] = useState(true)
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false)
+  const [isloading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()
 
@@ -83,7 +84,8 @@ export function Login() {
   }
 
   // Cuida do submit do formulário
-  function handleLoginClick(data: LoginFormData) {
+  async function handleLoginClick(data: LoginFormData) {
+    setIsLoading(true)
     const request = {
       email: data.email,
       password: data.password,
@@ -96,13 +98,13 @@ export function Login() {
       .find((cookie) => cookie.startsWith('token='))
       ?.split('=')[1]
 
-    AxiosAPI.post('/auth/login', request, {
+    await AxiosAPI.post('/auth/login', request, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
     })
       .then((res) => {
-        // Creando a instancia
+        // Criando a instancia
         const cookies = new Cookies()
 
         // Salva os cookies
@@ -111,6 +113,8 @@ export function Login() {
 
           cookies.set('is-logged-in', true, { path: '/' })
         }
+
+        setIsLoading(false)
         navigate('/')
       })
       .catch((error) => {
@@ -121,7 +125,10 @@ export function Login() {
           setIsPasswordValid,
         )
         setIsSnackbarOpen(true)
+        setIsLoading(false)
       })
+
+    setIsLoading(false)
   }
 
   // Cuida do fechamento da snackbar
@@ -192,6 +199,7 @@ export function Login() {
             helperText={!isEmailValid ? 'Email inválido ou incorreto' : ''}
             {...register('email')}
             onChange={handleEmailInputChange}
+            disabled={isloading}
             sx={{ width: '100%', marginBottom: '16px' }}
           />
 
@@ -200,6 +208,7 @@ export function Login() {
             variant="outlined"
             error={!isPasswordValid}
             onChange={handlePasswordInputChange}
+            disabled={isloading}
             sx={{ width: '100%', marginBottom: '16px' }}
           >
             <InputLabel htmlFor="outlined-adornment-password">
@@ -233,6 +242,7 @@ export function Login() {
             size="large"
             type="submit"
             onClick={handleSubmit(handleLoginClick)}
+            disabled={isloading}
             sx={{
               backgroundColor: defaultTheme['color-secondary-100'],
               '&:hover': {
