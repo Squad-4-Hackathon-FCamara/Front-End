@@ -28,7 +28,13 @@ import { defaultTheme } from '../../styles/themes/default.ts'
 import { AxiosAPI } from '../../AxiosConfig.ts'
 import { useNavigate } from 'react-router'
 import Cookies from 'universal-cookie'
-import { GoogleAuthProvider, onAuthStateChanged, signInWithCustomToken, signInWithPopup, signOut } from '@firebase/auth'
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithCustomToken,
+  signInWithPopup,
+  signOut,
+} from '@firebase/auth'
 import { auth } from '../../firebase/index.ts'
 
 export function Login() {
@@ -153,53 +159,57 @@ export function Login() {
 
   function handleLoginGoogle() {
     const provider = new GoogleAuthProvider()
-    signInWithPopup(auth, provider).then(async res => {
-      // setUserName(res.user.displayName || '')
-      // setUserEmail(res.user.email || '')
-      // setUserEmail(res.user || '')
-      const body = {
-          email: res.user.email, 
+    signInWithPopup(auth, provider)
+      .then(async (res) => {
+        // setUserName(res.user.displayName || '')
+        // setUserEmail(res.user.email || '')
+        // setUserEmail(res.user || '')
+        const body = {
+          email: res.user.email,
           firstName: res.user.displayName?.split(' ')[0],
           lastName: res.user.displayName?.split(' ')[1],
           //password apenas para passar em validações, será desconsiderada quando fizer login com google
           password: '1111111111Aa!',
-          userGoogle: true
+          userGoogle: true,
         }
-      
-      AxiosAPI.post('auth/login', 
-      body, {headers: {
-        'Content-Type': `application/json`,
-        'same-origin-allow-popups': '*'
-      },}).then(res => {
-        console.log(res);
-        
-      }).catch(e => {
-        console.log('no catch');
-        console.log(e);
+
+        AxiosAPI.post('auth/login', body, {
+          headers: {
+            'Content-Type': `application/json`,
+            'same-origin-allow-popups': '*',
+          },
+        })
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((e) => {
+            setIsSnackbarOpen(true)
+            console.log('no catch')
+            console.log(e)
+            setTimeout(() => {
+              setIsSnackbarOpen(false)
+            }, 5000)
+          })
+
+        // fetch('http://localhost:3001/auth/login', {method: 'post', body: JSON.stringify(body),
+        //  headers: {'Content-Type': 'application/json'}}).then(res => {console.log(res);
+        //  }).catch(e => {
+        //     console.log('no catch');
+        //     console.log(e);
+        //   })
       })
-
-      // fetch('http://localhost:3001/auth/login', {method: 'post', body: JSON.stringify(body), 
-      //  headers: {'Content-Type': 'application/json'}}).then(res => {console.log(res);
-      //  }).catch(e => {
-      //     console.log('no catch');
-      //     console.log(e);
-      //   })
-      
-      
-    }).catch(e => {
-      console.log('deu erro');
-      //se o usuário recusar, cai aqui
-      console.log(e);
-
-    })
+      .catch((e) => {
+        console.log('deu erro')
+        //se o usuário recusar, cai aqui
+        console.log(e)
+      })
 
     // onAuthStateChanged(auth, user => {
     //   console.log('no onAuthStateChanged');
-      
-    //   console.log(user);
-      
-    // })
 
+    //   console.log(user);
+
+    // })
 
     // signOut(auth).then(() => {
     //   // this.router.navigate([''])
@@ -207,10 +217,6 @@ export function Login() {
     // }).catch(error => {
     //   console.log(`Ocorreu um erro. ${error.message}`, true)
     // })
-
-    
-      
-    
   }
 
   const handleShowPassword = () => setShowPassword((show) => !show)
@@ -237,7 +243,7 @@ export function Login() {
             severity="warning"
             sx={{ backgroundColor: defaultTheme['warning-main'] }}
           >
-            Email ou senha estão incorretos
+            Falha na autenticação
           </Alert>
         </Snackbar>
 
