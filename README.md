@@ -8,17 +8,21 @@
 
 ![FINAL](https://github.com/Squad-4-Hackathon-FCamara/Back-End/assets/50846424/91e76f8f-1216-4a92-a51c-67fab77dd134)
 
+---
 
 ## Sobre
 Front end do Orange Portfólio da squad 4 da 5ª edição do Programa de formação da FCamara e Orange Juice.
 
-## Principais tecnologias utilizadas
-* [React](https://react.dev/)
-* [Vite](https://vitejs.dev/)
-* [Styled Components](https://styled-components.com/)
-* [Material UI](https://mui.com/material-ui/)
+## 🛠️ Tecnologias utilizadas
+<a href="https://react.dev/"><img alt="REACT" src="https://img.shields.io/badge/React-ff5522?style=for-the-badge&logo=react&logoColor=white"></a>
+<a href="https://www.typescriptlang.org/"><img alt="TYPESCRIPT" src="https://img.shields.io/badge/typescript-ff5522?style=for-the-badge&logo=typescript&logoColor=white"></a>
+<a href="https://vitejs.dev/"><img alt="VITE" src="https://img.shields.io/badge/Vite-ff5522?style=for-the-badge&logo=vite&logoColor=white"></a>
+<a href="https://styled-components.com/"><img alt="STYLED COMPONENTS" src="https://img.shields.io/badge/styled--components-ff5522?style=for-the-badge&logo=styled-components&logoColor=white"></a>
+<a href="https://mui.com/material-ui/"><img alt="MUI" src="https://img.shields.io/badge/Material UI-ff5522?style=for-the-badge&logo=MUI&logoColor=white"></a>
 
-### Funcionalidades
+---
+
+## ⚙️ Funcionalidades
 
 - [x] Cadastro de usuário
 - [x] Login com o Google
@@ -27,6 +31,8 @@ Front end do Orange Portfólio da squad 4 da 5ª edição do Programa de formaç
 - [x] Exclusão de projetos
 - [x] Descoberta de novos projetos
 - [x] Filtragem projetos por categorias
+
+---
 
 ## Como executar localmente
 Primeiramente, é necessário clonar e executar o projeto do back end, que está disponível [em seu repositório](https://github.com/Squad-4-Hackathon-FCamara/Back-End).
@@ -45,6 +51,8 @@ npm install
 npm run dev
 ```
 4º passo - Acesse a url localhost que foi gerada.
+
+---
 
 ## 🤝 Colaboradores
 
