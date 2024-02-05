@@ -10,8 +10,10 @@
 
 ---
 
-## Sobre
+## 💻 Sobre
 Front end do Orange Portfólio da squad 4 da 5ª edição do Programa de formação da FCamara e Orange Juice.
+
+---
 
 ## 🛠️ Tecnologias utilizadas
 <a href="https://react.dev/"><img alt="REACT" src="https://img.shields.io/badge/React-ff5522?style=for-the-badge&logo=react&logoColor=white"></a>
@@ -34,7 +36,7 @@ Front end do Orange Portfólio da squad 4 da 5ª edição do Programa de formaç
 
 ---
 
-## Como executar localmente
+## 👨‍💻 Como executar localmente
 Primeiramente, é necessário clonar e executar o projeto do back end, que está disponível [em seu repositório](https://github.com/Squad-4-Hackathon-FCamara/Back-End).
 Após executar o back end, execute o front end:
 
