@@ -11,7 +11,7 @@
 ---
 
 ## 💻 Sobre
-Front end do Orange Portfólio da squad 4 da 5ª edição do Programa de formação da FCamara e Orange Juice.
+Frontend do Orange Portfolio, um MVP desenvolvido pelo Squad 4 da 5ª edição do Programa de Formação da [Orange Juice](https://tech.orangejuice.com.br/orangejuice) em parceria com a [FCamara](https://fcamara.com/), é a face visível e interativa da nossa plataforma. Ele é responsável por proporcionar uma experiência de usuário envolvente e intuitiva, permitindo que os membros da comunidade Orange Juice criem, compartilhem e descubram projetos de maneira simples e eficiente. Com um design moderno e funcionalidades inovadoras, o frontend garante uma navegação suave e uma interação fluida para todos os usuários.
 
 ---
 
